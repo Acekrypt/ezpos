@@ -72,6 +72,7 @@ class PosSale
 		dialog.signal_connect('response') do |widget, data|
 		    widget.destroy
 		end
+		dialog.window_position=Gtk::Window::POS_CENTER_ALWAYS
 		dialog.show
 	    end
 
@@ -119,6 +120,7 @@ class PosSale
 	    PosSale.new
 	else
 	    dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::WARNING,Gtk::MessageDialog::BUTTONS_CLOSE,'Unable to save sale')
+	    dialog.window_position=Gtk::Window::POS_CENTER_ALWAYS
 	    dialog.run
 	    dialog.destroy
 	    self

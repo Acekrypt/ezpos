@@ -10,6 +10,7 @@ require 'pos_sale'
 require 'payment_ctrl'
 require 'totals_display'
 
+DB.instance # force connection before anything else
 POSSetting.init
 
 class PointOfSale
