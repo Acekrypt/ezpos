@@ -36,6 +36,7 @@ class CustomerInfoDialog
     end
 
     def markup( ctrl, str )
+	str = "" if ! str
 	ctrl.set_markup( str )
     end
 

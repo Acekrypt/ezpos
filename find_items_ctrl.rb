@@ -59,7 +59,7 @@ class FindItemsCtrl
 
     def grid_got_focus( widget, dir )
 	if ! @grid.model.iter_first
-	    ItemsGrid.instance.focus
+#	    ItemsGrid.instance.focus
 	    true
 	else
 	    false
