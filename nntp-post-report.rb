@@ -2,7 +2,7 @@
 
 require 'net/smtp'
 require 'base64'
-require 'sales_report'
+require 'inv/sales_report'
 require 'nntp'
 
 s = Net::NNTP.new('news.allmed.net')
@@ -18,7 +18,7 @@ boundary ='------------060206040805030707000202'
 msgid += '@' + host.chomp + '>'
 
 date = Time.new - 86400 
-report = SalesReport.new( date )
+report = INV::SalesReport.new( date )
 report_name = 'JC_Store_' + date.strftime("%m-%d-%Y") + '.pdf'
 
 
