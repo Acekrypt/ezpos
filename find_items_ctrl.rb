@@ -66,7 +66,6 @@ class FindItemsCtrl
 	end
     end
 
-
     def code
 	@entry.text.upcase
     end
