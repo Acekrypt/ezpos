@@ -155,7 +155,7 @@ class ItemsGrid
 	sku.code = iter[0]
 	sku.descrip = iter[1]
 	sku.um = iter[2]
-	sku.price = iter[3].to_f
+	sku.price = Money.new( iter[3] )
 	sku.qty = iter[4].to_i
 	sku.discount = iter[6].to_i
 	sku
@@ -192,11 +192,11 @@ class ItemsGrid
 	line[0] = sku.code
 	line[1] = sku.descrip
 	line[2] = sku.um
-	line[3] = sku.formated_price
+	line[3] = sku.price.to_s
 	line[4] = sku.qty
-	line[5] = sku.formated_undiscounted_total
+	line[5] = sku.undiscounted_total.to_s
 	line[6] = get_discount( sku )
-	line[7] = sku.formated_total
+	line[7] = sku.total.to_s
 	line[8] = sku
 	line[9] = sku.returned?
     end

@@ -130,7 +130,7 @@ class PointOfSale
       dialog =  @glade.get_widget("tax_rate_dialog")
       dialog.show
       txt_entry = @glade.get_widget("tax_rate_text_entry_ctrl");
-      txt_entry.text =  sprintf( "%0.2f",POS::Setting.instance.tax_rate * 100 )
+      txt_entry.text =  sprintf( "%0.3f",POS::Setting.instance.tax_rate * 100 )
   end
 
   def on_tax_rate_dialog_ok( widget )

@@ -53,9 +53,9 @@ class PaymentCtrl
     end
 
     def get_additional_payment
-	rec = Payment.formated_total( @payments )
-	tot = @pending_sale.formated_total
-	@payment_type_label.set_markup( 'Sale Total: ' + tot + ' - ' + rec + ' = ' + sprintf('%.2f',tot.to_f - rec.to_f ) + ' Remaining' )
+	rec = Payment.total( @payments )
+	tot = @pending_sale.total
+	@payment_type_label.set_markup( 'Sale Total: ' + tot.to_s + ' - ' + rec.to_s + ' = ' + (tot - rec).to_s + ' Remaining' )
 #	@amt_received.grab_focus
 	@payment_type_dialog.run
     end
@@ -75,13 +75,13 @@ class PaymentCtrl
     def clear_payments
 	if @payments
 	    for p in @payments
-		p.destroy
+		p.remove
 	    end
 	end
     end
 
     def record_payment( payment_type )
-	@amt_received.text = sprintf('%.2f', @pending_sale.total - Payment.total(@payments) ) 
+	@amt_received.text = ( @pending_sale.total - Payment.total(@payments) ).to_s
 
 	for child in @more_info_vbox.children
 	    @more_info_vbox.remove(child)
@@ -117,10 +117,10 @@ class PaymentCtrl
 	    @payments.push( Payment.new( Hash[ 
 					    'method_id'=>payment_type.db_pk,
 					    'customer_id'=> @customer.db_pk,
-					    'amount'=> @amt_received.text.to_f,
+					    'amount'=> Money.new( @amt_received.text ),
 					    'transaction_id'=>payment_type.transaction_id( elements ),
 					] ) )
-	    if  sprintf( '%.2f',Payment.total( @payments ) ).to_f < sprintf( '%.2f',@pending_sale.total).to_f
+	    if  Payment.total( @payments ) < @pending_sale.total
 		get_additional_payment
 	    end
 	else

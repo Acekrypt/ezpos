@@ -69,7 +69,6 @@ class PosSale
 	DB.instance.begin_transaction
 
 	finalized_sale = PaymentCtrl.instance.record_sale(  @sale )
-
 	
 	if ! finalized_sale
 # 	    dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::WARNING,Gtk::MessageDialog::BUTTONS_CLOSE,'Unable to save sale')
@@ -88,7 +87,7 @@ class PosSale
 	for p in payments
 	    if ( ! change_shown ) && ( p.payment_method.is_a?( Payment::Method::Cash ) )
 		p.change=finalized_sale.change_given
-		dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::INFO,Gtk::MessageDialog::BUTTONS_CLOSE,'Change Due: ' + finalized_sale.formated_change_given )
+		dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::INFO,Gtk::MessageDialog::BUTTONS_CLOSE,'Change Due: ' + finalized_sale.change_given.to_s )
 		dialog.signal_connect('response') do |widget, data|   widget.destroy end
 		dialog.window_position=Gtk::Window::POS_CENTER_ALWAYS
 		dialog.show

@@ -12,14 +12,14 @@ class DisplayPole
     end
 
     def show_sale( sale )
-	@pole.line_one=sprintf('Sb %7.2f Tx %5.2f',sale.subtotal, sale.tax )
-	@pole.line_two=sprintf('Total: %12.2f', sale.total)
+	@pole.line_one=sprintf('Sb %10s Tx %8s',sale.subtotal.to_s, sale.tax.to_s )
+	@pole.line_two=sprintf('Total: %15s', sale.total.to_s)
     end
 
 
     def show_sku( sku , sale_total )
 	@pole.line_one=sku.descrip[0..LogicControlsDisplay::LINE_LENGTH]
-	@pole.line_two=sprintf('%-6.2f Tot %8.2f',sku.total, sale_total)
+	@pole.line_two=sprintf('%-9s Tot %11s',sku.total.to_s, sale_total.to_s)
     end
 
     def show_thanks

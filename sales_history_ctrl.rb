@@ -132,7 +132,7 @@ class SalesHistoryCtrl
 
     def set_return_amount_label( sku )
 	if sku
-	    @return_amount.set_markup( 'Price ' + sku.formated_total + ' + ' + sku.formated_tax + ' Tax = ' + sku.formated_total_with_tax + ' Total' )
+	    @return_amount.set_markup( 'Price ' + sku.total.to_s + ' + ' + sku.tax.to_s + ' Tax = ' + sku.total_with_tax.to_s + ' Total' )
 	else
 	    @return_amount.set_markup('')
 	end
@@ -182,14 +182,14 @@ class SalesHistoryCtrl
     end
 
     def update_amounts( sale )
-	set_amount( @subtotal_amt, sale.formated_subtotal )
-	set_amount( @tax_amt, sale.formated_tax )
-	set_amount( @total_amt, sale.formated_total )
+	set_amount( @subtotal_amt, sale.subtotal.to_s )
+	set_amount( @tax_amt, sale.tax.to_s )
+	set_amount( @total_amt, sale.total.to_s )
     end
 
     def set_items( sale )
 	@items_grid.clear
-	sale.skus.reverse.each{ | sku |
+	sale.skus.each{ | sku |
 	    @items_grid.insert( sku )
 	}
 
@@ -228,7 +228,7 @@ class SalesHistoryCtrl
 	    else
 		row[2] = payments.first.name_of
 	    end
-	    row[3] = sale.formated_total
+	    row[3] = sale.total.to_s
 	end
 
     end

@@ -22,30 +22,30 @@ class Printer
 	for sku in sale.skus
 	    recpt.puts sku.descrip[0..39]
 	    if 0 == sku.discount
-		recpt.puts sprintf('%-14s',sku.code) + sprintf('%3d', sku.qty ) + ' x ' + sprintf('%-8.2f', sku.price ) + sprintf('%12.2f', sku.total )
+		recpt.puts sprintf('%-14s',sku.code) + sprintf('%3d', sku.qty ) + ' x ' + sprintf('%-8s', sku.price.to_s ) + sprintf('%12s', sku.total.to_s )
 	    else
-		line =  sprintf('%-10s%3d x %.2f',sku.code, sku.qty,( sku.price + sku.discount ))
-		line+= ' - ' +  sprintf('%.2f Disc',sku.discount)
+		line = sprintf('%-10s%3d x %s',sku.code, sku.qty,sku.undiscounted_total.to_s )
+		line+= ' - ' + sku.formated_discount.to_s + ' Disc'
 		remainder = 40 - line.size
-		if ( remainder < sprintf('%.2f',sku.total ).size )
+		if ( remainder < sku.total.to_s.size )
 		    recpt.puts line
-		    recpt.puts sprintf("%40.2f", sku.total )
+		    recpt.puts sprintf("%40s", sku.total.to_s )
 		else
-		    recpt.puts sprintf("%s%#{remainder}.2f", line,sku.total )
+		    recpt.puts sprintf("%s%#{remainder}s", line,sku.total.to_s )
 		end
 	    end
 	end
-	
+
 	recpt.puts LINE
-	recpt.puts 'Subtotal' + sprintf('%32.2f',sale.subtotal )
-	recpt.puts 'Tax'      + sprintf('%37.2f',sale.tax )
-	recpt.puts 'Total'    + sprintf('%35.2f',sale.total )
+	recpt.puts 'Subtotal' + sprintf('%32s',sale.subtotal.to_s )
+	recpt.puts 'Tax'      + sprintf('%37s',sale.tax.to_s )
+	recpt.puts 'Total'    + sprintf('%35s',sale.total.to_s )
 	recpt.puts LINE
 	for payment in sale.payments
-	    recpt.puts sprintf('%-25s%15.2f',payment.payment_method.name,payment.amount )
+	    recpt.puts sprintf('%-25s%15s',payment.payment_method.name,payment.amount.to_s )
 	end
-	
-	recpt.puts 'Change'   + sprintf('%34.2f',sale.change_given )
+
+	recpt.puts 'Change'   + sprintf('%34s',sale.change_given.to_s )
 
 	recpt.puts LINE
 	recpt.puts '             Thank You!'

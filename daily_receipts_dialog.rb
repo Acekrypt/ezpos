@@ -58,9 +58,9 @@ class DailyReceiptDialog
 
     def set_to_receipt( receipt )
 	@date_label.markup=receipt.date_covered.strftime('%m/%d/%Y')
-	@checks_ctrl.text=receipt.formated_checks
-	@cash_ctrl.text=receipt.formated_cash
-	@credit_cards_ctrl.text=receipt.formated_credit_cards
+	@checks_ctrl.text=receipt.checks.to_s
+	@cash_ctrl.text=receipt.cash.to_s
+	@credit_cards_ctrl.text=receipt.credit_cards.to_s
     end
 
     def blank_fields
