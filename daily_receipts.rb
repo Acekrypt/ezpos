@@ -12,6 +12,14 @@ class DailyReceipt
 	initialize_vars( var )
     end
 
+    def total
+	checks+cash+credit_cards
+    end
+
+    def formated_total
+	sprintf('%.2f',total)
+    end
+
     def formated_checks
 	sprintf( '%0.2f',checks)
     end
