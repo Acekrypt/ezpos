@@ -5,7 +5,7 @@ require 'singleton'
 class TotalsDisplay
     include Singleton
 
-    OPEN_MARKUP = '<span weight="bold" font_family="Times" foreground="red" size="xx-large"'
+    OPEN_MARKUP = '<span weight="bold" font_family="Times" foreground="red" size="xxx-large"'
     MARKUP = OPEN_MARKUP + '>'
 
     def sale=( sale )
