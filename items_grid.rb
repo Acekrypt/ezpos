@@ -1,7 +1,7 @@
 
 
 require 'singleton'
-require 'inv/sku.rb'
+require 'nas/inv/sku.rb'
 
 
 class CellRender < Gtk::CellRendererText
@@ -30,9 +30,7 @@ class ItemsGrid
 	@grid = grid
 	@discount = 0
 
-
-
-	@grid.model=Gtk::ListStore.new(String,String,String,String,Integer,String,String,String,INV::SaleSKU, TrueClass )
+	@grid.model=Gtk::ListStore.new(String,String,String,String,Integer,String,String,String,NAS::INV::SaleSKU, TrueClass )
 	@grid.rules_hint = true
 	@grid.selection.mode = Gtk::SELECTION_SINGLE
  	@grid.headers_visible=true
@@ -151,7 +149,7 @@ class ItemsGrid
 
 
     def create_sku( iter )
-	sku = INV::SaleSKU.new( @sale )
+	sku = NAS::INV::SaleSKU.new( @sale )
 	sku.code = iter[0]
 	sku.descrip = iter[1]
 	sku.um = iter[2]
@@ -216,7 +214,7 @@ class ItemsGrid
 	row = model.get_iter(Gtk::TreePath.new(path_string))
 	case cell.column
 	when 3
-	    row[3] =  sprintf( '%0.2f', new_text.to_f )
+	    row[3] = sprintf('%.2f',new_text.to_f)
 	when 4
 	    row[4] = new_text.to_i
 	when 6

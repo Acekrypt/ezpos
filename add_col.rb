@@ -1,9 +1,6 @@
-#!/usr/bin/ruby -I/usr/local/lib/rubylib
+#!/usr/bin/ruby
 
-
-
-
-require 'db'
+require 'nas/db'
 
 if ARGV.size < 2
     $stderr.puts 'add_col.rb <table> <column> <type> [default value]'
@@ -12,7 +9,7 @@ end
 
 sql =  'ALTER TABLE ' + ARGV[0] + ' add column ' + ARGV[1] + ' ' + ARGV[2]
 
-DB.instance.exec( sql )
+NAS::DB.instance.exec( sql )
 
 if ARGV.size == 4
     sql =  'update ' + ARGV[0] + ' set ' + ARGV[1] + ' =  ' + DB.quote( ARGV[3] )

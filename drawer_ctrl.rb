@@ -49,7 +49,7 @@ class Drawer
 
     def open
 	char = POS::Setting.instance.drawer_char
-    	port = File.new( LocalConfig::CASH_DRAWER_PORT,'w' )
+    	port = File.new( NAS::LocalConfig::CASH_DRAWER_PORT,'w' )
 	port.putc char
 	port.close
     end

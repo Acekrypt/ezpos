@@ -1,5 +1,5 @@
 
-require 'daily_receipts'
+require 'nas/daily_receipts'
 require 'singleton'
 
 class DailyReceiptDialog
@@ -23,7 +23,7 @@ class DailyReceiptDialog
 	else
 	    set_editable( false )
 	end
-	@receipts = DailyReceipt.find_on_date( date )
+	@receipts = NAS::DailyReceipt.find_on_date( date )
 	if @receipts
 	    set_to_receipt( @receipts )
 	else
@@ -42,7 +42,7 @@ class DailyReceiptDialog
 	    @receipts.cash = @cash_ctrl.text
 	    @receipts.credit_cards = @credit_cards_ctrl.text
 	else
-	    @receipts=DailyReceipt.new( Hash[ 
+	    @receipts=NAS::DailyReceipt.new( Hash[ 
 					   'date_covered' => Time.new,
 					   'checks' => @checks_ctrl.text.to_f,
 					   'cash'   => @cash_ctrl.text.to_f,

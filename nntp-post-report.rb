@@ -18,7 +18,7 @@ boundary ='------------060206040805030707000202'
 msgid += '@' + host.chomp + '>'
 
 date = Time.new - 86400 
-report = INV::SalesReport.new( date )
+report = NAS::INV::SalesReport.new( date )
 report_name = 'JC_Store_' + date.strftime("%m-%d-%Y") + '.pdf'
 
 

@@ -1,5 +1,5 @@
 require 'singleton'
-require 'inv/sale'
+require 'nas/inv/sale'
 require 'pos_settings'
 
 class Printer

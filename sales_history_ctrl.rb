@@ -1,7 +1,7 @@
 
 
 require 'singleton'
-require 'inv/sale'
+require 'nas/inv/sale'
 require 'daily_receipts_dialog'
 
 class SalesHistoryCtrl
@@ -76,7 +76,7 @@ class SalesHistoryCtrl
 
 	@sales_view.signal_connect('cursor_changed') do | view,row_num,col,store |
 	    @sale_id_box.text=""
-	    display_sale(  INV::Sale.new(  @sales_view.selection.selected.get_value( 0 ) ) )
+	    display_sale( NAS::INV::Sale.new(  @sales_view.selection.selected.get_value( 0 ) ) )
  	end
 
 	@sale_id_box.signal_connect('activate') do find_from_box end
@@ -197,10 +197,10 @@ class SalesHistoryCtrl
 
     def update_sales
 	if @sale_id_box.text.empty?
-	    sales = INV::Sale.find_on_date( date ).reverse
+	    sales = NAS::INV::Sale.find_on_date( date ).reverse
 	else
 	    begin
-		sales = Array[INV::Sale.new( @sale_id_box.text ) ]
+		sales = Array[NAS::INV::Sale.new( @sale_id_box.text ) ]
 	    rescue Exception
 		sales = Array.new
 		dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::ERROR,Gtk::MessageDialog::BUTTONS_CLOSE, 'Sale ID: ' + @sale_id_box.text + ' not found'  )
@@ -223,7 +223,7 @@ class SalesHistoryCtrl
 	    row[0] = sale.db_pk.to_s
 	    row[1] = sale.occured.strftime('%I:%M%P %m/%d/%y')
 	    payments = sale.payments
-	    if ( payments.empty? ) || ( payments.first.payment_method.is_a? Payment::Method::BillingAcct )
+	    if ( payments.empty? ) || ( payments.first.payment_method.is_a? NAS::Payment::Method::BillingAcct )
 		row[2] = sale.customer.code
 	    else
 		row[2] = payments.first.name_of

@@ -1,13 +1,13 @@
 
 
 require 'singleton'
-require 'inv/sku.rb'
+require 'nas/inv/sku.rb'
 
 class FindItemsCtrl
     include Singleton
 
     def initialize
-	@db = DB.instance
+	@db = NAS::DB.instance
     end
 
     def glade=( glade )
@@ -74,7 +74,7 @@ class FindItemsCtrl
     def nearest_match
 	iter = @grid.model.iter_first
 	if iter
-	    iter[0]
+	    iter[0].upcase
 	else
 	    nil
 	end
@@ -87,7 +87,7 @@ class FindItemsCtrl
 	    char = char[0]
 	    if char > 47 && char < 123
 		@grid_items.clear
-		sql = 'select code, descrip from sku where code like \'' + widget.text + sprintf('%c',char) + '%\' limit 20'
+		sql = 'select code, descrip from sku where code like \'' + (widget.text + sprintf('%c',char)).upcase + '%\' limit 20'
 		res = @db.exec( sql )
 		res.result.each do |tupl|
 		    line = @grid_items.append

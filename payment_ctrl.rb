@@ -1,5 +1,5 @@
 
-require 'payment'
+require 'nas/payment'
 
 require 'singleton'
 
@@ -18,7 +18,7 @@ class PaymentCtrl
 
 	@payment_type_combo_box = glade.get_widget("payment_type_menu_ctrl")
 	menu = Gtk::Menu.new
-	for pt in Payment::Type.all
+	for pt in NAS::Payment::Type.all
 	    menu.append( Gtk::MenuItem.new( pt.name ) )
 	end
 	menu.show_all
@@ -53,7 +53,7 @@ class PaymentCtrl
     end
 
     def get_additional_payment
-	rec = Payment.total( @payments )
+	rec = NAS::Payment.total( @payments )
 	tot = @pending_sale.total
 	@payment_type_label.set_markup( 'Sale Total: ' + tot.to_s + ' - ' + rec.to_s + ' = ' + (tot - rec).to_s + ' Remaining' )
 #	@amt_received.grab_focus
@@ -61,7 +61,7 @@ class PaymentCtrl
     end
 
     def on_payment_type_ok
-	payment_type = Payment::Type.all[ @payment_type_combo_box.history ]
+	payment_type = NAS::Payment::Type.all[ @payment_type_combo_box.history ]
 	@payment_type_dialog.hide
 	record_payment( payment_type )
     end
@@ -81,7 +81,7 @@ class PaymentCtrl
     end
 
     def record_payment( payment_type )
-	@amt_received.text = ( @pending_sale.total - Payment.total(@payments) ).to_s
+	@amt_received.text = ( @pending_sale.total - NAS::Payment.total(@payments) ).to_s
 
 	for child in @more_info_vbox.children
 	    @more_info_vbox.remove(child)
@@ -105,7 +105,7 @@ class PaymentCtrl
     def on_payment_more_info_ok
 	@payment_more_info_dialog.hide
 	
-	payment_type = Payment::Type.all[ @payment_type_combo_box.history ]
+	payment_type = NAS::Payment::Type.all[ @payment_type_combo_box.history ]
 	elements=Array.new
 	for el in @payment_info
 	    elements.push( el.text )
@@ -114,13 +114,13 @@ class PaymentCtrl
 	if err_msg.empty?
 	    @customer=payment_type.get_customer( elements )
 
-	    @payments.push( Payment.new( Hash[ 
+	    @payments.push( NAS::Payment.new( Hash[ 
 					    'method_id'=>payment_type.db_pk,
 					    'customer_id'=> @customer.db_pk,
 					    'amount'=> Money.new( @amt_received.text ),
 					    'transaction_id'=>payment_type.transaction_id( elements ),
 					] ) )
-	    if  Payment.total( @payments ) < @pending_sale.total
+	    if  NAS::Payment.total( @payments ) < @pending_sale.total
 		get_additional_payment
 	    end
 	else

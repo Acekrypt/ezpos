@@ -1,7 +1,7 @@
 
 
-require 'db'
-require 'inv/pending_sale'
+require 'nas/db'
+require 'nas/inv/pending_sale'
 require 'drawer_ctrl'
 require 'customer_info_dialog'
 require 'printer'
@@ -14,7 +14,7 @@ class PosSale
    
 
     def initialize
-	@sale=INV::PendingSale.new( POS::Setting.instance.tax_rate )
+	@sale=NAS::INV::PendingSale.new( POS::Setting.instance.tax_rate )
 	TotalsDisplay.instance.sale = @sale
 	SaleItemsGrid.instance.clear
 	DisplayPole.instance.show_welcome
@@ -66,7 +66,7 @@ class PosSale
     def finalize( glade )
 	return self if @sale.empty?
 
-	DB.instance.begin_transaction
+	NAS::DB.instance.begin_transaction
 
 	finalized_sale = PaymentCtrl.instance.record_sale(  @sale )
 	
@@ -75,7 +75,7 @@ class PosSale
 # 	    dialog.window_position=Gtk::Window::POS_CENTER_ALWAYS
 # 	    dialog.run
 # 	    dialog.destroy
-	    DB.instance.abort_transaction
+	    NAS::DB.instance.abort_transaction
 	    return self
 	end
 
@@ -85,7 +85,7 @@ class PosSale
 	payments = finalized_sale.payments
 	change_shown = false
 	for p in payments
-	    if ( ! change_shown ) && ( p.payment_method.is_a?( Payment::Method::Cash ) )
+	    if ( ! change_shown ) && ( p.payment_method.is_a?( NAS::Payment::Method::Cash ) )
 		p.change=finalized_sale.change_given
 		dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::INFO,Gtk::MessageDialog::BUTTONS_CLOSE,'Change Due: ' + finalized_sale.change_given.to_s )
 		dialog.signal_connect('response') do |widget, data|   widget.destroy end
@@ -94,10 +94,10 @@ class PosSale
 		change_shown = true
 	    end
 
-	    if p.payment_method.is_a?( Payment::Method::BillingAcct )
+	    if p.payment_method.is_a?( NAS::Payment::Method::BillingAcct )
 		cid = CustomerInfoDialog.new( glade, finalized_sale.customer )
 		if ! cid.sale_ok?
-		    DB.instance.abort_transaction
+		    NAS::DB.instance.abort_transaction
 		    return self
 		end
 	    end
@@ -108,7 +108,7 @@ class PosSale
 
 	Printer.instance.output_sale( finalized_sale )
 
-	DB.instance.commit_transaction
+	NAS::DB.instance.commit_transaction
 
 	command = './drive_pole '
 	command += POS::Setting.instance.pole_thank_you_pause.to_s + ' '
@@ -130,11 +130,11 @@ class PosSale
     end
 
     def add_sku( code )
-	if add_skus( INV::SKU.find(code, false ) )
+	if add_skus( NAS::INV::SKU.find(code, false ) )
 	    FindItemsCtrl.instance.clear
 	else
 	    code = FindItemsCtrl.instance.nearest_match
-	    if add_skus( INV::SKU.find(code, false ) )
+	    if add_skus( NAS::INV::SKU.find(code, false ) )
 		FindItemsCtrl.instance.clear
 	    else
 		not_found( code)

@@ -1,9 +1,11 @@
-#!/usr/bin/ruby -I/usr/local/lib/rubylib
+#!/usr/bin/ruby
+
+require 'libglade2'
+
+require 'nas/local_config'
+require 'nas/db'
 
 require 'pos_settings'
-require 'libglade2'
-require 'local_config'
-require 'db'
 require 'items_grid'
 require 'find_items_ctrl'
 require 'pos_sale'
@@ -44,7 +46,7 @@ class PointOfSale
       window.fullscreen
       window.set_has_frame( false )
       window.show
-
+      DisplayPole.instance.reset
       FindItemsCtrl.instance.glade       = @glade
       TotalsDisplay.instance.glade       = @glade
       PaymentCtrl.instance.glade         = @glade 

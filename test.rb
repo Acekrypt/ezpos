@@ -3,7 +3,7 @@
 require 'inv/sales_report'
 
 date = Time.new -  86400
-report = INV::SalesReport.new( date )
+report = NAS::INV::SalesReport.new( date )
 
 
 f = File.new('report.pdf','w')
