@@ -205,9 +205,15 @@ class ItemsGrid
     end
 
     def update_row( row )
-	row[ 5 ] = sprintf( '%0.2f',( row[4].to_i * row[3].to_f ) )
-	row[ 7 ] = sprintf( '%0.2f',( row[5].to_f * ( ( 100 - row[6].to_f ).to_f / 100 ) ) )
-	row[ SKU_ELEMENT ] = create_sku( row )
+	row[ SKU_ELEMENT ] = sku = create_sku( row )
+	sku.qty = row[4]
+	sku.price=Money.new( row[3] )
+	sku.discount=row[ 6 ].to_i
+	row[5] = sku.undiscounted_total.to_s
+	row[7] = sku.total.to_s
+#	row[ 5 ] = sprintf( '%0.2f',( row[4].to_i * row[3].to_f ) )
+#	row[ 7 ] = sku.total.to_s sprintf( '%0.2f',( row[5].to_f * ( ( 100 - row[6].to_f ).to_f / 100 ) ) )
+
     end
 
     def cell_edited(cell, path_string, new_text, model)
@@ -218,7 +224,7 @@ class ItemsGrid
 	when 4
 	    row[4] = new_text.to_i
 	when 6
-	    row[6] = new_text.to_i.to_s + '%'
+	    row[6] = new_text.to_i > 99 ? '99%' : new_text.to_i.to_s + '%'
 	else
 	    row[ cell.column ] = new_text
 	end

@@ -23,8 +23,12 @@ class DiscountCtrl
     end
     
     def value_changed
-	SaleItemsGrid.instance.discount=@ctrl.value
-	@sale.update
+	if @ctrl.value.to_i > 99
+	    Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::ERROR,Gtk::MessageDialog::BUTTONS_CLOSE, 'Discounts greater than 100% are not allowed' )
+	else
+	    SaleItemsGrid.instance.discount=@ctrl.value.to_i
+	    @sale.update
+	end
     end
 
     def clear

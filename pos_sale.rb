@@ -10,9 +10,6 @@ require 'discount_ctrl'
 
 class PosSale
 
-
-   
-
     def initialize
 	@sale=NAS::INV::PendingSale.new( POS::Setting.instance.tax_rate )
 	TotalsDisplay.instance.sale = @sale
