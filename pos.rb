@@ -2,6 +2,7 @@
 
 
 require 'libglade2'
+require 'local_config'
 require 'db'
 require 'pos_settings'
 require 'items_grid'
@@ -9,6 +10,7 @@ require 'find_items_ctrl'
 require 'pos_sale'
 require 'payment_ctrl'
 require 'totals_display'
+
 
 DB.instance # force connection before anything else
 POSSetting.init
