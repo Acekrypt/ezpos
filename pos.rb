@@ -180,8 +180,9 @@ end
 
 begin
     Gtk.init
-    Gnome::Program.new(PointOfSale::NAME, PointOfSale::VERSION)
-    PointOfSale.new( File.dirname($0) + "/pos.glade")
+#   Gnome::Program.new(PointOfSale::NAME, PointOfSale::VERSION)
+    win=PointOfSale.new( File.dirname($0) + "/pos.glade")
+    win.show_all
     Gtk.main
 
 
