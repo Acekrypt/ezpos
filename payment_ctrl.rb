@@ -4,6 +4,7 @@ require 'nas/payment'
 require 'singleton'
 require 'nas/payment/credit_card/card'
 require 'nas/payment/credit_card/face_to_face'
+require 'nas/widgets/get_string'
 
 class PaymentCtrl
 
@@ -57,7 +58,6 @@ class PaymentCtrl
 	rec = NAS::Payment.total( @payments )
 	tot = @pending_sale.total
 	@payment_type_label.set_markup( 'Sale Total: ' + tot.to_s + ' - ' + rec.to_s + ' = ' + (tot - rec).to_s + ' Remaining' )
-
 	@payment_type_dialog.run
     end
 
@@ -84,7 +84,6 @@ class PaymentCtrl
 	@more_info_vbox.pack_start( label, true,true, 10 )
 	label.show
 	entry = Gtk::Entry.new
-	entry.text=';4707588360001608=06021011864342800000?'
 	entry.activates_default=true
 	@payment_info.push( entry )
 	@more_info_vbox.pack_start( entry, true,true, 0 )
@@ -175,37 +174,49 @@ class PaymentCtrl
 	@payment_more_info_dialog.hide
 	clear_payments
     end
-    
 
+    def present_processing_dialog
+	d=Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::INFO,Gtk::MessageDialog::BUTTONS_CANCEL, 'Now Processing Card' )
+	d.signal_connect('response'){ | w |  }
+	d.show_now
+	d
+    end
 
     def process_credit_card_payment
+#	@payment_more_info_dialog.hide
 	try_again=false
 	cc=@payment_info.first.text
-	match = /;(\d{16})=(\d{2})(\d{2})/.match(cc)
+	match = /(\d+)=(\d{2})(\d{2})/.match(cc)
 	results=nil
 	if match
-	    puts "#{match[1]} - #{match[2]} - #{match[3]}"
-	    results=NAS::Payment::CreditCard::FaceToFace.charge( Money.new( @amt_received.text ), match[1], match[2], match[3] )
-	elsif cc == POS::Settings::BAD_CC_SWIPE
+	    d=present_processing_dialog
+	    results=NAS::Payment::CreditCard::FaceToFace.charge( Money.new( @amt_received.text ), match[1], match[3], match[2] )
+	    d.destroy
+	elsif cc == POS::Setting::BAD_CC_SWIPE
+	    d=Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::ERROR,Gtk::MessageDialog::BUTTONS_OK,'Bad Swipe' )
+     	    d.run
+	    d.destroy
 	    get_additional_payment
 	else
 	    str=cc.gsub(/\D/,'')
 	    if /\d{16}/.match( str )
-		month=NAS::Widgets::GetString('Date','Expiration Month' ).new.to_s
-		year=NAS::Widgets::GetString('Date','Expiration Year' ).new.to_s
+		month=NAS::Widgets::GetString.new('Date','Expiration Month' ).to_s
+		year=NAS::Widgets::GetString.new('Date','Expiration Year' ).to_s
 		if ! month.empty? && ! year.empty?
+		    d=present_processing_dialog
 		    results=NAS::Payment::CreditCard::FaceToFace.charge( Money.new( @amt_received.text ), cc, month, year )
+		    d.destroy
 		end
 	    end
 	end
 	if results
-	    results.each{ |k,v| puts "#{k.to_s} => #{v.to_s}" }
+	    results.each{ |k,v| puts "#{k.to_s} => #{v.to_s}" } if DEBUG
 
 	    if results['approved'] == 'APPROVED'
 		amt=Money.new( @amt_received.text )
 		@payments.push( NAS::Payment.new( Hash[ 
 						     'method_id'=> NAS::Payment::Method::CreditCard.new.db_pk,
-						     'customer_id'=> LocalConfig::Accounts.credit_card.db_pk,
+						     'customer_id'=> NAS::LocalConfig::Accounts.credit_card.db_pk,
 						     'amount'=> amt,
 						     'transaction_id'=> results['code'],
 						 ] ) )

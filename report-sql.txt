@@ -1,0 +1,1 @@
+psql -A -Uallmed allmed -c SELECT a.*,b.occured,d.name from sale_skus a, sales b,payments c,payment_types d where b.id=a.sale_id and c.sale_id=b.id and d.id=c.method_id

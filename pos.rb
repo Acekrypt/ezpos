@@ -15,6 +15,8 @@ require 'drawer_ctrl'
 require 'sales_history_ctrl'
 require 'daily_receipts_dialog'
 
+
+
 if ARGV.size > 0 && ARGV[0] == 'DEBUG'
     DEBUG=true
 else
@@ -174,9 +176,10 @@ class PointOfSale
 
 
   def on_about_activate( *widget )
-      dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::INFO,Gtk::MessageDialog::BUTTONS_OK,"EZPOS\nCreated by Nathan Stitt\nCopyright 2004, Alliance Medical Inc." )
-      dialog.run
-      dialog.destroy
+    on_view_history_clicked(nil)
+  #    dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::INFO,Gtk::MessageDialog::BUTTONS_OK,"EZPOS\nCreated by Nathan Stitt\nCopyright 2004, Alliance Medical Inc." )
+  #    dialog.run
+  #   dialog.destroy
   end
 
   def on_new_sale_activate( *widget )
@@ -194,6 +197,8 @@ end
 
 begin
     Gtk.init
+
+
     #Gnome::Program.new(PointOfSale::NAME, PointOfSale::VERSION)
     win=PointOfSale.new( File.dirname($0) + "/pos.glade")
     Gtk.main
