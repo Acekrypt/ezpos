@@ -96,15 +96,18 @@ class FindItemsCtrl
 		end
 	    end
 	else if 'BackSpace' == char
-		@grid_items.clear
-		sql = 'select code, descrip from sku where code like \'' + widget.text.chop + '%\' limit 20'
-		res = @db.exec( sql )
-		res.result.each do |tupl|
+		 @grid_items.clear
+		 sql = 'select code, descrip from sku where code like \'' + widget.text.chop + '%\''
+		 if widget.text.size < 4
+		     sql += ' limit 20'
+		 end
+		 res = @db.exec( sql )
+		 res.result.each do |tupl|
 		    line = @grid_items.append
 		    line[0] = tupl[0]
 		    line[1] = tupl[1]
 		end
-	    end
+	     end
 	end
 	
 	false
