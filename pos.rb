@@ -43,13 +43,17 @@ class PointOfSale
  #    window.set_default_size(1024, 768)
       #window.fullscreen
 
- #     window.show
+      window.fullscreen
+
+  
   #    window.maximize
 
 
  #     window.set_resizable( false )
- #     window.set_has_frame( false )
-     
+      window.set_has_frame( false )
+      window.show
+
+
       FindItemsCtrl.instance.glade = @glade
       TotalsDisplay.instance.glade = @glade
       PaymentCtrl.instance.glade   = @glade 
