@@ -1,7 +1,6 @@
-#!/usr/bin/ruby -I/home/nas/code/allmedweb/lib -I/home/nas/code/ruby-pos
+#!/usr/bin/ruby -I/usr/local/lib/rubylib
 
-
-require 'pos_globals'
+require './pos_globals'
 require 'libglade2'
 require 'items_grid'
 require 'find_items_ctrl'
