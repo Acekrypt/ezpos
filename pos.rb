@@ -1,10 +1,9 @@
 #!/usr/bin/ruby -I/usr/local/lib/rubylib
 
-
+require 'pos_settings'
 require 'libglade2'
 require 'local_config'
 require 'db'
-require 'pos_settings'
 require 'items_grid'
 require 'find_items_ctrl'
 require 'pos_sale'
@@ -13,7 +12,6 @@ require 'totals_display'
 
 
 conn = DB.instance
-conn.init
 
 conn.exec('select * from sku limit 1')
 
