@@ -1,9 +1,8 @@
 
 require 'gconf2'
-require 'customer'
+
 
 module POSSetting
-
 
     def POSSetting.init
 	@gConf = GConf::Client.new
@@ -12,7 +11,7 @@ module POSSetting
 	@print_header = "" if ! @print_header
 	@tax=0.0 if ! @tax
 	@taxExtemp = false;
-	@check_account = @credit_card_account = @cash_account = Customer.find( 'CASH' )
+
     end
 
     def POSSetting.tax_rate=( tax )
@@ -38,21 +37,6 @@ module POSSetting
     end
 
 
-    def POSSetting.CreditCardAccount
-	@credit_card_account
-    end
-
-    def POSSetting.CashAccount
-	@cash_account
-    end
-
-    def POSSetting.CheckAccount
-	@check_account
-    end
-
-    def POSSetting.customer
-	@cash_account
-    end
 
     def POSSetting.printHeader
 	@print_header
