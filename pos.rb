@@ -12,7 +12,12 @@ require 'payment_ctrl'
 require 'totals_display'
 
 
-DB.instance # force connection before anything else
+conn = DB.instance
+conn.init
+
+conn.exec('select * from sku limit 1')
+
+
 POSSetting.init
 
 class PointOfSale
