@@ -27,7 +27,7 @@ class TotalsDisplay
 
     def tax_exempt=( val )
 	@taxExempt = val
-	@tax_label.set_markup( OPEN_MARKUP + ' strikethrough="' + POS::Setting.instance.tax_exempt.pretty_s + '">Tax:</span>')
+	@tax_label.set_markup( OPEN_MARKUP + ' strikethrough="' + POS::Setting.instance.tax_exempt.to_s + '">Tax:</span>')
 	update
     end
 
