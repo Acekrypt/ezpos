@@ -100,7 +100,6 @@ class PosSale
 	    end
 
 	    Drawer.instance.open if p.payment_method.open_drawer
-
 	end
 
 	Printer.instance.output_sale( finalized_sale )
