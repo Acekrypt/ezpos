@@ -48,12 +48,12 @@ class Drawer
     # BEL - Switches 1-3 ON Switches 4-8 OFF
 
     def open
-	char = POSSetting.drawer_char
-#	fork do
-	    port = File.new( '/dev/lp0','w' )
-	    port.putc char
-	    port.close
-#	end
+	char = POS::Setting.instance.drawer_char
+
+#	    port = File.new( '/dev/lp0','w' )
+#	    port.putc char
+#	    port.close
+
     end
 
     

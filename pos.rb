@@ -10,8 +10,7 @@ require 'pos_sale'
 require 'payment_ctrl'
 require 'totals_display'
 require 'drawer_ctrl'
-
-POSSetting.init
+require 'sales_history_ctrl'
 
 class PointOfSale
   TITLE = "Simple Text Editor"
@@ -32,9 +31,9 @@ class PointOfSale
 	  when 'on_found_skus_results_grid_cursor_changed'
 	      FindItemsCtrl.instance.method(:grid_cursor )
 	  when 'on_items_grid_key_press_event'
-	      ItemsGrid.instance.method(:on_key_press_event)
+	      SaleItemsGrid.instance.method(:on_key_press_event)
 	  when 'on_items_grid_focus'
-	      ItemsGrid.instance.method(:grid_got_focus)
+	      SaleItemsGrid.instance.method(:grid_got_focus)
 	  else
 	      self.method( handler )
 	  end
@@ -45,15 +44,21 @@ class PointOfSale
       window.set_has_frame( false )
       window.show
 
-      FindItemsCtrl.instance.glade = @glade
-      TotalsDisplay.instance.glade = @glade
-      PaymentCtrl.instance.glade   = @glade 
-      ItemsGrid.instance.glade     = @glade
+      FindItemsCtrl.instance.glade    = @glade
+      TotalsDisplay.instance.glade    = @glade
+      PaymentCtrl.instance.glade      = @glade 
+      SaleItemsGrid.instance.glade    = @glade
+      SalesHistoryCtrl.instance.glade = @glade
+
+
 
       @sale = PosSale.new
 
   end
 
+  def on_view_history_clicked( widget )
+      SalesHistoryCtrl.instance.present
+  end
 
   def on_drawer_button_clicked( widget )
       Drawer.instance.open
@@ -71,11 +76,38 @@ class PointOfSale
       @sale.discount=widget.value.to_i
   end
 
+
+  def on_set_display_pole_messages_activate( widget )
+      dialog=@glade.get_widget('set_pole_messages_dialog')
+      welcome_pause=@glade.get_widget('pole_welcome_pause')
+      welcome_pause.text = POS::Setting.instance.pole_welcome_pause.to_s
+      welcome_one = @glade.get_widget('pole_welcome_text_one')
+      welcome_one.text = POS::Setting.instance.pole_welcome_one
+      welcome_two = @glade.get_widget('pole_welcome_text_two')
+      welcome_two.text = POS::Setting.instance.pole_welcome_two
+      thanks_pause  = @glade.get_widget('pole_thank_you_pause') 
+      thanks_pause.text  = POS::Setting.instance.pole_thank_you_pause.to_s
+      thanks_one  = @glade.get_widget('pole_thank_you_text_one') 
+      thanks_one.text  = POS::Setting.instance.pole_thank_you_one
+      thanks_two  = @glade.get_widget('pole_thank_you_text_two')
+      thanks_two.text  = POS::Setting.instance.pole_thank_you_two
+      if Gtk::Dialog::RESPONSE_OK==dialog.run
+	    POS::Setting.instance.pole_welcome_pause=welcome_pause.text.to_i
+	    POS::Setting.instance.pole_welcome_one=welcome_one.text
+	    POS::Setting.instance.pole_welcome_two=welcome_two.text
+	    POS::Setting.instance.pole_thank_you_pause=thanks_pause.text.to_i
+	    POS::Setting.instance.pole_thank_you_one=thanks_one.text
+	    POS::Setting.instance.pole_thank_you_two=thanks_two.text
+	end
+	dialog.hide
+  end
+
+
   def on_set_receipt_header_set( widget )
       dialog =  @glade.get_widget("set_print_header_dialog")
       buffer = @glade.get_widget("print_header_text_ctrl").buffer
       buffer.delete( buffer.start_iter, buffer.end_iter )
-      buffer.insert( buffer.start_iter, POSSetting.printHeader )
+      buffer.insert( buffer.start_iter, POS::Setting.instance.print_header )
       dialog.run
   end
 
@@ -83,7 +115,7 @@ class PointOfSale
       dialog =  @glade.get_widget("set_print_header_dialog")
       dialog.hide
       buffer = @glade.get_widget("print_header_text_ctrl").buffer
-      POSSetting.printHeader = buffer.get_text
+      POS::Setting.instance.print_header = buffer.get_text
   end
 
 
@@ -94,7 +126,7 @@ class PointOfSale
 
 
   def on_tax_exempt_toggle
-      POSSetting.toggle_tax_exempt
+      POS::Setting.instance.toggle_tax_exempt
       TotalsDisplay.instance.tax_exempt = $taxExempt
   end
 
@@ -102,12 +134,12 @@ class PointOfSale
       dialog =  @glade.get_widget("tax_rate_dialog")
       dialog.show
       txt_entry = @glade.get_widget("tax_rate_text_entry_ctrl");
-      txt_entry.text =  sprintf( "%0.2f",POSSetting.tax_rate * 100 )
+      txt_entry.text =  sprintf( "%0.2f",POS::Setting.instance.tax_rate * 100 )
   end
 
   def on_tax_rate_dialog_ok( widget )
       txt_entry = @glade.get_widget("tax_rate_text_entry_ctrl");
-      POSSetting.tax_rate = ( txt_entry.text.to_f / 100 )
+      POS::Setting.instance.tax_rate = ( txt_entry.text.to_f / 100 )
       dialog =  @glade.get_widget("tax_rate_dialog")
       dialog.hide
   end
@@ -153,23 +185,25 @@ begin
     PointOfSale.new( File.dirname($0) + "/pos.glade")
     Gtk.main
 
-rescue Exception
-    msg = $!.to_s
-    msg += "\n"
-    for level in $!.backtrace
-	msg += level + "\n"
-    end
 
-    fork do
-	pig = IO.popen("mail -s 'POS ERROR' sysadmin@allmed.net", "w+")
-	pig.puts msg
-	pig.close_write
-    end
+# rescue Exception
+#     msg = $!.to_s
+#     msg += "\n"
+#     for level in $!.backtrace
+# 	msg += level + "\n"
+#     end
 
-    dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::ERROR,Gtk::MessageDialog::BUTTONS_CLOSE, msg  )
-    if  dialog.run == Gtk::Dialog::RESPONSE_YES
-	@sale=Sale.new
-    end
+#     fork do
+# 	pig = IO.popen("mail -s 'POS ERROR' sysadmin@allmed.net", "w+")
+# 	pig.puts msg
+# 	pig.close_write
+#     end
+
+#     dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::ERROR,Gtk::MessageDialog::BUTTONS_CLOSE, msg  )
+#     if  dialog.run == Gtk::Dialog::RESPONSE_YES
+# 	@sale=Sale.new
+#     end
 
 
 end
+ 

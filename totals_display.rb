@@ -15,11 +15,11 @@ class TotalsDisplay
 
     def update
 	@subtotal.set_markup( MARKUP + @sale.formated_subtotal + '</span>' )
-	if ( POSSetting.tax_exempt )
+	if ( POS::Setting.instance.tax_exempt )
 	    @sale.tax_rate = 0
 	    @tax.set_markup( OPEN_MARKUP + ' strikethrough="true">0.00</span>' )
 	else
-	    @sale.tax_rate = POSSetting.tax_rate
+	    @sale.tax_rate = POS::Setting.instance.tax_rate
 	    @tax.set_markup( OPEN_MARKUP + ' strikethrough="false">' + @sale.formated_tax + '</span>' )
 	end
 	@total.set_markup( MARKUP + @sale.formated_total + '</span>' )
@@ -27,7 +27,7 @@ class TotalsDisplay
 
     def tax_exempt=( val )
 	@taxExempt = val
-	@tax_label.set_markup( OPEN_MARKUP + ' strikethrough="' + POSSetting.tax_exempt.to_s + '">Tax:</span>')
+	@tax_label.set_markup( OPEN_MARKUP + ' strikethrough="' + POS::Setting.instance.tax_exempt.to_s + '">Tax:</span>')
 	update
     end
 
