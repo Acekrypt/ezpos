@@ -43,8 +43,8 @@ class PointOfSale
  #    window.set_default_size(1024, 768)
       #window.fullscreen
 
-      window.show
-      window.maximize
+ #     window.show
+  #    window.maximize
 
 
  #     window.set_resizable( false )
