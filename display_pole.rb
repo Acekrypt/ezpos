@@ -1,5 +1,5 @@
 require 'singleton'
-
+require 'local_config'
 require 'logic_controls'
 
 class DisplayPole
@@ -8,7 +8,7 @@ class DisplayPole
 
 
     def initialize
-	@pole=LogicControlsDisplay.new('/dev/ttyS0')
+	@pole=LogicControlsDisplay.new( LocalConfig::DISPLAY_POLE_PORT )
     end
 
     def show_sale( sale )
