@@ -57,6 +57,11 @@ encode64( report.pdf ).each_line{ | line |
 }
 msg += '--' + boundary + '---'
 
+f = File.new( '/tmp/report.pdf' )
 
-puts s.post( msg )
+f.write( report.pdf )
+
+f.close
+
+#puts s.post( msg )
 
