@@ -177,9 +177,11 @@ end
 
 
 begin
-    Gnome::Program.new(PointOfSale::NAME, PointOfSale::VERSION)
 
     Gtk.init
+
+    Gnome::Program.new(PointOfSale::NAME, PointOfSale::VERSION)
+
     PointOfSale.new( File.dirname($0) + "/pos.glade")
     Gtk.main
 
