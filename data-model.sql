@@ -5,8 +5,7 @@ create table daily_receipts(
   date_covered date not null,
   checks numeric not null,
   cash numeric not null,
-  credit_cards numeric not null,
-  billing numeric not null
+  credit_cards numeric not null
 );
 
 create unique index daily_receipts_indx1 on daily_receipts( date_covered );

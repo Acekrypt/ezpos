@@ -1,0 +1,79 @@
+LOGIC CONTROLS COMMAND SET (PD3000, PD6000, TD3000):
+
+
+1. Vertical Scroll Mode  <12>, (18), {^R}:
+Data is written into the second row and transferred to the first row
+when carriage return is received, leaving the second row empty.
+
+2. Normal Display Mode  <11>, (17), {^Q}:
+Data can be written into either row.  Moves to the left most digit of
+the other row when line is full.
+
+3. Brightness Control  <04>, (04), {^D}:
+The brightness of the display can be adjusted using this command
+followed by a data byte <FF>, <60>, <40> or <20>.
+ <04><FF> - 100% Brightness
+ <04><60> - 60% Brightness
+ <04><40> - 40% Brightness
+ <04><20> - 20% Brightness
+
+4. Back Space  <08>, (08), {^H}:
+The cursor position moves one digit to the left erasing the previous
+information.
+
+5. Horizontal Tab  <09>, (09), {^I}:
+The cursor position shifts one digit to the right without erasing
+character at original cursor position.
+
+6. Line Feed  <0A>, (10), {^J}:
+The cursor position moves to the same position in the other row.  In
+vertical scroll mode, if cursor was in second row, the cursor will not
+move and display will scroll up.
+
+7. Carriage Return  <0D>, (13), {^M}:
+The cursor moves to the left most digit of the row it is in.
+
+8. Digit Select  <10>, (16), {^P}:
+Moves the cursor to any position on the display with this command
+followed by a data byte of <00> to <27>, or in decimal (00) to (39).
+ e.g. <10><00> - MSD of top row
+  <10><13> - LSD of top row
+  <10><14> - MSD of bottom row
+  <10><27> - LSD of bottom row
+
+9. Cursor On  <13>, (19), {^S}:
+Turns on the cursor.
+
+10. Cursor Off  <14>, (20), {^T}:
+Turns off the cursor.
+
+11. Reset  <1F>, (31), {^_}:
+All characters are erased and all settings are returned to the
+power-on reset conditions.
+
+12. Down Load Font  <03><X> <F> <F> <F> <F> <F>,  (03), {^C}:
+Assign a keyboard key (ASCII code <20> to <7F>) to a different style
+font. The &#8220;X&#8221; represents the ASCII code for the selected
+key. The &#8220;F&#8217;s&#8221; represent the 5 segments that will
+make up the special font.  These bytes are translated to binary (1 and
+0) to indicate whether a dot is to be turned ON or OFF.  The 5 bytes
+form 35 bit stream of 1&#8217;s and 0&#8217;s starting from the
+top-left corner of the character, running from left to right (each
+data byte is interpreted from LSB to MSB).
+
+e.g. Character &#8216;8&#8217; is composed of <2E>, <46>, <17>, <A3>,
+<03>
+   
+0 1 1 1 0  2E   (0010  1110)
+1 0 0 0 1  46   (0100  0110)
+1 0 0 0 1  
+0 1 1 1 0  17   (0001  0111)
+1 0 0 0 1  
+1 0 0 0 1  A3   (1010  0011)
+0 1 1 1 0  03   (0000  0011)
+
+
+13. Message Scroll Left on Top Line  <05><X><X><X> ... <X><0D>, (05),
+{^E}:
+Scrolls a continuous message of up to 45 characters from right to left
+on the top line.  The message must be terminated with <0D>.
