@@ -1,13 +1,13 @@
 #!/usr/bin/ruby -I/usr/local/lib/rubylib
 
-require './pos_globals'
+
 require 'libglade2'
+require 'pos_settings'
 require 'items_grid'
 require 'find_items_ctrl'
 require 'pos_sale'
 require 'payment_ctrl'
 require 'totals_display'
-
 
 Globals.init
 
@@ -39,14 +39,14 @@ class PointOfSale
       end
 
       window = @glade.get_widget("ezpos_window")
- #     window.set_default_size(1024, 768)
+ #    window.set_default_size(1024, 768)
       #window.fullscreen
 
       window.show
       window.maximize
 
 
-  #    window.set_resizable( false )
+ #     window.set_resizable( false )
  #     window.set_has_frame( false )
      
       FindItemsCtrl.instance.glade = @glade

@@ -2,10 +2,10 @@
 require 'gconf2'
 require 'customer'
 
-module Globals
+module POSSetting
     @check_account = @credit_card_account = @cash_account = Customer.find( 'CASH' )
 
-    def Globals.init
+    def POSSetting.init
 	@gConf = GConf::Client.new
 	@tax = @gConf["/apps/ezpos/tax_rate"]
 	@print_header =	@gConf['/apps/ezpos/print_header']
@@ -14,50 +14,50 @@ module Globals
 	@taxExtemp = false;
     end
 
-    def Globals.tax_rate=( tax )
+    def POSSetting.tax_rate=( tax )
 	@gConf['/apps/ezpos/tax_rate'] = tax
 	@tax = tax
 	TotalsDisplay.instance.update
     end
 
-    def Globals.tax_rate
+    def POSSetting.tax_rate
 	@tax
     end
 
-    def Globals.tax_exempt=( val )
+    def POSSetting.tax_exempt=( val )
 	@taxExtemp = val
     end
 
-    def Globals.tax_exempt
+    def POSSetting.tax_exempt
 	@taxExtemp
     end
 
-    def Globals.toggle_tax_exempt
+    def POSSetting.toggle_tax_exempt
 	@taxExtemp = ! @taxExtemp
     end
 
 
-    def Globals.CreditCardAccount
+    def POSSetting.CreditCardAccount
 	@credit_card_account
     end
 
-    def Globals.CashAccount
+    def POSSetting.CashAccount
 	@cash_account
     end
 
-    def Globals.CheckAccount
+    def POSSetting.CheckAccount
 	@check_account
     end
 
-    def Globals.customer
+    def POSSetting.customer
 	@cash_account
     end
 
-    def Globals.printHeader
+    def POSSetting.printHeader
 	@print_header
     end
 
-    def Globals.printHeader=( ph )
+    def POSSetting.printHeader=( ph )
 	@gConf['/apps/ezpos/print_header'] = ph
 	@print_header = ph
     end
