@@ -6,9 +6,6 @@ class Printer
     include Singleton
     LINE='----------------------------------------'
 
-
-
-
     def output_sale( sale )
 
 	recpt = Tempfile.new('ezpos-sale-'+sale.db_pk.to_s+'-')

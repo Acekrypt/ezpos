@@ -113,6 +113,7 @@ class PaymentCtrl
 	err_msg = payment_type.validate( elements )
 	if err_msg.empty?
 	    @customer=payment_type.get_customer( elements )
+
 	    @payments.push( Payment.new( Hash[ 
 					    'subtotal'=>@pending_sale.subtotal,
 					    'method_id'=>payment_type.db_pk,

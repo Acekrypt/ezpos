@@ -183,25 +183,25 @@ begin
     Gtk.main
 
 
-# rescue Exception
-#     msg = $!.to_s
-#     msg += "\n"
-#     for level in $!.backtrace
-# 	msg += level + "\n"
-#     end
+rescue Exception
+    msg = $!.to_s
+    msg += "\n"
+    for level in $!.backtrace
+	msg += level + "\n"
+    end
 
-#     fork do
-# 	pig = IO.popen("mail -s 'POS ERROR' sysadmin@allmed.net", "w+")
-# 	pig.puts msg
-# 	pig.close_write
-#     end
+    fork do
+	pig = IO.popen("mail -s 'POS ERROR' sysadmin@allmed.net", "w+")
+	pig.puts msg
+	pig.close_write
+    end
 
-#     $stderr.puts msg
+    $stderr.puts msg
 
-#     dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::ERROR,Gtk::MessageDialog::BUTTONS_CLOSE, msg  )
-#     if  dialog.run == Gtk::Dialog::RESPONSE_YES
-# 	@sale=Sale.new
-#     end
+    dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::ERROR,Gtk::MessageDialog::BUTTONS_CLOSE, msg  )
+    if  dialog.run == Gtk::Dialog::RESPONSE_YES
+	@sale=Sale.new
+    end
 
 
 end
