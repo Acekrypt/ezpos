@@ -82,7 +82,7 @@ class PointOfSale
       welcome_one.text = POS::Setting.instance.pole_welcome_one
       welcome_two = @glade.get_widget('pole_welcome_text_two')
       welcome_two.text = POS::Setting.instance.pole_welcome_two
-      thanks_pause  = @glade.get_widget('pole_thank_you_pause') 
+      thanks_pause  = @glade.get_widget('pole_thank_you_pause')
       thanks_pause.text  = POS::Setting.instance.pole_thank_you_pause.to_s
       thanks_one  = @glade.get_widget('pole_thank_you_text_one') 
       thanks_one.text  = POS::Setting.instance.pole_thank_you_one
@@ -182,7 +182,6 @@ begin
     Gtk.init
 #   Gnome::Program.new(PointOfSale::NAME, PointOfSale::VERSION)
     win=PointOfSale.new( File.dirname($0) + "/pos.glade")
-    win.show_all
     Gtk.main
 
 
