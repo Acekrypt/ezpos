@@ -1,12 +1,9 @@
 #!/usr/bin/ruby -I/usr/local/lib/rubylib
 
-require 'sales_report'
+require 'inv/sales_report'
 
-
-
-
-date = Time.new 
-report = SalesReport.new( date )
+date = Time.new -  86400
+report = INV::SalesReport.new( date )
 
 
 f = File.new('report.pdf','w')

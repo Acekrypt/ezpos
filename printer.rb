@@ -42,7 +42,7 @@ class Printer
 	recpt.puts 'Total'    + sprintf('%35.2f',sale.total )
 	recpt.puts LINE
 	for payment in sale.payments
-	    recpt.puts sprintf('%-25s%15.2f',payment.payment_method.name,payment.amtreceived )
+	    recpt.puts sprintf('%-25s%15.2f',payment.payment_method.name,payment.amount )
 	end
 	
 	recpt.puts 'Change'   + sprintf('%34.2f',sale.change_given )

@@ -87,8 +87,8 @@ class PosSale
 	change_shown = false
 	for p in payments
 	    if ( ! change_shown ) && ( p.payment_method.is_a?( Payment::Method::Cash ) )
-		change = sprintf('%.2f', finalized_sale.change_given )
-		dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::INFO,Gtk::MessageDialog::BUTTONS_CLOSE,'Change Due: ' + change )
+		p.change=finalized_sale.change_given
+		dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::INFO,Gtk::MessageDialog::BUTTONS_CLOSE,'Change Due: ' + finalized_sale.formated_change_given )
 		dialog.signal_connect('response') do |widget, data|   widget.destroy end
 		dialog.window_position=Gtk::Window::POS_CENTER_ALWAYS
 		dialog.show

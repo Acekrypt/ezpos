@@ -117,7 +117,7 @@ class PaymentCtrl
 	    @payments.push( Payment.new( Hash[ 
 					    'method_id'=>payment_type.db_pk,
 					    'customer_id'=> @customer.db_pk,
-					    'amtreceived'=> @amt_received.text.to_f,
+					    'amount'=> @amt_received.text.to_f,
 					    'transaction_id'=>payment_type.transaction_id( elements ),
 					] ) )
 	    if  sprintf( '%.2f',Payment.total( @payments ) ).to_f < sprintf( '%.2f',@pending_sale.total).to_f
