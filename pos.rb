@@ -10,7 +10,7 @@ require 'pos_sale'
 require 'payment_ctrl'
 require 'totals_display'
 
-Globals.init
+POSSetting.init
 
 class PointOfSale
   TITLE = "Simple Text Editor"
@@ -73,7 +73,7 @@ class PointOfSale
   def on_set_receipt_header_set( widget )
       dialog =  @glade.get_widget("set_print_header_dialog")
       buffer = @glade.get_widget("print_header_text_ctrl").buffer
-      buffer.insert( buffer.start_iter, Globals.printHeader )
+      buffer.insert( buffer.start_iter, POSSetting.printHeader )
       dialog.run
   end
 
@@ -81,7 +81,7 @@ class PointOfSale
       dialog =  @glade.get_widget("set_print_header_dialog")
       dialog.hide
       buffer = @glade.get_widget("print_header_text_ctrl").buffer
-      Globals.printHeader = buffer.get_text
+      POSSetting.printHeader = buffer.get_text
   end
 
 
@@ -92,7 +92,7 @@ class PointOfSale
 
 
   def on_tax_exempt_toggle
-      Globals.toggle_tax_exempt
+      POSSetting.toggle_tax_exempt
       TotalsDisplay.instance.tax_exempt = $taxExempt
   end
 
@@ -100,12 +100,12 @@ class PointOfSale
       dialog =  @glade.get_widget("tax_rate_dialog")
       dialog.show
       txt_entry = @glade.get_widget("tax_rate_text_entry_ctrl");
-      txt_entry.text =  sprintf( "%0.2f",Globals.tax_rate * 100 )
+      txt_entry.text =  sprintf( "%0.2f",POSSetting.tax_rate * 100 )
   end
 
   def on_tax_rate_dialog_ok( widget )
       txt_entry = @glade.get_widget("tax_rate_text_entry_ctrl");
-      Globals.tax_rate = ( txt_entry.text.to_f / 100 )
+      POSSetting.tax_rate = ( txt_entry.text.to_f / 100 )
       dialog =  @glade.get_widget("tax_rate_dialog")
       dialog.hide
   end

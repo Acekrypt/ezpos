@@ -9,7 +9,7 @@ class PosSale
     LINE='----------------------------------------'
 
     def initialize
-	@sale=INV::PendingSale.new( Globals.tax_rate )
+	@sale=INV::PendingSale.new( POSSetting.tax_rate )
 	TotalsDisplay.instance.sale = @sale
 	ItemsGrid.instance.clear
 
@@ -77,7 +77,7 @@ class PosSale
 
 	    recpt = Tempfile.new('ezpos-sale-'+finalized_sale.db_pk.to_s+'-')
 
-	    Globals.printHeader.each_line{ |line|
+	    POSSetting.printHeader.each_line{ |line|
 		line.chomp!
 		recpt.puts line.center(40)
 	    }
