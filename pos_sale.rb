@@ -69,7 +69,7 @@ class PosSale
 	
 	if ! finalized_sale
 # 	    dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::WARNING,Gtk::MessageDialog::BUTTONS_CLOSE,'Unable to save sale')
-# 	    dialog.window_position=Gtk::Window::POS_CENTER_ALWAYS
+# 	    dia log.window_position=Gtk::Window::POS_CENTER_ALWAYS
 # 	    dialog.run
 # 	    dialog.destroy
 	    NAS::DB.instance.abort_transaction
@@ -103,6 +103,9 @@ class PosSale
 	end
 
 	Printer.instance.output_sale( finalized_sale )
+
+	glade.get_widget('tax_exempt_ctrl').active=false
+	POS::Setting.instance.set_not_tax_exempt
 
 	NAS::DB.instance.commit_transaction
 

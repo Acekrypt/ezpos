@@ -15,6 +15,12 @@ require 'drawer_ctrl'
 require 'sales_history_ctrl'
 require 'daily_receipts_dialog'
 
+if ARGV.size > 0 && ARGV[0] == 'DEBUG'
+    DEBUG=true
+else
+    DEBUG=false
+end
+
 class PointOfSale
   TITLE = "Simple Text Editor"
   NAME = "SimpleTextEditor"
@@ -42,10 +48,10 @@ class PointOfSale
 	  end
       end
 
-      window = @glade.get_widget("ezpos_window") 
-      window.fullscreen
-      window.set_has_frame( false )
-      window.show
+      widget=@glade.get_widget('process_credit_cards_ctrl')
+      widget.active=POS::Setting.instance.process_cards
+      widget.signal_connect('toggled'){ | widget | POS::Setting.instance.toggle_proccess_cards }
+
       DisplayPole.instance.reset
       FindItemsCtrl.instance.glade       = @glade
       TotalsDisplay.instance.glade       = @glade
@@ -54,7 +60,20 @@ class PointOfSale
       SalesHistoryCtrl.instance.glade    = @glade
       DailyReceiptDialog.instance.glade  = @glade
       DiscountCtrl.instance.glade        = @glade
+
       @sale = PosSale.new
+      window = @glade.get_widget("ezpos_window") 
+
+      if DEBUG
+	  FindItemsCtrl.instance.entry.text='0001'
+	  FindItemsCtrl.instance.entry_complete(nil)
+	  @sale.finalize( @glade )
+      else
+	  window.fullscreen
+	  window.set_has_frame( false )
+      end
+      window.show
+
   end
 
   def on_view_history_clicked( widget )
@@ -64,7 +83,6 @@ class PointOfSale
   def on_drawer_button_clicked( widget )
       Drawer.instance.open
   end
-
 
   def on_key_press_event( widget,k )
       key = k.keyval
@@ -121,7 +139,6 @@ class PointOfSale
       dialog.hide
   end
 
-
   def on_tax_exempt_toggle
       POS::Setting.instance.toggle_tax_exempt
       exempt = POS::Setting.instance.tax_exempt
@@ -155,9 +172,6 @@ class PointOfSale
       @sale = @sale.finalize( @glade )
   end
 
-  def on_receive_payment_type( widget )
-      
-  end
 
   def on_about_activate( *widget )
       dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::INFO,Gtk::MessageDialog::BUTTONS_OK,"EZPOS\nCreated by Nathan Stitt\nCopyright 2004, Alliance Medical Inc." )

@@ -42,9 +42,9 @@
 		      <accelerator key="F1" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image18">
+			<widget class="GtkImage" id="image25">
 			  <property name="visible">True</property>
-			  <property name="stock">gtk-delete</property>
+			  <property name="stock">gtk-apply</property>
 			  <property name="icon_size">1</property>
 			  <property name="xalign">0.5</property>
 			  <property name="yalign">0.5</property>
@@ -65,9 +65,9 @@
 		      <accelerator key="F12" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image19">
+			<widget class="GtkImage" id="image26">
 			  <property name="visible">True</property>
-			  <property name="stock">gtk-dialog-question</property>
+			  <property name="stock">gtk-justify-fill</property>
 			  <property name="icon_size">1</property>
 			  <property name="xalign">0.5</property>
 			  <property name="yalign">0.5</property>
@@ -80,22 +80,6 @@
 
 		  <child>
 		    <widget class="GtkMenuItem" id="separatormenuitem1">
-		      <property name="visible">True</property>
-		    </widget>
-		  </child>
-
-		  <child>
-		    <widget class="GtkCheckMenuItem" id="tax_exempt_toggle">
-		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">Tax _Exempt</property>
-		      <property name="use_underline">True</property>
-		      <property name="active">False</property>
-		      <signal name="activate" handler="on_tax_exempt_toggle" last_modification_time="Wed, 14 Apr 2004 16:48:47 GMT"/>
-		    </widget>
-		  </child>
-
-		  <child>
-		    <widget class="GtkMenuItem" id="separator4">
 		      <property name="visible">True</property>
 		    </widget>
 		  </child>
@@ -170,6 +154,15 @@
 		      <signal name="activate" handler="on_set_display_pole_messages_activate" last_modification_time="Fri, 30 Apr 2004 21:10:29 GMT"/>
 		    </widget>
 		  </child>
+
+		  <child>
+		    <widget class="GtkCheckMenuItem" id="process_credit_cards_ctrl">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">Process Credit Cards</property>
+		      <property name="use_underline">True</property>
+		      <property name="active">False</property>
+		    </widget>
+		  </child>
 		</widget>
 	      </child>
 	    </widget>
@@ -233,6 +226,21 @@
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
+	    </widget>
+	  </child>
+
+	  <child>
+	    <widget class="GtkCheckButton" id="tax_exempt_ctrl">
+	      <property name="visible">True</property>
+	      <property name="tooltip" translatable="yes">Is Sale Tax Exempt</property>
+	      <property name="can_focus">True</property>
+	      <property name="label" translatable="yes">Tax Exempt</property>
+	      <property name="use_underline">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="active">False</property>
+	      <property name="inconsistent">False</property>
+	      <property name="draw_indicator">True</property>
+	      <signal name="toggled" handler="on_tax_exempt_toggle" last_modification_time="Mon, 18 Oct 2004 15:09:27 GMT"/>
 	    </widget>
 	  </child>
 
@@ -690,6 +698,7 @@
 	    <widget class="GtkButton" id="payment_type_ok_button">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="label">gtk-ok</property>
 	      <property name="use_stock">True</property>
@@ -757,6 +766,7 @@
 	  <child>
 	    <widget class="GtkOptionMenu" id="payment_type_menu_ctrl">
 	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="history">-1</property>
 	    </widget>
@@ -838,7 +848,7 @@
 	  <child>
 	    <widget class="GtkLabel" id="label54">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Amount Received:</property>
+	      <property name="label" translatable="yes">Amount:</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -867,7 +877,7 @@
 	      <property name="text" translatable="yes"></property>
 	      <property name="has_frame">True</property>
 	      <property name="invisible_char" translatable="yes">*</property>
-	      <property name="activates_default">False</property>
+	      <property name="activates_default">True</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>

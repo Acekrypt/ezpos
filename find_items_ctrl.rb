@@ -10,6 +10,8 @@ class FindItemsCtrl
 	@db = NAS::DB.instance
     end
 
+    attr_accessor :entry
+
     def glade=( glade )
 
 	@grid = glade.get_widget("found_skus_results_grid")
