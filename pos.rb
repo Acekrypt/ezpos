@@ -139,7 +139,7 @@ class PointOfSale
       if ! @sale.empty?
 	  dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::WARNING,Gtk::MessageDialog::BUTTONS_YES_NO,'Do you want to abandon the current sale?' )
 	  if  dialog.run == Gtk::Dialog::RESPONSE_YES
-	      @sale=Sale.new
+	      @sale = PosSale.new
 	  end
 	  dialog.destroy
       end
