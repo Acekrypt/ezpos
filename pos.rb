@@ -41,19 +41,9 @@ class PointOfSale
       end
 
       window = @glade.get_widget("ezpos_window")
- #    window.set_default_size(1024, 768)
-      #window.fullscreen
-
       window.fullscreen
-
-  
-  #    window.maximize
-
-
- #     window.set_resizable( false )
       window.set_has_frame( false )
       window.show
-
 
       FindItemsCtrl.instance.glade = @glade
       TotalsDisplay.instance.glade = @glade
@@ -84,6 +74,7 @@ class PointOfSale
   def on_set_receipt_header_set( widget )
       dialog =  @glade.get_widget("set_print_header_dialog")
       buffer = @glade.get_widget("print_header_text_ctrl").buffer
+      buffer.delete( buffer.start_iter, buffer.end_iter )
       buffer.insert( buffer.start_iter, POSSetting.printHeader )
       dialog.run
   end
@@ -139,7 +130,9 @@ class PointOfSale
   end
 
   def on_about_activate( *widget )
-
+      dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::INFO,Gtk::MessageDialog::BUTTONS_OK,"EZPOS\nCreated by Nathan Stitt\nCopyright 2004, Alliance Medical Inc." )
+      dialog.run
+      dialog.destroy
   end
 
   def on_new_sale_activate( *widget )

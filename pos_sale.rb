@@ -90,7 +90,10 @@ class PosSale
 
 
 	    recpt.puts LINE
-	    
+	    t = Time.new
+	    time = t.strftime(" %I:%M%p") + t.strftime("%m/%d/%Y")
+	    recpt.puts sprintf('SALE #: %-6d%26s',finalized_sale.db_pk, time )
+	    recpt.puts LINE
 	    for sku in @sale.skus
 		recpt.puts sku.descrip[0..39]
 		
@@ -130,6 +133,9 @@ class PosSale
 	    recpt.close
 
 	    exec('lp -d receipt ' + recpt.path ) if fork == nil
+
+#	    f = File.new( recpt.path )
+#	    f.each{ | line | puts line }
 
 	    PosSale.new
 	else
