@@ -181,6 +181,8 @@ class PaymentCtrl
 
     def process_credit_card_payment
 #	@payment_more_info_dialog.hide
+	@customer=NAS::LocalConfig::Accounts.credit_card
+
 	try_again=false
 	cc=@payment_info.first.text
 	match = /(\d+)=(\d{2})(\d{2})/.match(cc)

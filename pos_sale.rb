@@ -98,10 +98,14 @@ class PosSale
 		    return self
 		end
 	    end
-
+	    print_sig_rec=false
+            if p.payment_method.is_a?( NAS::Payment::Method::CreditCard ) && POS::Setting.instance.process_cards
+	       print_sig_rec=true
+	    end
 	    Drawer.instance.open if p.payment_method.open_drawer
 	end
 
+	Printer.instance.print_signature_slip( finalized_sale ) if print_sig_rec
 	Printer.instance.output_sale( finalized_sale )
 
 	glade.get_widget('tax_exempt_ctrl').active=false

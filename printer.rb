@@ -30,6 +30,8 @@ class Printer
         recpt.puts
         recpt.puts '   -------------------------------------'
         recpt.puts '                Signature'
+        recpt.puts
+        recpt.puts
 	recpt.puts '                Thank You!'
         recpt.putc 0x1B
         recpt.putc 'd'
@@ -76,7 +78,11 @@ class Printer
 	recpt.puts 'Tax'      + sprintf('%37s',sale.tax.to_s )
 	recpt.puts 'Total'    + sprintf('%35s',sale.total.to_s )
 	recpt.puts LINE
-
+        for payment in sale.payments
+           recpt.puts sprintf('%-25s%15s',payment.payment_method.name,payment.amount.to_s )
+        end
+        recpt.puts 'Change'   + sprintf('%34s',sale.change_given.to_s )
+	recpt.puts LINE
 	recpt.puts '             Thank You!'
         recpt.putc 0x1B
         recpt.putc 'd'
