@@ -2,6 +2,7 @@
 
 require 'db'
 require 'inv/pending_sale'
+require 'drawer_ctrl'
 
 class PosSale
 
@@ -76,6 +77,10 @@ class PosSale
 		dialog.show
 	    end
 
+	    if payment.payment_method.open_drawer
+		Drawer.instance.open
+	    end
+
 	    recpt = Tempfile.new('ezpos-sale-'+finalized_sale.db_pk.to_s+'-')
 
 	    POSSetting.printHeader.each_line{ |line|
@@ -114,8 +119,8 @@ class PosSale
 	    recpt.puts LINE
 	    recpt.puts '             Thank You!'
 	    recpt.close
-	    dump = File.new( recpt.path )
-	    dump.each {|line| puts line }
+
+	    exec('lp -d receipt ' + recpt.path ) if fork == nil
 
 	    PosSale.new
 	else

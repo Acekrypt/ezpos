@@ -41,4 +41,10 @@ module POSSetting
 	@gConf['/apps/ezpos/print_header'] = ph
 	@print_header = ph
     end
+ 
+    def POSSetting.drawer_char
+	7
+    end
+
+    
 end

@@ -180,6 +180,7 @@ class ItemsGrid
 
     def on_key_press_event( widget, k )
 	key = k.keyval
+puts key
 	if 65535 == key
 	    @grid.model.remove( @grid.selection.selected )
 	    @sale.update

@@ -7,9 +7,7 @@ require 'singleton'
 class PaymentCtrl
 
     include Singleton
-
-
-
+    
     def glade=( glade )
 	@glade=glade
 	@payment=nil

@@ -42,7 +42,7 @@
 		      <accelerator key="F1" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image10">
+			<widget class="GtkImage" id="image12">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-delete</property>
 			  <property name="icon_size">1</property>
@@ -65,7 +65,7 @@
 		      <accelerator key="F12" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image11">
+			<widget class="GtkImage" id="image13">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-dialog-question</property>
 			  <property name="icon_size">1</property>
@@ -103,13 +103,13 @@
 		  <child>
 		    <widget class="GtkImageMenuItem" id="quit_app">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">_Quit</property>
+		      <property name="label" translatable="yes">_Restart</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_quit_activate" last_modification_time="Wed, 14 Apr 2004 15:17:29 GMT"/>
-		      <accelerator key="Q" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+		      <accelerator key="R" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image12">
+			<widget class="GtkImage" id="image14">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-quit</property>
 			  <property name="icon_size">1</property>
@@ -194,7 +194,12 @@
 	  <property name="tooltips">True</property>
 
 	  <child>
-	    <placeholder/>
+	    <widget class="button" id="button1">
+	      <property name="visible">True</property>
+	      <property name="label" translatable="yes">OpenDrawer</property>
+	      <property name="use_underline">True</property>
+	      <signal name="clicked" handler="on_drawer_button_clicked" last_modification_time="Fri, 23 Apr 2004 15:51:08 GMT"/>
+	    </widget>
 	  </child>
 
 	  <child>
@@ -213,10 +218,14 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkImage" id="image6">
+	    <widget class="GtkLabel" id="label19">
 	      <property name="visible">True</property>
-	      <property name="stock">gtk-go-back</property>
-	      <property name="icon_size">4</property>
+	      <property name="label" translatable="yes"> % Discount</property>
+	      <property name="use_underline">False</property>
+	      <property name="use_markup">False</property>
+	      <property name="justify">GTK_JUSTIFY_LEFT</property>
+	      <property name="wrap">False</property>
+	      <property name="selectable">False</property>
 	      <property name="xalign">0.5</property>
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
@@ -494,6 +503,7 @@
 	      <property name="rules_hint">True</property>
 	      <property name="reorderable">False</property>
 	      <property name="enable_search">True</property>
+	      <signal name="key_press_event" handler="on_items_grid_key_press_event" last_modification_time="Thu, 22 Apr 2004 14:24:52 GMT"/>
 	    </widget>
 	  </child>
 	</widget>

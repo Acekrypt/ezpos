@@ -9,6 +9,7 @@ require 'find_items_ctrl'
 require 'pos_sale'
 require 'payment_ctrl'
 require 'totals_display'
+require 'drawer_ctrl'
 
 POSSetting.init
 
@@ -62,6 +63,12 @@ class PointOfSale
       @sale = PosSale.new
 
   end
+
+
+  def on_drawer_button_clicked( widget )
+      Drawer.instance.open
+  end
+
 
   def on_key_press_event( widget,k )
       key = k.keyval
@@ -147,9 +154,29 @@ class PointOfSale
 
 end
 
-Gnome::Program.new(PointOfSale::NAME, PointOfSale::VERSION)
 
-PointOfSale.new( File.dirname($0) + "/pos.glade")
+begin
+    Gnome::Program.new(PointOfSale::NAME, PointOfSale::VERSION)
+    PointOfSale.new( File.dirname($0) + "/pos.glade")
+    Gtk.main
+
+rescue Exception
+    msg = $!.to_s
+    msg += "\n"
+    for level in $!.backtrace
+	msg += level + "\n"
+    end
+
+    fork do
+	pig = IO.popen("mail -s 'POS ERROR' sysadmin@allmed.net", "w+")
+	pig.puts msg
+	pig.close_write
+    end
+
+    dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::ERROR,Gtk::MessageDialog::BUTTONS_CLOSE, msg  )
+    if  dialog.run == Gtk::Dialog::RESPONSE_YES
+	@sale=Sale.new
+    end
 
 
-Gtk.main
+end
