@@ -118,6 +118,15 @@ class PosSale
 	    recpt.puts 'Change'   + sprintf('%34.2f',payment.change_given )
 	    recpt.puts LINE
 	    recpt.puts '             Thank You!'
+	    recpt.puts
+	    recpt.puts
+	    recpt.puts
+	    recpt.puts
+	    recpt.puts
+	    recpt.puts
+	    recpt.puts
+	    recpt.puts
+	    recpt.puts
 	    recpt.close
 
 	    exec('lp -d receipt ' + recpt.path ) if fork == nil

@@ -49,11 +49,11 @@ class Drawer
 
     def open
 	char = POSSetting.drawer_char
-	fork do
+#	fork do
 	    port = File.new( '/dev/lp0','w' )
 	    port.putc char
 	    port.close
-	end
+#	end
     end
 
     
