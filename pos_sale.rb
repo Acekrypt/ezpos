@@ -65,16 +65,17 @@ class PosSale
 
     def finalize( glade )
 	return self if @sale.empty?
-	pay_ctrl = PaymentCtrl.instance
 
 	DB.instance.begin_transaction
-	finalized_sale = pay_ctrl.save( @sale )
 
+	finalized_sale = PaymentCtrl.instance.record_sale(  @sale )
+
+	
 	if ! finalized_sale
-	    dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::WARNING,Gtk::MessageDialog::BUTTONS_CLOSE,'Unable to save sale')
-	    dialog.window_position=Gtk::Window::POS_CENTER_ALWAYS
-	    dialog.run
-	    dialog.destroy
+# 	    dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::WARNING,Gtk::MessageDialog::BUTTONS_CLOSE,'Unable to save sale')
+# 	    dialog.window_position=Gtk::Window::POS_CENTER_ALWAYS
+# 	    dialog.run
+# 	    dialog.destroy
 	    DB.instance.abort_transaction
 	    return self
 	end
@@ -82,24 +83,28 @@ class PosSale
 	DisplayPole.instance.show_sale( finalized_sale )
 
 	#print
-	payment = finalized_sale.payment
-
-	if payment.payment_method.is_a?( Payment::Method::Cash )
-	    dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::INFO,Gtk::MessageDialog::BUTTONS_CLOSE,'Change Due: ' + sprintf('%.2f',payment.change_given ) )
-	    dialog.signal_connect('response') do |widget, data|
-		widget.destroy
+	payments = finalized_sale.payments
+	change_shown = false
+	for p in payments
+	    if ( ! change_shown ) && ( p.payment_method.is_a?( Payment::Method::Cash ) )
+		change = sprintf('%.2f', finalized_sale.change_given )
+		dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::INFO,Gtk::MessageDialog::BUTTONS_CLOSE,'Change Due: ' + change )
+		dialog.signal_connect('response') do |widget, data|   widget.destroy end
+		dialog.window_position=Gtk::Window::POS_CENTER_ALWAYS
+		dialog.show
+		change_shown = true
 	    end
-	    dialog.window_position=Gtk::Window::POS_CENTER_ALWAYS
-	    dialog.show
-	end
 
-	if payment.payment_method.is_a?( Payment::Method::BillingAcct )
-	    cid = CustomerInfoDialog.new( glade, finalized_sale.customer )
-	    cid.display
-	end
+	    if p.payment_method.is_a?( Payment::Method::BillingAcct )
+		cid = CustomerInfoDialog.new( glade, finalized_sale.customer )
+		if ! cid.sale_ok?
+		    DB.instance.abort_transaction
+		    return self
+		end
+	    end
 
-	if payment.payment_method.open_drawer
-	    Drawer.instance.open
+	    Drawer.instance.open if p.payment_method.open_drawer
+
 	end
 
 	Printer.instance.output_sale( finalized_sale )

@@ -318,7 +318,6 @@ class ViewItemGrid < ItemsGrid
 
    def remove( iter )
        @parent.remove_sku( iter )
-       remove_row( iter )
     end
 
     def selected( iter )

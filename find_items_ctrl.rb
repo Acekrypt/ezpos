@@ -68,7 +68,7 @@ class FindItemsCtrl
 
 
     def code
-	@entry.text
+	@entry.text.upcase
     end
 
     def nearest_match

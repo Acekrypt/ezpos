@@ -10,7 +10,7 @@ class Printer
 
 
     def output_sale( sale )
-	payment=sale.payment
+
 	recpt = Tempfile.new('ezpos-sale-'+sale.db_pk.to_s+'-')
 
 	POS::Setting.instance.print_header.each_line{ |line|
@@ -44,8 +44,12 @@ class Printer
 	recpt.puts 'Tax'      + sprintf('%37.2f',sale.tax )
 	recpt.puts 'Total'    + sprintf('%35.2f',sale.total )
 	recpt.puts LINE
-	recpt.puts sprintf('%-25s%15.2f',payment.payment_method.name,payment.amtreceived )
-	recpt.puts 'Change'   + sprintf('%34.2f',payment.change_given )
+	for payment in sale.payments
+	    recpt.puts sprintf('%-25s%15.2f',payment.payment_method.name,payment.amtreceived )
+	end
+	
+	recpt.puts 'Change'   + sprintf('%34.2f',sale.change_given )
+
 	recpt.puts LINE
 	recpt.puts '             Thank You!'
 	recpt.puts

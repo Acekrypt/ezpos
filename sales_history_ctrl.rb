@@ -13,7 +13,7 @@ class SalesHistoryCtrl
 
 	@other_window=@glade.get_widget("ezpos_window")
 
-	@window       = glade.get_widget("returns_window")
+	@window       = glade.get_widget("history_window")
       	@window.fullscreen
 	@window.set_has_frame( false )
 		    
@@ -26,6 +26,7 @@ class SalesHistoryCtrl
 	@reason_text  = glade.get_widget('reason_text_widget')
 	@reason_info  = glade.get_widget('returns_reason_info')
 	@print_button = glade.get_widget('print_receipt_button')
+	@return_amount= glade.get_widget('returns_amount_label')
 
 	glade.get_widget('back_to_sale_button').signal_connect('clicked') do
 	    SalesHistoryCtrl.instance.hide
@@ -118,20 +119,30 @@ class SalesHistoryCtrl
     def remove_sku( row )
 	sku = row[ ItemsGrid::SKU_ELEMENT ]
 	@reason_text.sensitive=true
+	set_return_amount_label(sku)
 	buffer = @reason_text.buffer
 	buffer.delete( buffer.start_iter, buffer.end_iter )
 	@window.present
 	if Gtk::Dialog::RESPONSE_OK==@reason_dialog.run
 	    sku.return( buffer.get_text )
+	    display_sale( sku.sale )
 	end
-	@items_grid.insert( sku )
 	@reason_dialog.hide
+    end
+
+    def set_return_amount_label( sku )
+	if sku
+	    @return_amount.set_markup( 'Price ' + sku.formated_total + ' + ' + sku.formated_tax + ' Tax = ' + sku.formated_total_with_tax + ' Total' )
+	else
+	    @return_amount.set_markup('')
+	end
     end
 
     def row_selected( row )
 	sku = row[ ItemsGrid::SKU_ELEMENT ]
 	if sku.returned?
 	    rec = sku.return_record
+	    set_return_amount_label( sku )
 	    @reason_info.set_markup('Returned ' + rec.occured.strftime("%I:%M%p - ") + rec.occured.strftime("%m/%d/%Y") )
 	    @reason_text.sensitive=false
 	    buffer = @reason_text.buffer
@@ -211,11 +222,11 @@ class SalesHistoryCtrl
 	    row = @model.append
 	    row[0] = sale.db_pk.to_s
 	    row[1] = sale.occured.strftime('%I:%M%P %m/%d/%y')
-	    payment = sale.payment
-	    if payment.payment_method.is_a? Payment::Method::BillingAcct
+	    payments = sale.payments
+	    if payments.first.payment_method.is_a? Payment::Method::BillingAcct
 		row[2] = sale.customer.code
 	    else
-		row[2] = payment.payment_method.name
+		row[2] = payments.first.name_of
 	    end
 	    row[3] = sale.formated_total
 	end
