@@ -115,7 +115,6 @@ class PaymentCtrl
 	    @customer=payment_type.get_customer( elements )
 
 	    @payments.push( Payment.new( Hash[ 
-					    'subtotal'=>@pending_sale.subtotal,
 					    'method_id'=>payment_type.db_pk,
 					    'customer_id'=> @customer.db_pk,
 					    'amtreceived'=> @amt_received.text.to_f,
