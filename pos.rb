@@ -10,12 +10,6 @@ require 'pos_sale'
 require 'payment_ctrl'
 require 'totals_display'
 
-
-conn = DB.instance
-
-conn.exec('select * from sku limit 1')
-
-
 POSSetting.init
 
 class PointOfSale
