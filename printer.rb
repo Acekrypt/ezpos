@@ -8,8 +8,8 @@ class Printer
 
 
     def print_signature_slip( sale )
-	recpt = File.open( NAS::LocalConfig::RECEIPT_PRINTER_PORT, 'w' )
-
+#	recpt = File.open( NAS::LocalConfig::RECEIPT_PRINTER_PORT, 'w' )
+        recpt = Tempfile.new('Sale-Signature-'+sale.db_pk.to_s+'-'+sale.subtotal.to_s)
 	time = sale.occured.strftime("%I:%M%p - ") + sale.occured.strftime("%b %d %Y")
 
 	recpt.puts sprintf('SALE #: %-6d%26s',sale.db_pk,time )
@@ -40,11 +40,15 @@ class Printer
         recpt.putc 'm'
 
         recpt.close
+
+        system("#{NAS::LocalConfig::RECEIPT_PRINTER_COMMAND} #{recpt.path}" )
+
     end
 
 
     def output_sale( sale )
-	recpt = File.open( NAS::LocalConfig::RECEIPT_PRINTER_PORT, 'w' )
+#	recpt = File.open( NAS::LocalConfig::RECEIPT_PRINTER_PORT, 'w' )
+        recpt = Tempfile.new('Sale-Receipt-'+sale.db_pk.to_s+'-'+sale.subtotal.to_s)
 
 	POS::Setting.instance.print_header.each_line{ |line|
 	    line.chomp!
@@ -89,8 +93,9 @@ class Printer
         recpt.putc 5
         recpt.putc 0x1B
         recpt.putc 'm'
-
 	recpt.close
+
+ 	system("#{NAS::LocalConfig::RECEIPT_PRINTER_COMMAND} #{recpt.path}" )
 
     end
 
