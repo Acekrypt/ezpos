@@ -16,7 +16,7 @@ class Setting
 	@tax_rate = @gConf['/apps/ezpos/tax_rate']
 	@print_header =	@gConf['/apps/ezpos/print_header']
 	@print_header = '' if ! @print_header
-	@tax_rate=0.0 if ! @tax
+	@tax_rate=0.0 if ! @tax_rate
 	@tax_exempt = false;
 
 	@pole_welcome_pause=@gConf['/apps/ezpos/pole_welcome_pause'].to_i

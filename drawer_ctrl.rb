@@ -49,11 +49,9 @@ class Drawer
 
     def open
 	char = POS::Setting.instance.drawer_char
-
-#	    port = File.new( '/dev/lp0','w' )
-#	    port.putc char
-#	    port.close
-
+    	port = File.new( '/dev/lp0','w' )
+	port.putc char
+	port.close
     end
 
     

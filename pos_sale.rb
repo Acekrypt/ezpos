@@ -16,7 +16,7 @@ class PosSale
 	@sale=INV::PendingSale.new( POS::Setting.instance.tax_rate )
 	TotalsDisplay.instance.sale = @sale
 	SaleItemsGrid.instance.clear
-
+	DisplayPole.instance.show_welcome
 	FindItemsCtrl.instance.new_sale( self )
 	SaleItemsGrid.instance.new_sale( self )
     end
@@ -56,8 +56,8 @@ class PosSale
 	    false
 	else
 	    for sku in skus
-		DisplayPole.instance.show_sku( sku )
 		@sale.add_sku( sku )
+		DisplayPole.instance.show_sku( sku,@sale.total )
 		SaleItemsGrid.instance.insert( sku )
 	    end
 	    true

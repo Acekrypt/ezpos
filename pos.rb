@@ -39,7 +39,7 @@ class PointOfSale
 	  end
       end
 
-      window = @glade.get_widget("ezpos_window")
+      window = @glade.get_widget("ezpos_window") 
       window.fullscreen
       window.set_has_frame( false )
       window.show
@@ -49,11 +49,7 @@ class PointOfSale
       PaymentCtrl.instance.glade      = @glade 
       SaleItemsGrid.instance.glade    = @glade
       SalesHistoryCtrl.instance.glade = @glade
-
-
-
       @sale = PosSale.new
-
   end
 
   def on_view_history_clicked( widget )

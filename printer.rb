@@ -59,10 +59,10 @@ class Printer
 	recpt.puts
 	recpt.close
 
-	#	    exec('lp -d receipt ' + recpt.path ) if fork == nil
+       	exec('lp -d receipt ' + recpt.path ) if fork == nil
 
-	f = File.new( recpt.path )
-	f.each{ | line | puts line }
+	#f = File.new( recpt.path )
+	#f.each{ | line | puts line }
 
 
     end

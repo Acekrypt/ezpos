@@ -17,9 +17,9 @@ class DisplayPole
     end
 
 
-    def show_sku( sku )
+    def show_sku( sku , sale_total )
 	@pole.line_one=sku.descrip[0..LogicControlsDisplay::LINE_LENGTH]
-	@pole.line_two=sprintf('%-10s%9.2f', sku.code,sku.total)
+	@pole.line_two=sprintf('%-6.2f Tot %8.2f',sku.total, sale_total)
     end
 
     def show_thanks

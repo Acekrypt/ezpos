@@ -10,7 +10,12 @@ class SalesHistoryCtrl
     def glade=( glade )
 	@glade = glade
 
+	@other_window=@glade.get_widget("ezpos_window")
+
 	@window       = glade.get_widget("returns_window")
+      	@window.fullscreen
+	@window.set_has_frame( false )
+		    
 	@sales_view   = glade.get_widget('sales_listing_view')
 	@items_view   = glade.get_widget('sales_items_view')
 	@subtotal_amt = glade.get_widget('sale_view_subtotal')
@@ -23,6 +28,7 @@ class SalesHistoryCtrl
 
 	glade.get_widget('back_to_sale_button').signal_connect('clicked') do
 	    SalesHistoryCtrl.instance.hide
+            @other_window.present
 	end
 
 	glade.get_widget('print_receipt_button').signal_connect('clicked') do
@@ -76,7 +82,8 @@ class SalesHistoryCtrl
     end
 
     def present
-	@window.present
+    	@other_window.hide
+    	@window.present
 	@sale_id_box.grab_focus
 	update_sales
     end
@@ -103,10 +110,11 @@ class SalesHistoryCtrl
 	@reason_text.sensitive=true
 	buffer = @reason_text.buffer
 	buffer.delete( buffer.start_iter, buffer.end_iter )
-	@items_grid.insert( sku )
+	@window.present
 	if Gtk::Dialog::RESPONSE_OK==@reason_dialog.run
 	    sku.return( buffer.get_text )
 	end
+	@items_grid.insert( sku )
 	@reason_dialog.hide
     end
 
