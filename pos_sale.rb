@@ -3,6 +3,8 @@
 require 'db'
 require 'inv/pending_sale'
 require 'drawer_ctrl'
+require 'customer_info_dialog'
+
 
 class PosSale
 
@@ -34,6 +36,7 @@ class PosSale
     def not_found( code )
 	code = '' if ! code
 	dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::WARNING,Gtk::MessageDialog::BUTTONS_CLOSE,code + ' NOT FOUND' )
+	dialog.default_response=Gtk::Dialog::RESPONSE_OK
 	dialog.run
 	dialog.destroy
     end
@@ -64,6 +67,7 @@ class PosSale
 	pay_ctrl = PaymentCtrl.instance
 	finalized_sale = pay_ctrl.save( @sale )
 	
+
 	if finalized_sale
 	    #print
 	    payment = finalized_sale.payment
@@ -75,6 +79,12 @@ class PosSale
 		end
 		dialog.window_position=Gtk::Window::POS_CENTER_ALWAYS
 		dialog.show
+	    end
+
+
+	    if payment.payment_method.is_a?( Payment::Method::BillingAcct )
+		cid = CustomerInfoDialog.new( glade, finalized_sale.customer )
+		cid.display
 	    end
 
 	    if payment.payment_method.open_drawer
