@@ -16,7 +16,7 @@ pdf = PDF::EZWriter.new("Letter", :landscape)
 pdf.select_font('pdf/fonts/Times-Roman')
 
 
-date = Time.new
+date = Time.new - 86400
 
 receipt = DailyReceipt.find_on_date( date )
 
