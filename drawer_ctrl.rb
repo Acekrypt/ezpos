@@ -48,10 +48,13 @@ class Drawer
     # BEL - Switches 1-3 ON Switches 4-8 OFF
 
     def open
-	char = POS::Setting.instance.drawer_char
     	port = File.new( NAS::LocalConfig::CASH_DRAWER_PORT,'w' )
-	port.putc char
-	port.close
+        port.putc 0x1B
+        port.putc 'p'
+        port.putc 0
+        port.putc 25
+        port.putc 250
+        port.close
     end
 
     

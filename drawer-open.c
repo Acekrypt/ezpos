@@ -8,5 +8,9 @@
 
 
 int main(){
-	printf("%c",7);
+	printf("%c",0x1B);
+	printf("%c",'p');
+	printf("%c",0);
+	printf("%c",25);
+	printf("%c",250);
 }

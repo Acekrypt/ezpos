@@ -271,9 +271,10 @@ class SaleItemsGrid < ItemsGrid
     end
 
     def on_key_press_event( widget, k )
-	key = k.keyval
-	if 65535 == key
-	    remove( @grid.selection.selected )
+	case k.keyval
+	when 65535 then remove( @grid.selection.selected ) # delete
+	when 65477 then @grid.set_cursor( @grid.selection.selected.path, @grid.columns[4],true ) # F8
+	when 65478 then @grid.set_cursor( @grid.selection.selected.path, @grid.columns[5],true ) # F9
 	end
     end
 

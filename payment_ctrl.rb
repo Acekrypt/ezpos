@@ -139,9 +139,6 @@ class PaymentCtrl
 	end
     end
 
- 
-
-
 
     def record_std_payment(payment_type)
 	    elements=Array.new
@@ -218,7 +215,7 @@ class PaymentCtrl
 						     'method_id'=> NAS::Payment::Method::CreditCard.new.db_pk,
 						     'customer_id'=> NAS::LocalConfig::Accounts.credit_card.db_pk,
 						     'amount'=> amt,
-						     'transaction_id'=> results['code'],
+						     'transaction_id'=> results['ordernum'],
 						 ] ) )
 		try_again= ( amt < @pending_sale.total )
 	    else

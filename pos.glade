@@ -42,7 +42,7 @@
 		      <accelerator key="F1" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image25">
+			<widget class="GtkImage" id="image27">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-apply</property>
 			  <property name="icon_size">1</property>
@@ -65,7 +65,7 @@
 		      <accelerator key="F12" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image26">
+			<widget class="GtkImage" id="image28">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-justify-fill</property>
 			  <property name="icon_size">1</property>
@@ -105,6 +105,15 @@
 
 	      <child>
 		<widget class="GtkMenu" id="help_menu_menu">
+
+		  <child>
+		    <widget class="GtkMenuItem" id="_keyboard_shortcuts1">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">Keyboard Shortcuts</property>
+		      <property name="use_underline">True</property>
+		      <signal name="activate" handler="on_keyboard_shortcuts_activate" last_modification_time="Mon, 25 Oct 2004 21:13:36 GMT"/>
+		    </widget>
+		  </child>
 
 		  <child>
 		    <widget class="GtkMenuItem" id="about_app">
@@ -202,7 +211,6 @@
 	    <widget class="GtkSpinButton" id="discount_spin_ctrl">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Apply Discount To Sale</property>
-	      <property name="can_focus">True</property>
 	      <property name="climb_rate">5</property>
 	      <property name="digits">0</property>
 	      <property name="numeric">False</property>
@@ -233,14 +241,23 @@
 	    <widget class="GtkCheckButton" id="tax_exempt_ctrl">
 	      <property name="visible">True</property>
 	      <property name="tooltip" translatable="yes">Is Sale Tax Exempt</property>
-	      <property name="can_focus">True</property>
-	      <property name="label" translatable="yes">Tax Exempt</property>
+	      <property name="label" translatable="yes">Tax</property>
 	      <property name="use_underline">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
-	      <property name="active">False</property>
+	      <property name="active">True</property>
 	      <property name="inconsistent">False</property>
 	      <property name="draw_indicator">True</property>
 	      <signal name="toggled" handler="on_tax_exempt_toggle" last_modification_time="Mon, 18 Oct 2004 15:09:27 GMT"/>
+	    </widget>
+	  </child>
+
+	  <child>
+	    <widget class="GtkButton" id="button15">
+	      <property name="visible">True</property>
+	      <property name="label" translatable="yes">History</property>
+	      <property name="use_underline">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <signal name="clicked" handler="on_view_history_clicked" last_modification_time="Mon, 25 Oct 2004 17:04:20 GMT"/>
 	    </widget>
 	  </child>
 
@@ -2772,6 +2789,78 @@
 	  <property name="padding">0</property>
 	  <property name="expand">True</property>
 	  <property name="fill">True</property>
+	</packing>
+      </child>
+    </widget>
+  </child>
+</widget>
+
+<widget class="GtkDialog" id="keyboard_shortcuts_dialog">
+  <property name="title" translatable="yes">Keyboard Shortcuts</property>
+  <property name="type">GTK_WINDOW_TOPLEVEL</property>
+  <property name="window_position">GTK_WIN_POS_CENTER</property>
+  <property name="modal">True</property>
+  <property name="resizable">True</property>
+  <property name="destroy_with_parent">False</property>
+  <property name="has_separator">True</property>
+
+  <child internal-child="vbox">
+    <widget class="GtkVBox" id="dialog-vbox9">
+      <property name="visible">True</property>
+      <property name="homogeneous">False</property>
+      <property name="spacing">0</property>
+
+      <child internal-child="action_area">
+	<widget class="GtkHButtonBox" id="dialog-action_area9">
+	  <property name="visible">True</property>
+	  <property name="layout_style">GTK_BUTTONBOX_END</property>
+
+	  <child>
+	    <widget class="GtkButton" id="closebutton1">
+	      <property name="visible">True</property>
+	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label">gtk-close</property>
+	      <property name="use_stock">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="response_id">-7</property>
+	      <signal name="clicked" handler="on_keyboard_shortcuts_close_activate" last_modification_time="Mon, 25 Oct 2004 21:37:25 GMT"/>
+	    </widget>
+	  </child>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
+	  <property name="fill">True</property>
+	  <property name="pack_type">GTK_PACK_END</property>
+	</packing>
+      </child>
+
+      <child>
+	<widget class="GtkLabel" id="label61">
+	  <property name="visible">True</property>
+	  <property name="label" translatable="yes">F1      New Sale
+
+F8      Edit price of selected item
+
+F9      Edit qty of selected item
+
+F12    Finalize Sale</property>
+	  <property name="use_underline">False</property>
+	  <property name="use_markup">False</property>
+	  <property name="justify">GTK_JUSTIFY_LEFT</property>
+	  <property name="wrap">False</property>
+	  <property name="selectable">False</property>
+	  <property name="xalign">0.5</property>
+	  <property name="yalign">0.5</property>
+	  <property name="xpad">0</property>
+	  <property name="ypad">0</property>
+	</widget>
+	<packing>
+	  <property name="padding">0</property>
+	  <property name="expand">False</property>
+	  <property name="fill">False</property>
 	</packing>
       </child>
     </widget>

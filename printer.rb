@@ -9,6 +9,7 @@ class Printer
     def output_sale( sale )
 	recpt = Tempfile.new('ezpos-sale-'+sale.db_pk.to_s+'-')
 
+
 	POS::Setting.instance.print_header.each_line{ |line|
 	    line.chomp!
 	    recpt.puts line.center(40)
@@ -16,6 +17,7 @@ class Printer
 
 	recpt.puts LINE
 	time = sale.occured.strftime("%I:%M%p - ") + sale.occured.strftime("%m/%d/%Y")
+
 	recpt.puts sprintf('SALE #: %-6d%26s',sale.db_pk,time )
 	recpt.puts LINE
 	for sku in sale.skus
@@ -55,17 +57,24 @@ class Printer
 	recpt.puts '             Thank You!'
 	recpt.puts
 	recpt.puts
+        recpt.putc 0x1B
+        recpt.putc 'd'
+        recpt.putc 5
+        recpt.putc 0x1B
+        recpt.putc 'm'
+
+
 	recpt.close
 
        	system("cat #{recpt.path} > #{NAS::LocalConfig::RECEIPT_PRINTER_PORT}" )
 
 	if print_sig
-	    system("cat /usr/local/ezpos/blank-lines.txt >  #{NAS::LocalConfig::RECEIPT_PRINTER_PORT}" )
+#	    system("cat /usr/local/ezpos/blank-lines.txt >  #{NAS::LocalConfig::RECEIPT_PRINTER_PORT}" )
 	    sleep(10)
 	    system("cat #{recpt.path} > #{NAS::LocalConfig::RECEIPT_PRINTER_PORT}" )
 	    system("cat /usr/local/ezpos/cc-append.txt > #{NAS::LocalConfig::RECEIPT_PRINTER_PORT}" )
 	end
-	system("cat /usr/local/ezpos/blank-lines.txt >  #{NAS::LocalConfig::RECEIPT_PRINTER_PORT}" )
+#	system("cat /usr/local/ezpos/blank-lines.txt >  #{NAS::LocalConfig::RECEIPT_PRINTER_PORT}" )
 #	f = File.new( recpt.path )
 #	f.each{ | line | puts line }
 #	f.close

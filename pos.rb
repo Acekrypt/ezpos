@@ -69,13 +69,21 @@ class PointOfSale
       if DEBUG
 	  FindItemsCtrl.instance.entry.text='0001'
 	  FindItemsCtrl.instance.entry_complete(nil)
-	  @sale.finalize( @glade )
+
+          Printer.instance.output_sale( ::NAS::INV::Sale.new(  128 ) )
+          Drawer.instance.open
+#	  @sale.finalize( @glade )
+
       else
 	  window.fullscreen
 	  window.set_has_frame( false )
       end
       window.show
 
+  end
+
+  def on_keyboard_shortcuts_activate( widget )
+      
   end
 
   def on_view_history_clicked( widget )
@@ -174,12 +182,19 @@ class PointOfSale
       @sale = @sale.finalize( @glade )
   end
 
+  def on_keyboard_shortcuts_close_activate( *w )
+      @glade.get_widget('keyboard_shortcuts_dialog').hide
+  end
+
+
+  def on_keyboard_shortcuts_activate( *widget )
+      @glade.get_widget('keyboard_shortcuts_dialog').show
+  end
 
   def on_about_activate( *widget )
-    on_view_history_clicked(nil)
-  #    dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::INFO,Gtk::MessageDialog::BUTTONS_OK,"EZPOS\nCreated by Nathan Stitt\nCopyright 2004, Alliance Medical Inc." )
-  #    dialog.run
-  #   dialog.destroy
+      dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::INFO,Gtk::MessageDialog::BUTTONS_OK,"EZPOS\nCreated by Nathan Stitt\nCopyright 2004, Alliance Medical Inc." )
+      dialog.run
+      dialog.destroy
   end
 
   def on_new_sale_activate( *widget )
@@ -202,8 +217,7 @@ begin
     #Gnome::Program.new(PointOfSale::NAME, PointOfSale::VERSION)
     win=PointOfSale.new( File.dirname($0) + "/pos.glade")
     Gtk.main
-
-
+    
 rescue Exception
     msg = $!.to_s
     msg += "\n"
@@ -225,6 +239,6 @@ rescue Exception
 	@sale=Sale.new
     end
 
-
+    
 end
  
