@@ -2,6 +2,7 @@
 
 
 require 'libglade2'
+require 'db'
 require 'pos_settings'
 require 'items_grid'
 require 'find_items_ctrl'
