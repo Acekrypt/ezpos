@@ -18,7 +18,10 @@ class Setting
 	@print_header = '' if ! @print_header
 	@tax_rate=0.0 if ! @tax_rate
 	@tax_exempt = false;
-
+	if ! @gConf.dir_exists?( '/apps/ezpos' )
+	    @gConf['/apps/ezpos/pole_welcome_pause'] =  @gConf['/apps/ezpos/pole_thank_you_pause'] = 10
+	    @gConf['/apps/ezpos/pole_welcome_one'] = @gConf['/apps/ezpos/pole_welcome_two'] = @gConf['/apps/ezpos/pole_thank_you_one'] = @gConf['/apps/ezpos/pole_thank_you_two'] = ''
+	end
 	@pole_welcome_pause=@gConf['/apps/ezpos/pole_welcome_pause'].to_i
 	@pole_welcome_one=@gConf['/apps/ezpos/pole_welcome_one']
 	@pole_welcome_two=@gConf['/apps/ezpos/pole_welcome_two']
