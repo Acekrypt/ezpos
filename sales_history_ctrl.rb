@@ -223,7 +223,7 @@ class SalesHistoryCtrl
 	    row[0] = sale.db_pk.to_s
 	    row[1] = sale.occured.strftime('%I:%M%P %m/%d/%y')
 	    payments = sale.payments
-	    if payments.first.payment_method.is_a? Payment::Method::BillingAcct
+	    if ( payments.empty? ) || ( payments.first.payment_method.is_a? Payment::Method::BillingAcct )
 		row[2] = sale.customer.code
 	    else
 		row[2] = payments.first.name_of
