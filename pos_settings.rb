@@ -32,13 +32,10 @@ class Setting
 	@pole_thank_you_one=@gConf['/apps/ezpos/pole_thank_you_one']
 	@pole_thank_you_two=@gConf['/apps/ezpos/pole_thank_you_two']
 	@process_cards=@gConf['/apps/ezpos/proccess_credit_cards']
-puts @process_cards
 	@drawer_char=7
     end
 
     def toggle_proccess_cards
-puts 'Cards Toggled'
-puts caller
 	@process_cards = ! @process_cards
 	@gConf['/apps/ezpos/proccess_credit_cards']=@process_cards
     end

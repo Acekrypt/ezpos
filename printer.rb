@@ -6,9 +6,43 @@ class Printer
     include Singleton
     LINE='----------------------------------------'
 
-    def output_sale( sale )
-	recpt = Tempfile.new('ezpos-sale-'+sale.db_pk.to_s+'-')
 
+    def print_signature_slip( sale )
+	recpt = File.open( NAS::LocalConfig::RECEIPT_PRINTER_PORT, 'w' )
+
+	time = sale.occured.strftime("%I:%M%p - ") + sale.occured.strftime("%b %d %Y")
+
+	recpt.puts sprintf('SALE #: %-6d%26s',sale.db_pk,time )
+	recpt.puts LINE
+	for payment in sale.payments
+            if payment.payment_method.is_a? NAS::Payment::Method::CreditCard
+                recpt.puts sprintf('%-25s%15s',payment.payment_method.name,payment.amount.to_s )
+            end
+	end
+	recpt.puts LINE
+        recpt.puts
+        recpt.puts '     I agree to pay the above amount'
+        recpt.puts '   according to my cardholder agreement'
+        recpt.puts
+        recpt.puts
+        recpt.puts
+        recpt.puts
+        recpt.puts
+        recpt.puts '   -------------------------------------'
+        recpt.puts '                Signature'
+	recpt.puts '                Thank You!'
+        recpt.putc 0x1B
+        recpt.putc 'd'
+        recpt.putc 5
+        recpt.putc 0x1B
+        recpt.putc 'm'
+
+        recpt.close
+    end
+
+
+    def output_sale( sale )
+	recpt = File.open( NAS::LocalConfig::RECEIPT_PRINTER_PORT, 'w' )
 
 	POS::Setting.instance.print_header.each_line{ |line|
 	    line.chomp!
@@ -16,7 +50,7 @@ class Printer
 	}
 
 	recpt.puts LINE
-	time = sale.occured.strftime("%I:%M%p - ") + sale.occured.strftime("%m/%d/%Y")
+	time = sale.occured.strftime("%I:%M%p - ") + sale.occured.strftime("%b %d %Y")
 
 	recpt.puts sprintf('SALE #: %-6d%26s',sale.db_pk,time )
 	recpt.puts LINE
@@ -42,42 +76,15 @@ class Printer
 	recpt.puts 'Tax'      + sprintf('%37s',sale.tax.to_s )
 	recpt.puts 'Total'    + sprintf('%35s',sale.total.to_s )
 	recpt.puts LINE
-	print_sig=false
-	for payment in sale.payments
-	    if payment.payment_method.is_a?( NAS::Payment::Method::CreditCard ) && POS::Setting.instance.process_cards
-		print_sig=true 
-	    end
-	    recpt.puts sprintf('%-25s%15s',payment.payment_method.name,payment.amount.to_s )
-	end
-
-	recpt.puts 'Change'   + sprintf('%34s',sale.change_given.to_s )
-
-	recpt.puts LINE
 
 	recpt.puts '             Thank You!'
-	recpt.puts
-	recpt.puts
         recpt.putc 0x1B
         recpt.putc 'd'
         recpt.putc 5
         recpt.putc 0x1B
         recpt.putc 'm'
 
-
 	recpt.close
-
-       	system("cat #{recpt.path} > #{NAS::LocalConfig::RECEIPT_PRINTER_PORT}" )
-
-	if print_sig
-#	    system("cat /usr/local/ezpos/blank-lines.txt >  #{NAS::LocalConfig::RECEIPT_PRINTER_PORT}" )
-	    sleep(10)
-	    system("cat #{recpt.path} > #{NAS::LocalConfig::RECEIPT_PRINTER_PORT}" )
-	    system("cat /usr/local/ezpos/cc-append.txt > #{NAS::LocalConfig::RECEIPT_PRINTER_PORT}" )
-	end
-#	system("cat /usr/local/ezpos/blank-lines.txt >  #{NAS::LocalConfig::RECEIPT_PRINTER_PORT}" )
-#	f = File.new( recpt.path )
-#	f.each{ | line | puts line }
-#	f.close
 
     end
 
