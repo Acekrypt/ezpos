@@ -61,9 +61,9 @@ class Printer
 
        	system('lp -d receipt ' + recpt.path )
 
-	#f = File.new( recpt.path )
-	#f.each{ | line | puts line }
-
+	f = File.new( recpt.path )
+	f.each{ | line | puts line }
+	f.close
 
     end
 

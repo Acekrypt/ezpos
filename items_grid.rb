@@ -140,10 +140,10 @@ class ItemsGrid
     def update_discount( perc )
 	row = @grid.model.iter_first
  	if row
-	    row[6] = perc.to_s + '%'
+	    row[6] = perc.to_i.to_s + '%'
 	    update_row( row )
  	    while row.next!
-		row[6] = perc.to_s + '%'
+		row[6] = perc.to_i.to_s + '%'
 		update_row( row )
  	    end
  	end
@@ -195,12 +195,16 @@ class ItemsGrid
 	line[3] = sku.formated_price
 	line[4] = sku.qty
 	line[5] = sku.formated_undiscounted_total
-	line[6] = sku.formated_discount
+	line[6] = get_discount( sku )
 	line[7] = sku.formated_total
 	line[8] = sku
 	line[9] = sku.returned?
     end
     private :insert_sku
+
+    def get_discount( sku )
+	sku.formated_discount
+    end
 
     def update_row( row )
 	row[ 5 ] = sprintf( '%0.2f',( row[4].to_i * row[3].to_f ) )
@@ -247,6 +251,10 @@ class SaleItemsGrid < ItemsGrid
 
     def release_focus
 	FindItemsCtrl.instance.focus
+    end
+
+    def get_discount( sku )
+	sprintf('%i%%',DiscountCtrl.instance.value)
     end
 
     def grid_got_focus( widget, dir )

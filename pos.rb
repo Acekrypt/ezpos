@@ -11,6 +11,7 @@ require 'payment_ctrl'
 require 'totals_display'
 require 'drawer_ctrl'
 require 'sales_history_ctrl'
+require 'daily_receipts_dialog'
 
 class PointOfSale
   TITLE = "Simple Text Editor"
@@ -44,11 +45,13 @@ class PointOfSale
       window.set_has_frame( false )
       window.show
 
-      FindItemsCtrl.instance.glade    = @glade
-      TotalsDisplay.instance.glade    = @glade
-      PaymentCtrl.instance.glade      = @glade 
-      SaleItemsGrid.instance.glade    = @glade
-      SalesHistoryCtrl.instance.glade = @glade
+      FindItemsCtrl.instance.glade       = @glade
+      TotalsDisplay.instance.glade       = @glade
+      PaymentCtrl.instance.glade         = @glade 
+      SaleItemsGrid.instance.glade       = @glade
+      SalesHistoryCtrl.instance.glade    = @glade
+      DailyReceiptDialog.instance.glade  = @glade
+      DiscountCtrl.instance.glade        = @glade
       @sale = PosSale.new
   end
 
@@ -66,10 +69,6 @@ class PointOfSale
       if 113 == key
 	  Gtk.main_quit
       end
-  end
-
-  def on_discount_spin_ctrl_changed( widget )
-      @sale.discount=widget.value.to_i
   end
 
 

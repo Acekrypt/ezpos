@@ -6,6 +6,7 @@ require 'drawer_ctrl'
 require 'customer_info_dialog'
 require 'printer'
 require 'display_pole'
+require 'discount_ctrl'
 
 class PosSale
 
@@ -19,6 +20,7 @@ class PosSale
 	DisplayPole.instance.show_welcome
 	FindItemsCtrl.instance.new_sale( self )
 	SaleItemsGrid.instance.new_sale( self )
+	DiscountCtrl.instance.sale=self
     end
 
     def update
@@ -36,16 +38,13 @@ class PosSale
 
     def not_found( code )
 	code = '' if ! code
+	FindItemsCtrl.instance.clear
 	dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::WARNING,Gtk::MessageDialog::BUTTONS_CLOSE,code + ' NOT FOUND' )
 	dialog.default_response=Gtk::Dialog::RESPONSE_OK
 	dialog.run
 	dialog.destroy
     end
 
-    def discount=( percent )
-	SaleItemsGrid.instance.discount=percent
-	update
-    end
 
     def empty?
 	SaleItemsGrid.instance.empty?
@@ -70,9 +69,6 @@ class PosSale
 
 	DB.instance.begin_transaction
 	finalized_sale = pay_ctrl.save( @sale )
-
-	glade.get_widget('discount_spin_ctrl').value=0
-	SaleItemsGrid.instance.discount=0
 
 	if ! finalized_sale
 	    dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::WARNING,Gtk::MessageDialog::BUTTONS_CLOSE,'Unable to save sale')

@@ -2,6 +2,7 @@
 
 require 'singleton'
 require 'inv/sale'
+require 'daily_receipts_dialog'
 
 class SalesHistoryCtrl
     include Singleton
@@ -29,6 +30,10 @@ class SalesHistoryCtrl
 	glade.get_widget('back_to_sale_button').signal_connect('clicked') do
 	    SalesHistoryCtrl.instance.hide
             @other_window.present
+	end
+
+	glade.get_widget('show_enter_receipts_button').signal_connect('clicked') do
+	    show_deposits_dialog
 	end
 
 	glade.get_widget('print_receipt_button').signal_connect('clicked') do
@@ -79,6 +84,11 @@ class SalesHistoryCtrl
 	    @items_grid.clear
 	    update_sales
 	end
+    end
+
+
+    def show_deposits_dialog
+	DailyReceiptDialog.instance.show_receipts( Time.local(  @calendar.date[0],@calendar.date[1],@calendar.date[2] ) )
     end
 
     def present
