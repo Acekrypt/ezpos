@@ -42,7 +42,7 @@
 		      <accelerator key="F1" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image27">
+			<widget class="GtkImage" id="image28">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-apply</property>
 			  <property name="icon_size">1</property>
@@ -65,7 +65,7 @@
 		      <accelerator key="F12" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image28">
+			<widget class="GtkImage" id="image29">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-justify-fill</property>
 			  <property name="icon_size">1</property>
@@ -90,37 +90,6 @@
 		      <property name="label">gtk-quit</property>
 		      <property name="use_stock">True</property>
 		      <signal name="activate" handler="on_quit_activate" last_modification_time="Wed, 14 Apr 2004 15:17:29 GMT"/>
-		    </widget>
-		  </child>
-		</widget>
-	      </child>
-	    </widget>
-	  </child>
-
-	  <child>
-	    <widget class="GtkMenuItem" id="help_menu">
-	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">_Help</property>
-	      <property name="use_underline">True</property>
-
-	      <child>
-		<widget class="GtkMenu" id="help_menu_menu">
-
-		  <child>
-		    <widget class="GtkMenuItem" id="_keyboard_shortcuts1">
-		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">Keyboard Shortcuts</property>
-		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_keyboard_shortcuts_activate" last_modification_time="Mon, 25 Oct 2004 21:13:36 GMT"/>
-		    </widget>
-		  </child>
-
-		  <child>
-		    <widget class="GtkMenuItem" id="about_app">
-		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">_About</property>
-		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_about_activate" last_modification_time="Wed, 14 Apr 2004 15:17:29 GMT"/>
 		    </widget>
 		  </child>
 		</widget>
@@ -170,6 +139,37 @@
 		      <property name="label" translatable="yes">Process Credit Cards</property>
 		      <property name="use_underline">True</property>
 		      <property name="active">False</property>
+		    </widget>
+		  </child>
+		</widget>
+	      </child>
+	    </widget>
+	  </child>
+
+	  <child>
+	    <widget class="GtkImageMenuItem" id="help_menu">
+	      <property name="visible">True</property>
+	      <property name="label">gtk-help</property>
+	      <property name="use_stock">True</property>
+
+	      <child>
+		<widget class="GtkMenu" id="help_menu_menu">
+
+		  <child>
+		    <widget class="GtkMenuItem" id="_keyboard_shortcuts1">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">Keyboard Shortcuts</property>
+		      <property name="use_underline">True</property>
+		      <signal name="activate" handler="on_keyboard_shortcuts_activate" last_modification_time="Mon, 25 Oct 2004 21:13:36 GMT"/>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkMenuItem" id="about_app">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">_About</property>
+		      <property name="use_underline">True</property>
+		      <signal name="activate" handler="on_about_activate" last_modification_time="Wed, 14 Apr 2004 15:17:29 GMT"/>
 		    </widget>
 		  </child>
 		</widget>
