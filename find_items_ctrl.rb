@@ -86,7 +86,7 @@ class FindItemsCtrl
 	    char = char[0]
 	    if char > 47 && char < 123
 		@grid_items.clear
-		sql = 'select code, descrip from sku where code like \'' + (widget.text + sprintf('%c',char)).upcase + '%\' limit 20'
+		sql = 'select code, descrip from sku where code like \'' + (widget.text + sprintf('%c',char)).upcase + '%\' limit 100'
 		res = @db.exec( sql )
 		res.result.each do |tupl|
 		    line = @grid_items.append
@@ -96,19 +96,17 @@ class FindItemsCtrl
 	    end
 	else if 'BackSpace' == char
 		 @grid_items.clear
-		 sql = 'select code, descrip from sku where code like \'' + widget.text.chop + '%\''
-		 if widget.text.size < 4
-		     sql += ' limit 20'
+		 if widget.text.size > 1
+		     sql = 'select code, descrip from sku where code like \'' + widget.text.chop + '%\' limit 100'
+		     res = @db.exec( sql )
+		     res.result.each do |tupl|
+			line = @grid_items.append
+			line[0] = tupl[0]
+			line[1] = tupl[1]
+		    end
 		 end
-		 res = @db.exec( sql )
-		 res.result.each do |tupl|
-		    line = @grid_items.append
-		    line[0] = tupl[0]
-		    line[1] = tupl[1]
-		end
 	     end
 	end
-	
 	false
     end
 end
