@@ -2,8 +2,8 @@
 require 'nas/payment'
 
 require 'singleton'
-require 'nas/payment/credit_card/card'
-require 'nas/payment/credit_card/face_to_face'
+#require 'nas/payment/credit_card/card'
+require 'nas/payment/credit_card/yourpay'
 require 'nas/widgets/get_string'
 
 class PaymentCtrl
