@@ -177,9 +177,7 @@ class ItemsGrid
 
     def insert( sku )
 	if sku.is_a? Array
-	    for s in sku
-		insert_sku( s )
-	    end
+	    skus.each{ | s | insert_sku( s ) }
 	else
 	    insert_sku( sku )
 	end
@@ -192,9 +190,9 @@ class ItemsGrid
 	line[2] = sku.um
 	line[3] = sku.price.to_s
 	line[4] = sku.qty
-	line[5] = sku.undiscounted_total.to_s
+	line[5] = sku.total.to_s
 	line[6] = get_discount( sku )
-	line[7] = sku.total.to_s
+	line[7] = sku.discounted_total.to_s
 	line[8] = sku
 	line[9] = sku.returned?
     end
@@ -209,8 +207,8 @@ class ItemsGrid
 	sku.qty = row[4]
 	sku.price=Money.new( row[3] )
 	sku.discount=row[ 6 ].to_i
-	row[5] = sku.undiscounted_total.to_s
-	row[7] = sku.total.to_s
+	row[5] = sku.total.to_s
+	row[7] = sku.discounted_total.to_s
 #	row[ 5 ] = sprintf( '%0.2f',( row[4].to_i * row[3].to_f ) )
 #	row[ 7 ] = sku.total.to_s sprintf( '%0.2f',( row[5].to_f * ( ( 100 - row[6].to_f ).to_f / 100 ) ) )
 

@@ -52,9 +52,10 @@ class PosSale
 	    false
 	else
 	    for sku in skus
+		s=NAS::INV::SaleSKU.new( self, sku )
 		@sale.add_sku( sku )
-		DisplayPole.instance.show_sku( sku,@sale.total )
-		SaleItemsGrid.instance.insert( sku )
+		DisplayPole.instance.show_sku( s,@sale.total )
+		SaleItemsGrid.instance.insert( s )
 	    end
 	    true
 	end
