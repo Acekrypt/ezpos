@@ -36,7 +36,7 @@ class Setting
     end
 
     def toggle_proccess_cards
-	@process_cards = ! @process_cards
+ 	@process_cards = ! @process_cards
 	@gConf['/apps/ezpos/proccess_credit_cards']=@process_cards
     end
 
