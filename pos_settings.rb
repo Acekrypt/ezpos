@@ -4,7 +4,7 @@ require 'singleton'
 module POS
 
 class Setting
-    BAD_CC_SWIPE = ';E/'
+
     include Singleton
 
     attr_accessor :tax_exempt
@@ -21,9 +21,7 @@ class Setting
 	if ! @gConf.dir_exists?( '/apps/ezpos' )
 	    @gConf['/apps/ezpos/pole_welcome_pause'] =  @gConf['/apps/ezpos/pole_thank_you_pause'] = 10
 	    @gConf['/apps/ezpos/pole_welcome_one'] = @gConf['/apps/ezpos/pole_welcome_two'] = @gConf['/apps/ezpos/pole_thank_you_one'] = @gConf['/apps/ezpos/pole_thank_you_two'] = ''
-	    @gConf['/apps/ezpos/proccess_credit_cards']=false
 	end
-
 	@pole_welcome_pause=@gConf['/apps/ezpos/pole_welcome_pause'].to_i
 	@pole_welcome_one=@gConf['/apps/ezpos/pole_welcome_one']
 	@pole_welcome_two=@gConf['/apps/ezpos/pole_welcome_two']
@@ -31,7 +29,7 @@ class Setting
 	@pole_thank_you_pause=@gConf['/apps/ezpos/pole_thank_you_pause'].to_i
 	@pole_thank_you_one=@gConf['/apps/ezpos/pole_thank_you_one']
 	@pole_thank_you_two=@gConf['/apps/ezpos/pole_thank_you_two']
-	@process_cards=@gConf['/apps/ezpos/proccess_credit_cards']
+
 	@drawer_char=7
     end
 
@@ -45,10 +43,7 @@ class Setting
 	@tax_rate = tax
 	TotalsDisplay.instance.update
     end
-    
-    def set_not_tax_exempt
-	@tax_exempt = false
-    end
+
 
     def toggle_tax_exempt
 	@tax_exempt = ! @tax_exempt
