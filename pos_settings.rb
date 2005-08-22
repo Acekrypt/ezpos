@@ -43,7 +43,10 @@ class Setting
 	@tax_rate = tax
 	TotalsDisplay.instance.update
     end
-
+    
+    def set_non_tax_exempt
+	
+    end
 
     def toggle_tax_exempt
 	@tax_exempt = ! @tax_exempt

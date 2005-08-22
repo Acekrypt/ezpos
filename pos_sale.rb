@@ -109,8 +109,8 @@ class PosSale
 	Printer.instance.print_signature_slip( finalized_sale ) if print_sig_rec
 	Printer.instance.output_sale( finalized_sale )
 
-	glade.get_widget('tax_exempt_ctrl').active=false
-	POS::Setting.instance.set_not_tax_exempt
+#	glade.get_widget('tax_exempt_ctrl').active=false
+#	POS::Setting.instance.set_non_tax_exempt
 
 	NAS::DB.instance.commit_transaction
 
