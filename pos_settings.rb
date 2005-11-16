@@ -17,6 +17,7 @@ class Setting
 	@tax_rate = @gConf['/apps/ezpos/tax_rate']
 	@print_header =	@gConf['/apps/ezpos/print_header']
 	@print_header = '' if ! @print_header
+	@process_cards=@gConf['/apps/ezpos/proccess_credit_cards']
 	@tax_rate=0.0 if ! @tax_rate
 	@tax_exempt = false;
 	if ! @gConf.dir_exists?( '/apps/ezpos' )
