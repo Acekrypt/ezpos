@@ -106,12 +106,9 @@ class FindItemsCtrl
 	     end
 	end
 	if sql
-puts sql
 	    res = @db.exec( sql )
 	    res.result.each do |tupl|
-		puts "FOund: #{tupl[0]} | #{tupl[1]} | #{tupl[2]} | #{tupl[3]}"
 		line = @grid_items.append
-
 		line[0] = tupl[0]
 		line[1] = tupl[1]
 		line[2] = tupl[2]

@@ -71,9 +71,9 @@ class PointOfSale
 	  FindItemsCtrl.instance.entry_complete(nil)
           sale = NAS::INV::Sale.new(  129 )
 
-          Printer.instance.print_signature_slip( sale )
-          Printer.instance.output_sale( sale )
-          Drawer.instance.open
+#          Printer.instance.print_signature_slip( sale )
+#          Printer.instance.output_sale( sale )
+#          Drawer.instance.open
 #	  @sale.finalize( @glade )
 
       else
