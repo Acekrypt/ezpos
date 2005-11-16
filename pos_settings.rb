@@ -13,7 +13,7 @@ class Setting
     BAD_CC_SWIPE = ';E/'
 
     def initialize
-	@gConf = GConf::Client.new
+	@gConf = GConf::Client.default
 	@tax_rate = @gConf['/apps/ezpos/tax_rate']
 	@print_header =	@gConf['/apps/ezpos/print_header']
 	@print_header = '' if ! @print_header

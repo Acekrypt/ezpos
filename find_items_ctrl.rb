@@ -21,12 +21,22 @@ class FindItemsCtrl
 	column.min_width = 150
 	@grid.append_column(column)
 
-	column = Gtk::TreeViewColumn.new("Description", Gtk::CellRendererText.new,{:text => 1} )
-	column.min_width = 300
+	column = Gtk::TreeViewColumn.new("Price", Gtk::CellRendererText.new,{:text => 1} )
+	column.min_width = 30
 	@grid.append_column(column)
 
+	column = Gtk::TreeViewColumn.new("Description", Gtk::CellRendererText.new,{:text => 2} )
+	column.min_width = 500
+	@grid.append_column(column)
+	
+	renderer=Gtk::CellRendererText.new
+	renderer.foreground='grey'
+	renderer.xalign=1
+	column = Gtk::TreeViewColumn.new('C', renderer,{:text => 3} )
+	column.min_width = 30
+	@grid.append_column(column)
 
-	@grid_items = Gtk::ListStore.new(String, String)
+	@grid_items = Gtk::ListStore.new( String, String, String, String )
 
 	@grid.model = @grid_items
     end
@@ -84,30 +94,29 @@ class FindItemsCtrl
     def update( widget, key )
 	char = Gdk::Keyval.to_name( key.keyval )
 	char.delete!( 'KP_' )
-	if 1 == char.size
-	    char = char[0]
-	    if char > 47 && char < 123
-		@grid_items.clear
-		sql = 'select code, descrip from sku where code like \'' + (widget.text + sprintf('%c',char)).upcase + '%\' limit 100'
-		res = @db.exec( sql )
-		res.result.each do |tupl|
-		    line = @grid_items.append
-		    line[0] = tupl[0]
-		    line[1] = tupl[1]
-		end
-	    end
+	sql=nil
+	if 1 == char.size && char[0] > 47 && char[0] < 123
+	    sql = "select code, price1, descrip, cost from sku where code like '#{widget.text}#{char.upcase}%' limit 100"
+	    @grid_items.clear
 	else if 'BackSpace' == char
 		 @grid_items.clear
 		 if widget.text.size > 1
-		     sql = 'select code, descrip from sku where code like \'' + widget.text.chop + '%\' limit 100'
-		     res = @db.exec( sql )
-		     res.result.each do |tupl|
-			line = @grid_items.append
-			line[0] = tupl[0]
-			line[1] = tupl[1]
-		    end
+		     sql = 'select code, price1, descrip, cost from sku where code like \'' + widget.text.chop + '%\' limit 100'
 		 end
 	     end
+	end
+	if sql
+puts sql
+	    res = @db.exec( sql )
+	    res.result.each do |tupl|
+		puts "FOund: #{tupl[0]} | #{tupl[1]} | #{tupl[2]} | #{tupl[3]}"
+		line = @grid_items.append
+
+		line[0] = tupl[0]
+		line[1] = tupl[1]
+		line[2] = tupl[2]
+		line[3] = tupl[3]
+	    end
 	end
 	false
     end
