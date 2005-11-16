@@ -188,7 +188,7 @@ class PaymentCtrl
 	results=nil
 	if match
 	    d=present_processing_dialog
-	    results=YourPay.FaceToFaceCharge( Money.new( @amt_received.text ), match[1], match[3], match[2] )
+	    results=YourPay.FaceToFaceAuthorization( Money.new( @amt_received.text ), match[1], match[3], match[2] )
 	    d.destroy
 	elsif cc == POS::Setting::BAD_CC_SWIPE
 	    d=Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::ERROR,Gtk::MessageDialog::BUTTONS_OK,'Bad Swipe' )
@@ -202,7 +202,7 @@ class PaymentCtrl
 		year=NAS::Widgets::GetString.new('Date','Expiration Year' ).to_s
 		if ! month.empty? && ! year.empty?
 		    d=present_processing_dialog
-		    results=YourPay.FaceToFaceCharge( Money.new( @amt_received.text ), cc, month, year )
+		    results=YourPay.FaceToFaceAuthorization( Money.new( @amt_received.text ), cc, month, year )
 		    d.destroy
 		end
 	    end
