@@ -22,5 +22,9 @@ res.each do | ( trans, amt, dte ) |
 
     
 end
+puts
+puts
+puts ' -------> PRESS ENTER TO EXIT <---------'
+$stdin.gets
 
 file.close
