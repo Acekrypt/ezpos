@@ -151,7 +151,6 @@ class PaymentCtrl
 		
 		@payments.push( NAS::Payment.new( Hash[ 
 						     'method_id'=>payment_type.db_pk,
-						     'customer_id'=> @customer.db_pk,
 						     'amount'=> Money.new( @amt_received.text ),
 						     'transaction_id'=>payment_type.transaction_id( elements ),
 						 ] ) )
@@ -215,7 +214,6 @@ class PaymentCtrl
 		amt=Money.new( @amt_received.text )
 		@payments.push( NAS::Payment.new( Hash[ 
 						     'method_id'=> NAS::Payment::Method::CreditCard.new.db_pk,
-						     'customer_id'=> NAS::LocalConfig::Accounts.credit_card.db_pk,
 						     'amount'=> amt,
 						     'transaction_id'=> results['ordernum'],
 						 ] ) )
