@@ -10,6 +10,7 @@ class Setting
     attr_accessor :tax_exempt
     attr_reader  :tax_rate, :print_header, :drawer_char, :pole_thank_you_pause, :pole_thank_you_one, :pole_thank_you_two, :pole_welcome_pause, :pole_welcome_one, :pole_welcome_two, :process_cards
 
+    BAD_CC_SWIPE = ';E/'
 
     def initialize
 	@gConf = GConf::Client.new

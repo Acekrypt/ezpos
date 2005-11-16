@@ -77,8 +77,8 @@ class PointOfSale
 #	  @sale.finalize( @glade )
 
       else
-	  window.fullscreen
-	  window.set_has_frame( false )
+	  #window.fullscreen
+	  #window.set_has_frame( false )
       end
       window.show
 

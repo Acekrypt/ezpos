@@ -20,6 +20,23 @@ class Printer
             end
 	end
 	recpt.puts LINE
+	for sku in sale.skus
+	    recpt.puts sku.descrip[0..39]
+	    if 0 == sku.discount
+		recpt.puts sprintf('%-14s',sku.code) + sprintf('%3d', sku.qty ) + ' x ' + sprintf('%-8s', sku.price.to_s ) + sprintf('%12s', sku.total.to_s )
+	    else
+		line = sprintf('%-10s%3d x %s',sku.code, sku.qty,sku.total.to_s )
+		line+= ' - ' + sku.formated_discount.to_s + ' Disc'
+		remainder = 40 - line.size
+		if ( remainder < sku.total.to_s.size )
+		    recpt.puts line
+		    recpt.puts sprintf("%40s", sku.discounted_total.to_s )
+		else
+		    recpt.puts sprintf("%s%#{remainder}s", line,sku.total.to_s )
+		end
+	    end
+	end
+	recpt.puts LINE
         recpt.puts
         recpt.puts '     I agree to pay the above amount'
         recpt.puts '   according to my cardholder agreement'

@@ -132,7 +132,7 @@ class SalesHistoryCtrl
 
     def set_return_amount_label( sku )
 	if sku
-	    @return_amount.set_markup( 'Price ' + sku.total.to_s + ' + ' + sku.tax.to_s + ' Tax = ' + sku.total_with_tax.to_s + ' Total' )
+	    @return_amount.set_markup( 'Price ' + sku.total.to_s + ' + ' + sku.tax.to_s + ' Tax = ' + ( sku.total + sku.tax ).to_s + ' Total' )
 	else
 	    @return_amount.set_markup('')
 	end

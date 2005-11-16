@@ -48,13 +48,15 @@ class Drawer
     # BEL - Switches 1-3 ON Switches 4-8 OFF
 
     def open
-    	port = File.new( NAS::LocalConfig::CASH_DRAWER_PORT,'w' )
-        port.putc 0x1B
-        port.putc 'p'
-        port.putc 0
-        port.putc 25
-        port.putc 250
-        port.close
+        prn = Tempfile.new('Drawer-Open-')
+#    	prn = File.new( NAS::LocalConfig::CASH_DRAWER_PORT,'w' )
+        prn.putc 0x1B
+        prn.putc 'p'
+        prn.putc 0
+        prn.putc 25
+        prn.putc 250
+        prn.close
+        system("#{NAS::LocalConfig::CASH_DRAWER_COMMAND} #{prn.path}" )
     end
 
     

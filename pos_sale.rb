@@ -109,8 +109,9 @@ class PosSale
 	Printer.instance.print_signature_slip( finalized_sale ) if print_sig_rec
 	Printer.instance.output_sale( finalized_sale )
 
-#	glade.get_widget('tax_exempt_ctrl').active=false
-#	POS::Setting.instance.set_non_tax_exempt
+	glade.get_widget('tax_exempt_ctrl').active=false
+	POS::Setting.instance.set_non_tax_exempt
+
 
 	NAS::DB.instance.commit_transaction
 
@@ -138,7 +139,7 @@ class PosSale
 	    FindItemsCtrl.instance.clear
 	else
 	    code = FindItemsCtrl.instance.nearest_match
-	    if add_skus( NAS::INV::SKU.find(code, false ) )
+	    if code && add_skus( NAS::INV::SKU.find(code, false ) )
 		FindItemsCtrl.instance.clear
 	    else
 		not_found( code)
