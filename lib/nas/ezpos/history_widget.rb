@@ -147,12 +147,11 @@ class HistoryWidget < Gtk::VBox
                                                  "Sale #{sale_id} has been voided" )
                 dialog.run
                 dialog.destroy
-            else
-                display_sale( sale )
-                @cal.select_month( sale.occured.month, sale.occured.year )
-                @sales.update( sale.occured )
-                @sales.highlite( sale )
             end
+            display_sale( sale )
+            @cal.select_month( sale.occured.month, sale.occured.year )
+            @sales.update( sale.occured )
+            @sales.highlite( sale )
         else
             dialog = Gtk::MessageDialog.new( nil,
                                              Gtk::Dialog::MODAL,
