@@ -1,0 +1,53 @@
+<div class="calentry">
+
+<% remote_form_for :entry, @entry, :update=>"d#{@entry.start_time.yday}",
+   :complete=>"Element.update('sidebar','')",
+   :url=>{:action=>'save_entry' } do | entry_form | %>
+
+<%- if @entry.new_record?
+    dv=30
+    dt='min' %>
+   <h3>Create New Entry</h3>
+<%- else
+    ( dv,dt ) = @entry.duration%>
+    [ <%=link_to_remote( 'Delete', :update => "d#{@entry.start_time.yday}",
+      :url => { :action => :del_entry, :id=> @entry.id },
+      :complete=>"Element.update('sidebar','')" )%> ]
+    <h3>Update Entry</h3>
+   <%= entry_form.hidden_field :id %>
+<% end %>
+
+[<a href="#default"  onmouseout="Element.hide('selEvUsers');"
+     onmouseover="Element.show('selEvUsers');"> Participants </a>]
+<div id="selEvUsers" style="position: absolute; z-index: 1; width:50%; padding: 5px; display:none; background: #ff9999;" onmouseout="Element.hide('selEvUsers');" onmouseover="Element.show('selEvUsers');">
+  <%=render_employee_selector( Hash[ :selected=>@entry.employees ] ) %>
+</div>
+   <input type="hidden" name="orig_day" value="<%=@entry.start_time.to_i%>">
+   <br/>
+   Start:
+   <br/>
+   <%= entry_form.datetime_select :start_time, :hour_format => '12'  %>
+   <br/>
+   Lasts: <input type="text" size="2" name="num" value="<%= dv %>" style="text-align: center;">
+   <select name="numtype">
+   <option value="min" <%= dt=='min' ? 'selected' : ''%>>Minutes</option>
+   <option value="hours" <%= dt=='hours' ? 'selected' : ''%>>Hours</option>
+   <option value="days" <%= dt=='days' ? 'selected' : ''%>>Days</option>
+   </select>
+<br/>
+    Title:<br/>
+    <%= entry_form.text_field :title %>
+    <br/>
+    Desc:<br/>
+    <%= entry_form.text_area :description %>
+    <br/>
+
+
+    <%= submit_tag 'Save', :id=>'submit' %>
+    <input type="button" id="cancel" onClick="Element.update('sidebar','')" value="Cancel">
+
+ <% end %>
+</div>
+
+
+

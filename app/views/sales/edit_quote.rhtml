@@ -1,0 +1,73 @@
+<% content_for('sidebar'){ %>
+      <div id="recent">
+        <h3 onclick="toggleBox(this,'recent-quote');">Recently</h3>
+        <ul id="recent-quote">
+          <li>Recent Quote 1</li>
+          <li>Recent Quote 2</li>
+        </ul>
+      </div>
+
+
+<% } %>
+
+<% content_for("scripts") { %>
+<script type="text/javascript">
+
+
+
+function getSelectionId(text, li ) {
+    new Ajax.Updater( '','<%= url_for :action=>'add_sku' %>?q=<%=@sales_quote.id%>&id='+li.id,{evalScripts:true } );
+    $('sku_code').value = "";
+}
+
+var SkusList = {
+       reorder: function() {
+                new Effect.Highlight('skus_table',{startcolor:'#49090f'});
+                var rows = $('skus_table').getElementsByTagName('tr');
+                for (var i=1,len=rows.length;i<len;i++) {
+                        if (i % 2 == 0) {
+                                rows[i].className = 'even';
+                        } else {
+                                rows[i].className = 'odd';
+                        }
+                }
+        },
+        remove_sku: function( sku_id ){
+                Element.remove('sku_'+sku_id );
+        },
+        updateTotal: function(){
+
+        },
+        updateSkuTotal: function( sku_id ){
+                var price = $('sales_quote_sku_price_'+sku_id+'_in_place_editor').innerHTML
+                var qty = $('sales_quote_sku_qty_'+sku_id+'_in_place_editor').innerHTML;
+                $( 'sku_'+sku_id+'_total').innerHTML='$' + ( Math.round( price*qty*100 ) / 100 );
+                this.updateTotal;
+        }
+}
+</script>
+<% } %>
+
+<div style="text-align:center">
+     <h3>Bid for <%= in_place_editor_field( :sales_quote, 'recipient_name',{}, :size=>25 ) %></h3>
+     <%= link_to 'Print', :action=>:print,:id=>@sales_quote.id %>
+</div>
+<br/>
+<form action="#">
+  <div style="margin-left: auto; margin-right: auto;">
+    <label for="sku_code">Add Item:
+      <input type="text" id="sku_code" name="code">
+    </label>
+    <div id="sku_code_auto_complete" class="auto_complete">
+    </div>
+    <%= auto_complete_field( 'sku_code', :frequency=>0.01, :after_update_element => 'getSelectionId',:url=>{:action=>'auto_complete_sku_code'} ) %>
+  </div>
+</form>
+
+<div id="quote_skus">
+  <%= render :partial=>'quote_items'%>
+</div>
+
+<div id="sortable_list_control">
+  <%= sortable_element('skus_body', :handle=>'handle',:tag=>'tr', :complete =>'SkusList.reorder();', :url => { :action => :update_positions, :id=>@sales_quote.id } ) %>
+</div>

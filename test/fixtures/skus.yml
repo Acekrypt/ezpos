@@ -1,0 +1,46 @@
+---
+non:
+  price4: 0.0
+  level6: "0"
+  isbn:
+  price5: 0.0
+  category:
+  um: none
+  price6: 0.0
+  cost:
+  code: NOT EXISTENT
+  webonly: true
+  id: 1
+  level1: "0"
+  level2: "0"
+  price1: 0.0
+  on_hand: 0
+  level3: "0"
+  descrip: "Sorry, we no longer sell this item."
+  price2: 0.0
+  level4: "0"
+  price3: 0.0
+  level5: "0"
+
+return:
+  price4: 0.0
+  level6: "0"
+  isbn:
+  price5: 555
+  category:
+  um: none
+  price6: 0.0
+  cost:
+  code: RETURN
+  webonly: true
+  id: 2
+  level1: "0"
+  level2: "0"
+  price1: 0.0
+  on_hand: 0
+  level3: "5"
+  descrip: Returned Item.
+  price2: 0.0
+  level4: "0"
+  price3: 34
+  level5: "532"

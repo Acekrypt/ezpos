@@ -1,0 +1,13 @@
+
+<% content_for("scripts") { %>
+<script type="text/javascript">
+var tabberOptions = {manualStartup:true};
+</script>
+<%=    stylesheet_link_tag 'tabbed_widget' %>
+<%=    javascript_include_tag 'tabbed_widget' %>
+<% } %>
+
+
+
+ <%=render :partial=>'selector' %>
+

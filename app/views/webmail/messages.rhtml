@@ -1,0 +1,61 @@
+    <% content_for('sidebar') { %>
+    <%=render :partial=>'folders_list'%>
+    <% } %>
+
+    <div id="messages">
+      <div id="msglist">
+        <h2><%= @folder_name %></h2>
+        <%= start_form_tag({:controller=>'webmail', :action=>'messages'})%>
+        <div class='notviscode'><input type="submit" name="op" value="Search" /></div>
+        <input type="hidden" name="page" value="<%=@page%>"/>
+
+        <a href='#' onclick='toggle_msg_operations(true);'>
+          Operations<img id='img_msgops' alt='open' src='/images/mail/list_<%=@ops_img_src%>.gif'/>
+        </a>
+
+        <div id="msgops" class='<%=@ops_class%>'>
+          <h4>Operations on marked messages</h4>
+          <span id="opch">
+            <%= submit_tag('delete', :name=>'op')%>
+            <%= submit_tag('copy', :name=> 'op')%>
+            <%= submit_tag('move', :name=>'op')%>
+            <%= submit_tag('mark read', :name=>'op')%>
+            <%= submit_tag('mark unread', :name=>'op')%>
+          </span><br/>
+          <span id="destp">
+            'Destination for move and copy operations'&nbsp;
+            <select name="cpdest" size="1">
+              <% @user.email_folders.each do | folder | %>
+              <option value="<%=folder.name%>"><%=folder.name%></option>
+              <% end %>
+            </select>
+          </span>
+        </div>
+        <%= render_partial "search" %>
+        <%= page_navigation_webmail @pages if @pages.page_count > 1 %>
+        <table width='98%'>
+          <thead>
+            <tr>
+              <th width="1%"><input type="checkbox" name="allbox" onclick="checkAll(this.form)" style="margin: 0 0 0 4px" /></th>
+              <% if @folder_name == CDF::CONFIG[:mail_sent] %>
+              <th width="20%"><%= link_to( 'To', :controller=>'webmail', :action=>'messages', :op=>'SORT', :page=>@page, :scc=>'to_flat')%></th>
+              <% else %>
+              <th width="20%"><%= link_to('From', :controller=>'webmail', :action=>'messages', :op=>'SORT', :page=>@page, :scc=>'from_flat')%></th>
+              <% end%>
+              <th width='60%'><%= link_to('Subject', :controller=>'webmail', :action=>'messages', :op=>'SORT', :page=>@page, :scc=>'subject')%></th>
+              <th><%= link_to('Date', :controller=>'webmail', :action=>'messages', :op=>'SORT', :page=>@page, :scc=>'date')%></th>
+              <th><%= link_to('Size', :controller=>'webmail', :action=>'messages', :op=>'SORT', :page=>@page, :scc=>'size')%></th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for message in @messages %>
+            <%=  render_partial 'webmail/message_row', message %>
+            <% end %>
+          </tbody>
+        </table>
+        <%= page_navigation_webmail @pages if @pages.page_count > 1 %>
+</form>
+</div>
+</div>
+

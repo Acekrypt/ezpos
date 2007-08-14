@@ -1,0 +1,37 @@
+<table cellpadding="2" id="skus_table">
+<thead>
+    <tr>
+        <th>Del</th>
+        <th>Move</th>
+        <th>Code</th>
+        <th>Descrip</th>
+        <th>Price</th>
+        <th>Qty</th>
+        <th>Total</th>
+        <th align="center">Columns</th>
+    </tr>
+</thead>
+<tbody id="skus_body">
+<% @sales_quote.skus.each do | @sales_quote_sku | %>
+    <tr id="sku_<%=@sales_quote_sku.id%>" class="<%= cycle("odd","even") %>">
+        <td align="center"><%= link_to_remote( image_tag('del.gif'), :url=>{:action=>'rm_sku',:id=>@sales_quote_sku.id},
+        :complete=>"SkusList.remove_sku(#{@sales_quote_sku.id})" ) %></td>
+        <td align="center"><img src="/images/up-down.gif" class="handle"></td>
+        <td><%=@sales_quote_sku.code %></td>
+        <td><%= in_place_editor_field( :sales_quote_sku, 'descrip',{}, :size=>65 ) %></td>
+        <td align="right"><%= in_place_editor_field( :sales_quote_sku, 'price',{},
+           {:size=>10, :on_complete=>"function(){ SkusList.updateSkuTotal(#{@sales_quote_sku.id}); }" } ) %></td>
+        <td align="center"><%= in_place_editor_field( :sales_quote_sku, 'qty',{},
+           {:size=>10, :on_complete=>"function(){ SkusList.updateSkuTotal(#{@sales_quote_sku.id}); }" } ) %></td>
+        <td align="right"><span id="sku_<%=@sales_quote_sku.id%>_total"><%=@sales_quote_sku.total.format%></span></td>
+        <td align="center">
+          <%=@sales_quote_sku.sku.price2.format%><sup>2</sup>,
+          <%=@sales_quote_sku.sku.price3.format%><sup>3</sup>,
+          <%=@sales_quote_sku.sku.price4.format%><sup>4</sup>,
+          <%=@sales_quote_sku.sku.price5.format%><sup>5</sup>,
+          <%=@sales_quote_sku.sku.price6.format%><sup>6</sup>
+        </td>
+    </tr>
+<% end %>
+</tbody>
+</table>

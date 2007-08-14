@@ -1,0 +1,53 @@
+    <% content_for('sidebar') { %>
+    <%=render :partial=>'folders_list'%>
+    <% } %>
+
+
+    <form name="composeMail" id='composeMail' action="<%= url_for :action=>'compose' %>"  enctype="multipart/form-data" method="post">
+
+      <div id="msg-compose">
+        <input type="hidden" id="mail_toc" name="mail[toc]" value="<%=@mail.toc%>"/>
+        <input type="hidden" id="mail_op" name="op" value="Send"/>
+        <div id="msghdr">
+          <table>
+            <tr>
+              <td><label for=''>To</label></td><td><%= text_field_with_auto_complete(:mail, :to, {"size"=>65}, :skip_style => true, :tokens=> ",") %></td>
+              <td valign="middle" rowspan="4"><a style="border: 1px solid red; margin-left: 20px;" href='#' id="send" onclick="getFormField('composeMail').submit();">Send</a></td>
+            </tr>
+            <tr><td><label for=''>CC</label></td><td><%= text_field_with_auto_complete(:mail, :cc, {"size"=>65}, :skip_style => true, :tokens=> ",") %></td></tr>
+            <tr><td><label for=''>BCC</label></td><td><%= text_field_with_auto_complete(:mail, :bcc, {"size"=>65}, :skip_style => true, :tokens=> ",") %></td></tr>
+            <tr><td><label for=''>Subject</label></td><td><%= text_field('mail', 'subject', {"size"=>65}) %></td></tr>
+          </table>
+          <%= hidden_field('mail', 'from') %>
+          <%= hidden_field('mail', 'content_type') %>
+        </div>
+
+
+        <div class="msgpart ct-text-plain">
+          <%= text_area "mail", "body", "rows"=>20, "cols"=>75 %>
+        </div>
+
+        <div class="msgpart">
+          <% if @mail.attachments and @mail.attachments.size > 0%>
+          <table class="attachments">
+            <%  i = 0
+                @mail.attachments.each { |att|  %>
+            <tr><td><%=attachment(att, i)%></td></tr>
+            <%    i = i + 1
+                  }%>
+          </table>
+          <% end %>
+          <hr/>
+          <label for="attachment">Attachment:</label><%=%><input type="file" name="attachment"/>
+          <input type="button" name="mail_add_attachement" value="Add"
+                 onclick="getFormField('mail_op').value='Add';getFormField('composeMail').submit();">
+        </div>
+
+      </div>
+
+    </form>
+
+<% content_for("scripts") { %>
+<%= javascript_include_tag 'intranet/contact_choose' %>
+<%= include_tinymce %>
+<% } %>

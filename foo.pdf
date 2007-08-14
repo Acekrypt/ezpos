@@ -1,0 +1,303 @@
+%PDF-1.3
+%‚„œ”
+
+1 0 obj
+<< /Type /Catalog
+/Outlines 2 0 R
+/Pages 3 0 R>>
+endobj
+2 0 obj
+<< /Type /Outlines >>
+endobj
+3 0 obj
+<< /Type /Pages
+/Kids [6 0 R
+]
+/Count 1
+/Resources <<
+/ProcSet 4 0 R
+/Font << 
+/F1 8 0 R >>
+>>
+/MediaBox [0 0 612.0 792.0]
+ >>
+endobj
+4 0 obj
+[/PDF /Text ]
+endobj
+5 0 obj
+<<
+/CreationDate (D:200611292302)
+/Creator (runner)
+/Producer (PDF::Writer for Ruby)
+>>
+endobj
+6 0 obj
+<< /Type /Page
+/Parent 3 0 R
+/Contents [
+7 0 R
+9 0 R
+10 0 R
+]
+>>
+endobj
+7 0 obj
+<<
+/Length 2047 >>
+stream
+
+0.000 0.000 0.000 rg
+0.000 0.000 0.000 RG
+0.800 0.800 0.800 RG
+BT 36.000 742.440 Td /F1 10.0 Tf 0 Tr (Foo Inc.) Tj ET
+BT 36.000 726.880 Td /F1 10.0 Tf 0 Tr (42 Rock Street) Tj ET
+BT 36.000 711.320 Td /F1 10.0 Tf 0 Tr (New Haven, CT) Tj ET
+0.000 0.000 0.000 RG
+1 w
+31.000 753.750 m
+31.000 707.070 l S
+231.000 753.750 m
+231.000 707.070 l S
+30.500 753.750 m
+231.500 753.750 l S
+30.500 707.070 m
+231.500 707.070 l S
+0.800 0.800 0.800 RG
+BT 36.000 685.760 Td /F1 10.0 Tf 0 Tr (Gregory Brown) Tj ET
+BT 36.000 670.200 Td /F1 10.0 Tf 0 Tr (gregory.t.brown@gmail.com) Tj ET
+0.000 0.000 0.000 RG
+1 w
+31.000 697.070 m
+31.000 665.950 l S
+231.000 697.070 m
+231.000 665.950 l S
+30.500 697.070 m
+231.500 697.070 l S
+30.500 665.950 m
+231.500 665.950 l S
+BT 386.000 739.816 Td /F1 14.0 Tf 0 Tr (Invoice for Gregory) Tj ET
+0.800 0.800 0.800 RG
+BT 350.000 716.256 Td /F1 10.0 Tf 0 Tr (Order ID: 18180) Tj ET
+BT 350.000 700.696 Td /F1 10.0 Tf 0 Tr (Customer ID: 6291) Tj ET
+BT 350.000 685.136 Td /F1 10.0 Tf 0 Tr (Order Date: 2006-11-29) Tj ET
+0.000 0.000 0.000 RG
+1 w
+345.000 727.566 m
+345.000 680.886 l S
+545.000 727.566 m
+545.000 680.886 l S
+344.500 727.566 m
+545.500 727.566 l S
+344.500 680.886 m
+545.500 680.886 l S
+0.800 0.800 0.800 RG
+BT 81.000 604.128 Td /F1 12.0 Tf 0 Tr (id) Tj ET
+BT 100.429 604.128 Td /F1 12.0 Tf 0 Tr (sales_quote_i) Tj ET
+BT 100.429 590.256 Td /F1 12.0 Tf 0 Tr (d) Tj ET
+BT 189.557 604.128 Td /F1 12.0 Tf 0 Tr (code) Tj ET
+BT 248.966 604.128 Td /F1 12.0 Tf 0 Tr (qty) Tj ET
+BT 275.134 604.128 Td /F1 12.0 Tf 0 Tr (descrip) Tj ET
+BT 364.262 604.128 Td /F1 12.0 Tf 0 Tr (price) Tj ET
+BT 400.526 604.128 Td /F1 12.0 Tf 0 Tr (sku_id) Tj ET
+BT 445.553 604.128 Td /F1 12.0 Tf 0 Tr (present_order) Tj ET
+q
+0.800 0.800 0.800 rg
+76.000 533.516 450.000 50.240 re f
+0.800 0.800 0.800 rg
+76.000 433.036 450.000 50.240 re f
+0.800 0.800 0.800 rg
+76.000 332.556 450.000 50.240 re f
+0.800 0.800 0.800 rg
+76.000 208.956 450.000 61.800 re f
+0.800 0.800 0.800 rg
+76.000 120.036 450.000 50.240 re f
+1 w
+Q
+BT 479.984 20.000 Td /F1 8.0 Tf 0 Tr (1 of 1) Tj ET
+endstream
+endobj
+
+8 0 obj
+<< /Type /Font
+/Subtype /Type1
+/Name /F1
+/BaseFont /Helvetica
+/Encoding /WinAnsiEncoding
+>>
+endobj
+9 0 obj
+<<
+/Length 5467 >>
+stream
+
+BT 81.000 572.446 Td /F1 10.0 Tf 0 Tr (1) Tj ET
+BT 100.429 572.446 Td /F1 10.0 Tf 0 Tr (2) Tj ET
+BT 189.557 572.446 Td /F1 10.0 Tf 0 Tr (0838) Tj ET
+BT 248.966 572.446 Td /F1 10.0 Tf 0 Tr (1) Tj ET
+BT 275.134 572.446 Td /F1 10.0 Tf 0 Tr (collar, Laerdal ) Tj ET
+BT 275.134 560.886 Td /F1 10.0 Tf 0 Tr (#980300, ) Tj ET
+BT 275.134 549.326 Td /F1 10.0 Tf 0 Tr (Stifneck, adult ) Tj ET
+BT 275.134 537.766 Td /F1 10.0 Tf 0 Tr (no neck) Tj ET
+BT 364.262 572.446 Td /F1 10.0 Tf 0 Tr (689) Tj ET
+BT 400.526 572.446 Td /F1 10.0 Tf 0 Tr (3468) Tj ET
+BT 81.000 522.206 Td /F1 10.0 Tf 0 Tr (2) Tj ET
+BT 100.429 522.206 Td /F1 10.0 Tf 0 Tr (2) Tj ET
+BT 189.557 522.206 Td /F1 10.0 Tf 0 Tr (5701) Tj ET
+BT 248.966 522.206 Td /F1 10.0 Tf 0 Tr (1) Tj ET
+BT 275.134 522.206 Td /F1 10.0 Tf 0 Tr (box, trauma, ) Tj ET
+BT 275.134 510.646 Td /F1 10.0 Tf 0 Tr (Medi-Kit 12D, 11 ) Tj ET
+BT 275.134 499.086 Td /F1 10.0 Tf 0 Tr (3/8"x10 1/4"x11 ) Tj ET
+BT 275.134 487.526 Td /F1 10.0 Tf 0 Tr (3/4", 2 trays) Tj ET
+BT 364.262 522.206 Td /F1 10.0 Tf 0 Tr (5941) Tj ET
+BT 400.526 522.206 Td /F1 10.0 Tf 0 Tr (31878) Tj ET
+BT 81.000 471.966 Td /F1 10.0 Tf 0 Tr (3) Tj ET
+BT 100.429 471.966 Td /F1 10.0 Tf 0 Tr (2) Tj ET
+BT 189.557 471.966 Td /F1 10.0 Tf 0 Tr (8601) Tj ET
+BT 248.966 471.966 Td /F1 10.0 Tf 0 Tr (1) Tj ET
+BT 275.134 471.966 Td /F1 10.0 Tf 0 Tr (glove, Safeskin ) Tj ET
+BT 275.134 460.406 Td /F1 10.0 Tf 0 Tr (PFE, textured, ) Tj ET
+BT 275.134 448.846 Td /F1 10.0 Tf 0 Tr (no powder, ) Tj ET
+BT 275.134 437.286 Td /F1 10.0 Tf 0 Tr (medium) Tj ET
+BT 364.262 471.966 Td /F1 10.0 Tf 0 Tr (666) Tj ET
+BT 400.526 471.966 Td /F1 10.0 Tf 0 Tr (20630) Tj ET
+BT 81.000 421.726 Td /F1 10.0 Tf 0 Tr (4) Tj ET
+BT 100.429 421.726 Td /F1 10.0 Tf 0 Tr (2) Tj ET
+BT 189.557 421.726 Td /F1 10.0 Tf 0 Tr (4501BL) Tj ET
+BT 248.966 421.726 Td /F1 10.0 Tf 0 Tr (1) Tj ET
+BT 275.134 421.726 Td /F1 10.0 Tf 0 Tr (backboard ) Tj ET
+BT 275.134 410.166 Td /F1 10.0 Tf 0 Tr (restraint, BDM ) Tj ET
+BT 275.134 398.606 Td /F1 10.0 Tf 0 Tr ("Spider Rescue ) Tj ET
+BT 275.134 387.046 Td /F1 10.0 Tf 0 Tr (Strap", blue & red) Tj ET
+BT 364.262 421.726 Td /F1 10.0 Tf 0 Tr (9340) Tj ET
+BT 400.526 421.726 Td /F1 10.0 Tf 0 Tr (8681) Tj ET
+BT 81.000 371.486 Td /F1 10.0 Tf 0 Tr (5) Tj ET
+BT 100.429 371.486 Td /F1 10.0 Tf 0 Tr (2) Tj ET
+BT 189.557 371.486 Td /F1 10.0 Tf 0 Tr (9801) Tj ET
+BT 248.966 371.486 Td /F1 10.0 Tf 0 Tr (1) Tj ET
+BT 275.134 371.486 Td /F1 10.0 Tf 0 Tr (laryngeal mask, ) Tj ET
+BT 275.134 359.926 Td /F1 10.0 Tf 0 Tr (Portex, Soft ) Tj ET
+BT 275.134 348.366 Td /F1 10.0 Tf 0 Tr (Seal, disp., ) Tj ET
+BT 275.134 336.806 Td /F1 10.0 Tf 0 Tr (infant size 1.5) Tj ET
+BT 364.262 371.486 Td /F1 10.0 Tf 0 Tr (1634) Tj ET
+BT 400.526 371.486 Td /F1 10.0 Tf 0 Tr (23589) Tj ET
+BT 81.000 321.246 Td /F1 10.0 Tf 0 Tr (6) Tj ET
+BT 100.429 321.246 Td /F1 10.0 Tf 0 Tr (2) Tj ET
+BT 189.557 321.246 Td /F1 10.0 Tf 0 Tr (5591) Tj ET
+BT 248.966 321.246 Td /F1 10.0 Tf 0 Tr (1) Tj ET
+BT 275.134 321.246 Td /F1 10.0 Tf 0 Tr (radio, ) Tj ET
+BT 275.134 309.686 Td /F1 10.0 Tf 0 Tr (HT1000/MT2000/) Tj ET
+BT 275.134 298.126 Td /F1 10.0 Tf 0 Tr (MTX800&900, ) Tj ET
+BT 275.134 286.566 Td /F1 10.0 Tf 0 Tr (nylon carry case ) Tj ET
+BT 275.134 275.006 Td /F1 10.0 Tf 0 Tr (T strap) Tj ET
+BT 364.262 321.246 Td /F1 10.0 Tf 0 Tr (3360) Tj ET
+BT 400.526 321.246 Td /F1 10.0 Tf 0 Tr (1117) Tj ET
+BT 81.000 259.446 Td /F1 10.0 Tf 0 Tr (7) Tj ET
+BT 100.429 259.446 Td /F1 10.0 Tf 0 Tr (2) Tj ET
+BT 189.557 259.446 Td /F1 10.0 Tf 0 Tr (0800) Tj ET
+BT 248.966 259.446 Td /F1 10.0 Tf 0 Tr (1) Tj ET
+BT 275.134 259.446 Td /F1 10.0 Tf 0 Tr (text, Brady's ) Tj ET
+BT 275.134 247.886 Td /F1 10.0 Tf 0 Tr (Emergency ) Tj ET
+BT 275.134 236.326 Td /F1 10.0 Tf 0 Tr (Response to ) Tj ET
+BT 275.134 224.766 Td /F1 10.0 Tf 0 Tr (Crisis ) Tj ET
+BT 275.134 213.206 Td /F1 10.0 Tf 0 Tr (\(Discontinued\)) Tj ET
+BT 364.262 259.446 Td /F1 10.0 Tf 0 Tr (0) Tj ET
+BT 400.526 259.446 Td /F1 10.0 Tf 0 Tr (1794) Tj ET
+BT 81.000 197.646 Td /F1 10.0 Tf 0 Tr (8) Tj ET
+BT 100.429 197.646 Td /F1 10.0 Tf 0 Tr (2) Tj ET
+BT 189.557 197.646 Td /F1 10.0 Tf 0 Tr (0154BKSS) Tj ET
+BT 248.966 197.646 Td /F1 10.0 Tf 0 Tr (1) Tj ET
+BT 275.134 197.646 Td /F1 10.0 Tf 0 Tr (holster, #4, kit, ) Tj ET
+BT 275.134 186.086 Td /F1 10.0 Tf 0 Tr (lite, scissors, ) Tj ET
+BT 275.134 174.526 Td /F1 10.0 Tf 0 Tr (4ceps, black) Tj ET
+BT 364.262 197.646 Td /F1 10.0 Tf 0 Tr (1429) Tj ET
+BT 400.526 197.646 Td /F1 10.0 Tf 0 Tr (3114) Tj ET
+BT 81.000 158.966 Td /F1 10.0 Tf 0 Tr (9) Tj ET
+BT 100.429 158.966 Td /F1 10.0 Tf 0 Tr (2) Tj ET
+BT 189.557 158.966 Td /F1 10.0 Tf 0 Tr (0256) Tj ET
+BT 248.966 158.966 Td /F1 10.0 Tf 0 Tr (1) Tj ET
+BT 275.134 158.966 Td /F1 10.0 Tf 0 Tr (suction catheter, ) Tj ET
+BT 275.134 147.406 Td /F1 10.0 Tf 0 Tr (Baxter 14 fr, ) Tj ET
+BT 275.134 135.846 Td /F1 10.0 Tf 0 Tr (#T60C, ) Tj ET
+BT 275.134 124.286 Td /F1 10.0 Tf 0 Tr (w/control, coiled) Tj ET
+BT 364.262 158.966 Td /F1 10.0 Tf 0 Tr (105) Tj ET
+BT 400.526 158.966 Td /F1 10.0 Tf 0 Tr (4705) Tj ET
+0.000 0.000 0.000 RG
+1 w
+76.000 620.000 m
+76.000 120.036 l S
+1 w
+95.429 620.000 m
+95.429 120.036 l S
+184.557 620.000 m
+184.557 120.036 l S
+243.966 620.000 m
+243.966 120.036 l S
+270.134 620.000 m
+270.134 120.036 l S
+359.262 620.000 m
+359.262 120.036 l S
+395.526 620.000 m
+395.526 120.036 l S
+440.553 620.000 m
+440.553 120.036 l S
+1 w
+526.000 620.000 m
+526.000 120.036 l S
+75.500 620.000 m
+526.500 620.000 l S
+76.000 586.006 m
+526.000 586.006 l S
+75.500 120.036 m
+526.500 120.036 l S
+endstream
+endobj
+
+10 0 obj
+<<
+/Length 412 >>
+stream
+
+q
+0.000 0.000 0.000 RG
+1 w 0 J 0 j [ ] 0 d
+0.800 0.800 0.800 RG
+BT 110.000 84.102 Td /F1 14.0 Tf 0 Tr (Your Total: $1325.00  --  Thank you for your purchase!) Tj ET
+0.000 0.000 0.000 RG
+1 w
+105.000 99.136 m
+105.000 78.952 l S
+505.000 99.136 m
+505.000 78.952 l S
+104.500 99.136 m
+505.500 99.136 l S
+104.500 78.952 m
+505.500 78.952 l S
+BT 50.000 20.000 Td /F1 8.0 Tf 0 Tr (Printed at 17:02 29/11/2006) Tj ET
+1 w
+Q
+endstream
+endobj
+
+xref
+0 11
+0000000000 65535 f 
+0000000015 00000 n 
+0000000079 00000 n 
+0000000116 00000 n 
+0000000258 00000 n 
+0000000287 00000 n 
+0000000390 00000 n 
+0000000470 00000 n 
+0000002570 00000 n 
+0000002677 00000 n 
+0000008197 00000 n 
+
+trailer
+  << /Size 11
+     /Root 1 0 R
+ /Info 5 0 R
+  >>
+startxref
+8662
+%%EOF

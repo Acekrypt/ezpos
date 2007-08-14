@@ -1,0 +1,23 @@
+
+<ul id="primary">
+<%- links = Array[
+   [ 'webmail',   'Email',       link_to('Email', :controller=>"webmail", :action=>"messages")    ],
+   [ 'employee_prefs','Preferences', link_to('Preferences', :controller=>"employee_prefs" ) ],
+   [ 'contact',   'Contacts',    link_to('Contacts', :controller=>"contact", :action=>"list")     ],
+   [ 'calendar',  'Calendar',    link_to('Calendar', :controller=>"calendar")     ],
+   ]
+
+   links << [ 'sales',  'Sales',    link_to('Sales', :controller=>"sales")     ] if current_user.member_of? 'salesreps'
+
+links.each do | key, name,link | %>
+     <li>
+     <%- if @params['controller'] == key %>
+       <span><%= name %></span>
+         <ul id="secondary"><%= render :partial => "layouts/intranet/#{key}_links" %></ul>
+     <%- else %>
+        <%= link %>
+     <%- end %>
+     </li>
+   <%- end %>
+</ul>
+

@@ -1,0 +1,28 @@
+master-server: db.hq.allmed.net
+dumps-location: '/'
+server-login: dbexport
+server-password:  nejiwj9
+
+files:
+
+  - dest-table: skus
+    filename: inv_mast.csv.bz2
+    key: inv_mast_uid
+    class: Sku
+    src-table: inv_mast
+    map:
+      cost: "inv_mast.cost*100"
+      price: "inv_mast.price*100"
+      code: 'inv_mast.item_id'
+
+
+  - dest-table: customers
+    filename: p21_customer.csv.bz2
+    key: customer_id
+    class: Customer
+    src-table: p21_customers
+    map:
+      code: "p21_customers.legacy_id"
+      credit_limit_used: "p21_customers.credit_limit_used*100"
+      credit_limit: "p21_customers.credit_limit*100"
+

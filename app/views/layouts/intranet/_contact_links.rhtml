@@ -1,0 +1,9 @@
+        <%- if @params['action'] == 'list'%>
+        <li><%=link_to('Add One', :action => "add")%></li>
+        <li><%=link_to('Add multiple', :action => "add_multiple")%></li>
+        <%- else %>
+        <li><%= link_to('Back to List', :action => "list") %></li>
+        <%- end %>
+        <%- if @session['return_to'] %>
+        <li><%=link_to('Back to message', @session['return_to'] ) %></li>
+        <% end %>

@@ -1,0 +1,36 @@
+
+class Customer < ActiveRecord::Base
+
+    set_primary_key :customer_id
+
+
+    composed_of :credit_limit, :class_name => "Money", :mapping => [ %w(credit_limit cents) ]
+
+    composed_of :credit_limit_used, :class_name => "Money", :mapping => [ %w(credit_limit_used cents) ]
+
+
+    def credit_hold?
+        ( credit_limit_used > credit_limit || credit_status != 'GOOD' || net_days == 0 )
+    end
+
+    def credit_hold_explanation
+        if credit_limit_used > credit_limit
+            "has #{credit_limit_used} unpaid, with limit of #{credit_limit}"
+        elsif credit_status != 'GOOD'
+            "credit status is marked as #{credit_status}"
+        elsif net_days == 0
+            "account is not marked as open credit account"
+        end
+    end
+
+    def self.magic_find( code )
+        if code =~ /\w/
+            Customer.find( :first, :conditions => [ "code=?", code.upcase ] )
+        else
+            Customer.find( :first, :conditions => [ "customer_id=?", code ] )
+        end
+    end
+end
+
+
+

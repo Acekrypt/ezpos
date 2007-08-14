@@ -1,0 +1,32 @@
+#!/usr/bin/expect -f
+#
+
+set force_conservative 0  ;# set to 1 to force conservative mode even if
+                          ;# script wasn't run conservatively originally
+if {$force_conservative} {
+        set send_slow {1 .1}
+        proc send {ignore arg} {
+                sleep .1
+                exp_send -s -- $arg
+        }
+}
+
+
+log_user 0
+set timeout 5
+match_max 100000
+set login jcstore
+#[lindex $argv 0]
+set password umg8vb
+
+spawn /usr/bin/ssh -l $login sbt.hq.allmed.net
+# bin/sh
+#send "$login@\r"
+
+expect "*password:"
+send "$password\r"
+log_user 1
+
+interact
+
+

@@ -1,0 +1,8 @@
+               <tr id="filters_<%=@user.mail_filters[filter_counter].id%>">
+                        <td align="center"><img src="/images/up-down.gif" class="handle"></td>
+                        <td><%=h @user.mail_filters[filter_counter].name%></th>
+                        <td><%=link_to('Edit',
+                        :action=>"filter", :id=>@user.mail_filters[filter_counter].id)%></td>
+                        <td><%=link_to('Delete',
+                        :action=>"filter_delete", :id=>@user.mail_filters[filter_counter].id)%></td>
+                </tr>

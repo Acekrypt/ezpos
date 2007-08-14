@@ -1,0 +1,12 @@
+<div class="msghdr">
+  <dl>
+    <dt>To</dt><dd><%= CGI.escapeHTML(@mail.to) %></dd>
+    <% if @mail.cc %>
+    <dt>CC</dt><dd><%= CGI.escapeHTML(@mail.cc) %></dd>
+    <% end
+       if @mail.bcc %>
+    <dt>BCC</dt><dd><%= CGI.escapeHTML(@mail.bcc) %></dd>
+    <% end %>
+    <dt>Subject</dt><dd><%= CGI.escapeHTML(@mail.subject) %></dd>
+  </dl>
+</div>

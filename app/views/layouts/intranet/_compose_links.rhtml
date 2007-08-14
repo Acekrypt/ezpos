@@ -1,0 +1,7 @@
+      <li>
+      <%= link_to("&#171; Back to list", :controller=>"webmail", :action=>"messages") %>
+      </li>
+      <li><%=link_reply_to_sender(@msg_id)%></li>
+      <li><%=link_forward_message(@msg_id)%></li>
+      <li><%=link_flag_for_deletion(@msg_id)%></li>
+      <li><%=link_view_source(@msg_id)%></li>

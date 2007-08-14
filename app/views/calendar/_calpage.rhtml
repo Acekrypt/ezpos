@@ -1,0 +1,40 @@
+<table class="calendar" border="0" cellspacing="0" cellpadding="0">
+  <thead class="monthName">
+    <tr class="monthName">
+    <td align="right"><%= link_to image_tag('calendar/back',:title=>'Previous Month'),
+     {:action=>:index, :year=>@page.prev_month_year, :month=>@page.prev_month_number} %></td>
+      <th colspan="5"><%=@page.month_name%> <%= @page.year %> (<%= @page.as_roman %>) </th>
+    <td align="left"><%= link_to image_tag('calendar/forward',:title=>'Next Month'),
+     {:action=>:index, :year=>@page.next_month_year, :month=>@page.next_month_number} %></td>
+    </tr>
+    <tr class="monthName">
+      <td colspan="7"><%= render :partial=>'viewing_users', :locals=>{ :calendars=>@calendars } %></td>
+    </tr>
+    <tr class="dayName">
+      <%- @page.day_names.each do |d| %>
+        <th><%=d%></th>
+      <%- end %>
+    </tr>
+  </thead>
+  <tbody>
+    <%- @page.each_week do | week | %>
+        <tr class="week">
+          <%- week.each_day do | day | %>
+            <%- if day.member_of_month? %>
+              <td class="day">
+            <%- else %>
+              <td class="otherDay">
+            <%- end %>
+                <div class="mdd"><%=day.num%></div>
+                <%=link_to_remote( image_tag('intranet/add',:class=>'mdp'),
+                   :update => 'sidebar',
+                   :url => { :action => :add_entry, :at=> day.to_i } )%>
+                <span class="entries" id="d<%=day.yday%>">
+                        <%=render :partial=>'days_entries', :locals => { :entries => day.entries, :users => @calendars } %>
+                </span>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+  </tbody>
+</table>

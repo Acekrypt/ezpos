@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<%= @htmllang %>" lang="<%= @htmllang %>">
+  <head>
+    <title>home.allmed.net</title>
+    <meta http-equiv="content-type" content="text/html; charset=<%= @charset %>" />
+    <%= javascript_include_tag 'prototype' %>
+    <%= javascript_include_tag 'effects' %>
+  </head>
+  <body id="bodyID" onload="<%=@onload_function%>">
+
+<script type="text/javascript">
+var RollIt = {
+    timeout : null,
+    showPopup : function( elId ){
+        clearTimeout(this.timeout);
+        if($(elId ).style.display == 'none'){
+            this.timeout = setTimeout(function(){new Effect.BlindDown(elId, {duration:.3, fps:40})},400);
+        }
+    },
+    hidePopup : function(elId){
+        if($(elId).style.display == 'none'){
+            clearTimeout(this.timeout);
+        }else{
+            this.timeout = setTimeout(function(){new Effect.BlindUp(elId, {duration:.3, fps:40})},300);
+        }
+    }
+}
+</script>
+
+<div style="padding: 10px; background: #fff999;">
+<a href="#" onclick="RollIt.hidePopup('rollbit')" onmouseout="RollIt.hidePopup('rollbit')" onmouseover="RollIt.showPopup('rollbit')">Roll over Me</a>
+</div>
+
+<div id="rollbit" style="display:none; background: #ff9999;" onmouseout="RollIt.hidePopup('rollbit')" onmouseover="RollIt.showPopup('rollbit')">
+
+<h3 style="margin: 0;">Roll It</h3>
+By keeping your mouse hovering over this div or over the link that made it appear, it will stay open.
+
+<br/><br/>
+But, if you roll away from this div, it will roll back up.
+</div>
+
+<div style="background: #fff999; padding: 10px;">
+  Here's a bunch of other content
+</div>
+
+
+  </body>
+</html>

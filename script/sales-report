@@ -1,0 +1,103 @@
+#!/usr/bin/env ruby
+
+require 'getoptlong'
+require 'tempfile'
+
+env='production'
+ago=1
+opts = GetoptLong.new( [ "--enviroment", "-e",   GetoptLong::OPTIONAL_ARGUMENT],
+                       [ "--days-ago",   "-d",   GetoptLong::OPTIONAL_ARGUMENT])
+opts.each do | opt, arg |
+    case opt
+    when "--enviroment" then env = arg
+    when "--days-ago" then ago = arg.to_i
+    end
+end
+
+if env == 'production'
+    DEBUG=false
+else
+    DEBUG=true
+end
+
+RAILS_ENV=env
+
+require File.dirname( __FILE__ ) + '/../config/environment'
+
+require 'nas/ezpos/sales_report'
+require 'net/smtp'
+require 'base64'
+require 'nas/net/nntp'
+
+require 'cgi'
+
+host = `hostname --long`
+
+msgid = String.new('<')
+for i in 0..35
+    msgid << rand(26)+97
+end
+
+boundary ='------------060206040805030707000202'
+
+msgid += '@' + host.chomp + '>'
+
+date = Time.new - ( 86400 * ago )
+
+report=NAS::EZPOS::SalesReport.new( date )
+
+report_name = DEF::LOCATION_NAME.gsub(/\s/,'_') + date.strftime("%m-%d-%Y") + '.pdf'
+
+msg=<<EOS
+From: #{DEF::LOCATION_NAME} <#{DEF::LOCATION_EMAIL}>
+Newsgroups: allmed.stores.reports
+Organization: Alliance Medical
+Date: #{CGI::rfc1123_date(date)}
+Subject: #{date.strftime("%Y-%m-%d")} #{DEF::LOCATION_NAME} #{ report.summary.total_sales }
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary="#{boundary}"
+
+
+This is a multi-part message in MIME format.
+
+--#{boundary}
+Content-Type: text/html; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit\r\n
+
+#{report.html}
+
+--#{boundary}
+Content-Type: application/pdf;
+ name="#{report_name}"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="#{report_name}"
+
+EOS
+
+Base64.encode64( report.pdf ).each_line{ | line |
+    msg+=line.chomp
+    msg+="\r\n"
+}
+msg += '--' + boundary + '---'
+
+begin
+        File.open( '/tmp/report.pdf',"w" ){ | f | f.write( report.pdf ) }
+rescue
+end
+
+if RAILS_ENV == 'development'
+    puts report.html
+    f=Tempfile.new( 'pos-report' )
+    #report.xls( f.path )
+    #`gnumeric #{f.path}`
+    `xpdf /tmp/report.pdf`
+else
+    s = NAS::Net::NNTP.new( DEF::NNTP_REPORTING_SERVER )
+    res = s.post( msg )
+    STDERR.puts res if res[0..2] != '240'
+end
+

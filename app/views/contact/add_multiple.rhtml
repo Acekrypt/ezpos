@@ -1,0 +1,33 @@
+
+
+<%- if @flash["errors"] and not @flash["errors"].empty? %>
+<h3>Errors</h3>
+<ul>
+  <%- @flash["errors"].each do |message| %>
+  <li><%= message %></li>
+  <%- end %>
+</ul>
+<%- end %>
+<br/><br/>
+<form action="<%=link_import_preview%>" enctype="multipart/form-data" method="post">
+  <%= radio_button("contact", "file_type", "1")%> Comma-separated (CSV) file
+  <%= radio_button("contact", "file_type", "2")%> Tab-delimited text file
+  <table>
+    <tr>
+      <th><label for="contact[data]">Select file</label></th>
+      <td><input type="file" name="contact[data]"/></td>
+    </tr>
+    <tr>
+      <td colspan=2>
+        <input type="submit" value="Import"/>
+        <input type="button" value="Back to contacts" onclick="window.location='/webmail/contacts'"/>
+        <input type="button" value="Back to folders" onclick="window.location='/webmail/'"/>
+      </td>
+    </tr>
+  </table>
+</form>
+
+
+
+
+

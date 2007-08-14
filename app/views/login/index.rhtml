@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Please Log In</title>
+    <%= stylesheet_link_tag 'intranet/mailr' %>
+  </head>
+  <body>
+    <div id="login" <%= 'class="login_error"' if @flash['error'] %>>
+      <h1>Please log in</h1>
+      <% if @flash['error'] %>
+      <div id="SystemError"><%= @flash['error'] %></div>
+      <% elsif @flash['status'] %>
+      <div id="SystemStatus"><%= @flash['status'] %></div>
+      <% end %>
+      <form action="<%=url_for(:controller => 'login', :action => 'authenticate')%>" method="post">
+        <table class="form_layout">
+          <tr>
+            <th>Login:</th>
+            <td><%= text_field "login_user", "email" %></td>
+          </tr>
+          <tr>
+            <th>Password:</th>
+            <td><%= password_field "login_user", "password" %></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="form_actions">
+              <input type="submit" name="submit" value="Log In"/>
+            </td>
+          </tr>
+        </table>
+      </form>
+      <b class='cn tl'></b>
+      <b class='cn tr'></b>
+      <b class='cn bl'></b>
+      <b class='cn br'></b>
+    </div>
+  </body>
+</html>

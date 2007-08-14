@@ -1,0 +1,210 @@
+/*
+  A blue based theme, inspired by Blinksale and their ColorBurn widget. http://firewheeldesign.com
+
+  AUTHOR: Geoffrey Grosenbach http://nubyonrails.com
+
+  Colors:
+    Light Blue: bbccff
+    White: eeddee
+    Turq: 003355
+    Cream: ffffdd
+*/
+
+.calendar {
+  margin: auto;
+  width: 100%;
+  height: 650px;
+}
+
+.monthName th {
+  font-size: 180%;
+  text-align: center;
+  height: 20px;
+}
+
+.dayName th {
+  height: 30px;
+  font-size: 180%;
+  text-align: right;
+  padding-right: 8px;
+  padding-bottom: 0em;
+  background-color: #303030;
+  color: white;
+}
+
+
+.otherDay{
+  background-color: #ffffdd;
+}
+
+#entry_description {
+        width: 180px;
+        height:150px;
+}
+
+div.calentry select, input, textarea
+{
+  font-family: Georgia, "MS Serif", "New York", serif;
+  color: #000080;
+  background-color: #E0FFFF;
+  border: inset 1px #708090;
+}
+
+div.calentry #submit, #cancel {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-top: 8px;
+    background-color: grey;
+    display: block;
+    width: 6em;
+}
+
+#entry_title {
+        width: 180px;
+}
+
+.mdd{
+  float: right;
+  width: 15px;
+  text-align: right;
+  padding: 3px;
+  border-left: 1px solid #bbbbbb;
+  border-bottom: 1px solid #bbbbbb;
+}
+
+.mdp{
+  float: right;
+  width: 15px;
+  text-align: right;
+  padding: 3px;
+  cursor: pointer;
+  border: 0px;
+}
+
+.week{
+  height: 20%;
+}
+
+div.entry_desc
+{
+  display: none;
+
+}
+
+.day, .specialDay, .otherDay {
+  text-align: right;
+  border: 1px dotted #bbbbbb;
+  width: 14%;
+  vertical-align: top;
+}
+
+.day{
+  background-color: #bbccff;
+
+}
+.specialDay {
+  background-color: #003355;
+  color: white;
+}
+.specialDay a, .specialDay a:visited, .specialDay a:hover {
+  color: white;
+  text-decoration: none;
+  padding: 1em;
+}
+.specialDay a:hover {
+  color: white;
+  background-color: black;
+}
+.weekendDay {
+  background-color: #ffffdd;
+}
+
+span.entries {
+  text-align: left;
+}
+
+.caln0
+{
+  background-color: Crimson;
+  color: black;
+}
+
+.caln1
+{
+  background-color: Aquamarine;
+  color: black;
+}
+
+.caln2
+{
+  background-color: Burlywood;
+  color: black;
+}
+
+.caln3
+{
+  background-color: Darkolivegreen;
+  color: white;
+ }
+
+
+.caln4
+{
+  background-color: Brown;
+  color: white;
+}
+
+.caln5
+{
+  background-color: Chartreuse;
+  color: black;
+}
+
+.caln6
+{
+  background-color: Forestgreen;
+  color: white;
+}
+
+.caln7
+{
+  background-color: Blue;
+  color: white;
+}
+
+.caln8
+{
+  background-color: Powderblue;
+  color: black;
+ }
+
+.caln9
+{
+  background-color: yellow;
+  color: black;
+}
+
+.caln10
+{
+  background-color: Teal;
+  color: white;
+}
+
+.caln11
+{
+  background-color: Sienna;
+  color: white;
+}
+
+.caln12
+{
+  background-color: Darkorchid;
+  color: white;
+}
+
+.caln13
+{
+  background-color: Hotpink;
+  color: black;
+ }

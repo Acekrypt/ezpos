@@ -1,0 +1,25 @@
+--- 
+pos_payment_type_3: 
+  name: Check
+  type: PosPaymentType::Check
+  id: 3
+pos_payment_type_4: 
+  name: Billing Account
+  type: PosPaymentType::BillingAccount
+  id: 4
+pos_payment_type_5: 
+  name: Gift Certificate
+  type: PosPaymentType::GiftCertificate
+  id: 5
+pos_payment_type_6: 
+  name: Credit Card
+  type: PosPaymentType::YourPayCreditCard
+  id: 6
+pos_payment_type_1: 
+  name: Credit Card Terminal
+  type: PosPaymentType::CreditCardTerminal
+  id: 1
+pos_payment_type_2: 
+  name: Cash
+  type: PosPaymentType::Cash
+  id: 2

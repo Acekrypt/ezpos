@@ -1,0 +1,85 @@
+#!/usr/bin/env ruby
+
+require File.dirname( __FILE__ ) + '/../lib/nas/script'
+
+
+require 'nas/ezpos/sales_report'
+require 'net/smtp'
+require 'base64'
+require 'nas/net/nntp'
+
+require 'cgi'
+
+host = `hostname --long`
+
+msgid = String.new('<')
+for i in 0..35
+    msgid << rand(26)+97
+end
+
+boundary ='------------060206040805030707000202'
+
+msgid += '@' + host.chomp + '>'
+
+
+today=Date.today
+to  = today-today.day
+from=((to)<<1)+1
+
+report=NAS::EZPOS::SalesReport.new( from, to )
+
+require File.dirname( __FILE__ ) + '/../lib/nas/script'
+
+report=NAS::EZPOS::SalesReport.new( from, to )
+
+report_name = 'JC_Store_' + from.strftime("%B") + '.pdf'
+
+msg=<<EOS
+From: #{DEF::LOCATION_NAME} <#{DEF::LOCATION_EMAIL}>
+Newsgroups: allmed.stores.reports
+Organization: Alliance Medical
+Date: #{CGI::rfc1123_date(Time.now)}
+Subject: #{from.strftime('%Y %B')} #{DEF::LOCATION_NAME} Monthly Summary - #{ report.summary.total_sales }
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030624
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary="#{boundary}"
+
+
+This is a multi-part message in MIME format.
+
+--#{boundary}
+Content-Type: text/html; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit\r\n
+
+#{report.html}
+
+--#{boundary}
+Content-Type: application/pdf;
+ name="#{report_name}"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="#{report_name}"
+
+EOS
+
+Base64.encode64( report.pdf ).each_line{ | line |
+    msg+=line.chomp
+    msg+="\r\n"
+}
+msg += '--' + boundary + '---'
+
+
+if RAILS_ENV == 'development'
+    File.open( '/tmp/report.pdf',"w" ){ | f | f.write( report.pdf ) }
+    f=Tempfile.new( 'pos-report' )
+    #report.xls( f.path )
+    #`gnumeric #{f.path}`
+    `xpdf /tmp/report.pdf`
+else
+    s = NAS::Net::NNTP.new( DEF::NNTP_REPORTING_SERVER )
+    res = s.post( msg )
+    STDERR.puts res if res[0..2] != '240'
+end
+

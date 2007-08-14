@@ -1,0 +1,27 @@
+    <div id="filters">
+      <form action="/employee_prefs/filter" method="post">
+        <%=hidden_field 'filter', 'id' %>
+        <table class="list" width='100%'>
+          <tr>
+            <td><label for="filter[name]">Filter name</label></td>
+            <td colspan='3'><%=text_field 'filter', 'name' %></td>
+          </tr>
+          <tr><td colspan="4">Messages matching</td></tr>
+          <%= render_partial_collection "expr", @expressions %>
+          <tr><td colspan="4"><input type="submit" name="op" value="Add"/></td></tr>
+          <tr>
+            <td><label for="filter[destination_folder]">Will be placed in</label></td>
+            <td  colspan='3'>
+              <select name="filter[destination_folder]">
+                <%= options_from_collection_for_select(@destfolders, 'name', 'name', @filter.destination_folder) %>
+              </select>
+            </td>
+          </tr>
+          <tr><td colspan="4">
+              <input type="submit" name="op" value="Save"/>
+              <input type="button" name="op" value="Cancel" onclick="changeLoc('/employee_prefs');"/>
+          </td></tr>
+        </table>
+      </form>
+
+    </div>

@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+require File.dirname(__FILE__) + '/../config/boot'
+
+require 'nas/dbsync'
+require 'optparse'
+
+options = { :environment => (ENV['RAILS_ENV'] || "production").dup }
+verbose=false
+
+ARGV.options do |opts|
+  script_name = File.basename($0)
+  opts.banner = "Usage: runner 'puts Person.find(1).name' [options]"
+
+  opts.separator ""
+  opts.on("-v", "--verbose",
+        "Verbose Mode") { verbose=true }
+  opts.on("-e", "--environment=name", String,
+          "Specifies the environment for the runner to operate under (test/development/production).",
+          "Default: development") { |options[:environment]| }
+
+  opts.separator ""
+
+  opts.on("-h", "--help",
+          "Show this help message.") { puts opts; exit }
+
+  opts.parse!
+end
+
+ENV["RAILS_ENV"] = options[:environment]
+RAILS_ENV.replace(options[:environment]) if defined?(RAILS_ENV)
+
+require RAILS_ROOT + '/config/environment'
+
+
+
+updater=NAS::DBSync.new
+updater.perform{ | success,msg |
+    STDERR.puts msg if ( verbose || ! success )
+}
+

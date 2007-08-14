@@ -1,0 +1,6 @@
+    <div id="folders">
+      <h3 onclick="toggleBox(this,'folders-list');">Mail Folders</h3>
+      <ul id="folders-list"><%- @user.email_folders.each do | folder | %>
+        <li><%=folder_link(folder)%></li><%- end %>
+      </ul>
+    </div>

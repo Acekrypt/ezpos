@@ -1,0 +1,26 @@
+
+<div class="tabber">
+<%- @groups.each do | group | %>
+  <div class="tabbertab">
+     <h3><%= group.fc %> - <%= group.lc %></h3>
+     <table width="100%">
+     <%- ppl = group.ppl.sort
+     num_per=ppl.size/(ppl.size/3) %>
+       <tr>
+         <%- ppl.each_index do | index |
+             if index>0 && ( index%num_per ) == 0 %>
+                </tr><tr>
+             <%- end %>
+             <td><input type="checkbox" name="user_ids[<%=ppl[index].id%>]" <%=sel.has_key?(ppl[index].id) ? 'checked' : '' %> /> <%= ppl[ index ].code %></td>
+         <%- end %>
+        </tr>
+    </table>
+  </div>
+<%- end %>
+</div>
+
+
+<script type="text/javascript">
+tabberAutomatic({});
+</script>
+

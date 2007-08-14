@@ -1,0 +1,37 @@
+
+
+a:
+  id: 1
+  pos_sale_id: 1
+  code: '0001'
+  descrip: test sku
+  um: ea
+  price: 3434
+  qty: 1
+  tax: 234
+  discount: 343
+
+
+b:
+  id: 2
+  pos_sale_id: 1
+  code: '0003'
+  descrip: test sku
+  um: ea
+  price: 3434
+  qty: 3
+  tax: 2
+  discount: 0
+
+
+c:
+  id: 3
+  pos_sale_id: 1
+  code: '0001'
+  descrip: test sku
+  um: ea
+  price: 834
+  qty: 2
+  tax: 23
+  discount: 3
+

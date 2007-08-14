@@ -1,0 +1,13 @@
+
+
+<%= render_partial 'header',{ :title=>'Categories' } %>
+
+    <div style="width: 45%; height:95%; float: left; border: 0px;">
+      <%= live_tree( :category_tree, {
+      :initial_data_root => @root,
+      :on_click_item => "document.newitem.category.value=item.name;document.newitem.category_id.value=item.id;",
+      }) %>
+    </div>
+
+
+<%= render_partial 'footer' %>

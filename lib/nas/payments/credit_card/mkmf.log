@@ -1,0 +1,26 @@
+have_library: checking for main() in -llptxn... -------------------- yes
+
+"gcc -o conftest -I/home/nas/code/ruby/lib/payment/credit_card -I/usr/lib/ruby/1.8/i486-linux  -Wall -g -O2  -fPIC conftest.c  -L"/usr/lib"      -lruby1.8-static -llptxn  -lpthread -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+
+/*top*/
+int main() { return 0; }
+int t() { main(); return 0; }
+/* end */
+
+--------------------
+
+have_library: checking for main() in -llpssl... -------------------- yes
+
+"gcc -o conftest -I/home/nas/code/ruby/lib/payment/credit_card -I/usr/lib/ruby/1.8/i486-linux  -Wall -g -O2  -fPIC conftest.c  -L"/usr/lib"     -llptxn  -lruby1.8-static -llpssl -llptxn  -lpthread -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+
+/*top*/
+int main() { return 0; }
+int t() { main(); return 0; }
+/* end */
+
+--------------------
+

@@ -1,0 +1,45 @@
+
+
+<% content_for("scripts") { %>
+<script type="text/javascript">
+var SelUsers = {
+    timeout : null,
+    show : function(){
+        clearTimeout(this.timeout);
+        if($('selUsers').style.display == 'none'){
+            this.timeout = setTimeout(function(){new Effect.BlindDown('selUsers', {duration:.3, fps:40})},400);
+        }
+    },
+    hide : function(){
+        if($('selUsers').style.display == 'none'){
+            clearTimeout(this.timeout);
+        }else{
+           this.timeout = setTimeout(function(){
+              new Ajax.Updater('calpage', '/calendar/change_users', { parameters:Form.serialize( $('entryForm'))});
+              new Effect.BlindUp('selUsers', {duration:.3, fps:40}); }
+              ,300);
+        }
+    }
+}
+</script>
+
+<%= stylesheet_link_tag 'intranet/calendar' %>
+<%= javascript_include_tag 'effects' %>
+<% } %>
+<form id="entryForm" action="#default">
+   <a href="#default" onmouseout="SelUsers.hide();"
+     onmouseover="SelUsers.show();">Select Calendars</a>
+<br/>
+
+   <div id="selUsers" style="position: absolute; z-index: 1; width:50%; padding: 5px; display:none; background: #ff9999;"
+     onmouseout="SelUsers.hide();" onmouseover="SelUsers.show();">
+       <%=render_employee_selector( Hash[ :selected=>current_user.viewing_calendars ] ) %>
+   </div>
+</form>
+
+
+
+<div id="calpage">
+
+<%=render :partial=>'calpage' %>
+</div>

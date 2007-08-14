@@ -1,0 +1,24 @@
+
+
+sale:
+   id: 1
+   customer_id: 1
+   occured: 2005-03-01 15:38:25
+
+
+sale1:
+   id: 2
+   customer_id: 1
+   occured: 2005-04-01 15:38:25
+
+
+sale2:
+   id: 3
+   customer_id: 1
+   occured: 2005-05-01 15:38:25
+
+
+sale3:
+   id: 4
+   customer_id: 1
+   occured: 2005-06-01 15:38:25

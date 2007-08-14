@@ -1,0 +1,60 @@
+
+special:
+  id: 1
+  email: foo@example.com
+  code: SPEC
+  password: GKXeifdAvovdA
+  ticket:
+  title: Owner
+  timeout: 30
+  created_on: 2005-03-03 15:38:25
+  company: No Company
+  name: John Smith
+  address1: 123 Euclid
+  address2: Apt 1
+  city: Jefferson City
+  state: MO
+  zip: 65101
+  phone: 555-555-5555
+  country: US
+  pricelevel: 1
+  skulevel: 3
+  credit_limit: 0
+  acct_balance: 0
+  comments: Do not feed after midnight
+  tax_rate: 3.14159
+  salesman: RS
+  tax_cert_expiration: Jan 1 1980
+  web_only: true
+  due_days: 30
+  type: User
+
+normal:
+  id: 2
+  email: foo@example.com
+  code: NORM
+  password: GKXeifdAvovdA
+  ticket:
+  title: Owner
+  timeout: 30
+  created_on: 2005-03-03 15:38:25
+  company: No Company
+  name: John Smith
+  address1: 123 Euclid
+  address2: Apt 1
+  city: Jefferson City
+  state: MO
+  zip: 65101
+  phone: 555-555-5555
+  country: US
+  pricelevel: 1
+  skulevel: 0
+  credit_limit: 0
+  acct_balance: 0
+  comments: Do not feed after midnight
+  tax_rate: 3.14159
+  salesman: Super SalesMan
+  tax_cert_expiration: Jan 1 1970
+  web_only: true
+  due_days: 0
+  type: Customer

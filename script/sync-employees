@@ -1,0 +1,106 @@
+#!/usr/bin/env ruby
+require File.dirname(__FILE__) + '/../config/boot'
+
+require "ldap"
+require 'optparse'
+
+options = { :environment => (ENV['RAILS_ENV'] || "production").dup }
+verbose=false
+
+ARGV.options do |opts|
+  script_name = File.basename($0)
+  opts.banner = "Usage: runner 'puts Person.find(1).name' [options]"
+
+  opts.separator ""
+  opts.on("-v", "--verbose",
+        "Verbose Mode") { verbose=true }
+  opts.on("-e", "--environment=name", String,
+          "Specifies the environment for the runner to operate under (test/development/production).",
+          "Default: development") { |options[:environment]| }
+
+  opts.separator ""
+
+  opts.on("-h", "--help",
+          "Show this help message.") { puts opts; exit }
+
+  opts.parse!
+end
+
+ENV["RAILS_ENV"] = options[:environment]
+RAILS_ENV.replace(options[:environment]) if defined?(RAILS_ENV)
+
+require RAILS_ROOT + '/config/environment'
+
+sorter = proc{|s1,s2|  s1<=>s2 }
+
+conn = LDAP::Conn.new( DEF::LDAP_SERVER, 389 )
+conn.set_option(LDAP::LDAP_OPT_PROTOCOL_VERSION, 3)
+mod=LDAP::Mod.new( LDAP::LDAP_MOD_REPLACE, 'shadowExpire', [ '-1' ] )
+
+
+def insert_users( conn )
+    conn.search("ou=Users,dc=allmed,dc=net", LDAP::LDAP_SCOPE_SUBTREE,"(objectclass=inetOrgPerson)", nil, false, 0, 0) do |e|
+        h=e.to_hash
+        user = Employee.find_by_code h['uid']
+        if user.nil?
+            user=Employee.new
+            user.code=h['uid'].first
+        end
+
+        puts e.dn
+        #        puts h.keys.sort
+
+        begin
+            user.created_on = Time.at( h[ 'sambaPwdLastSet' ].first.to_i )
+            user.company = 'Alliance Medical'
+            user.name = h.has_key?('displayName')  ? h['displayName'].first : user.code
+            user.address1 = h.has_key?('street') ? h['street'].first : ''
+            user.city = h.has_key?('postalAddress') ? h['postalAddress'].first : ''
+            user.state = h.has_key?('postalAddress') ? h['postalAddress'].first.split('\W').last : ''
+            user.zip = h.has_key?('postalCode') ? h['postalCode'].first : ''
+            user.phone = h.has_key?('telephoneNumber') ? h['telephoneNumber'].first : ''
+            user.pricelevel=6
+            user.skulevel = 0
+            user.credit_limit = Money::ZERO
+            user.acct_balance = Money::ZERO
+            user.tax_rate = 0
+            user.salesman = ''
+            user.tax_cert_expiration = Time.now
+            user.web_only = true
+            user.save
+            puts "Saved"
+        rescue Exception=>e
+            puts "Raised: " + e.to_s
+        end
+    end
+
+end
+
+def insert_groups( conn )
+    conn.search("ou=Groups,dc=allmed,dc=net", LDAP::LDAP_SCOPE_SUBTREE,"(objectclass=posixGroup)", nil, false, 0, 0 ) do |e|
+        h=e.to_hash
+        h.each do | k,v |
+            puts sprintf("%20s => %-20s",k,v )
+        end
+        puts '-------------------'
+        group = Group.find_by_name h['cn'].first
+        if group.nil?
+            group=Group.new
+            group.name = h['cn'].first
+            group.description = h.has_key?('description') ? h['description'].first : ''
+        end
+        members=Array.new
+        uids=h['memberUid']
+        if uids
+            uids.each do | uid |
+                user = Employee.find_by_code( uid )
+                members << user if user
+                group.members = members
+            end
+        end
+        group.save
+    end
+end
+
+insert_users( conn )
+insert_groups( conn )

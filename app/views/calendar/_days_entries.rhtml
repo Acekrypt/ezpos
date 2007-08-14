@@ -1,0 +1,26 @@
+<%- unless entries.empty? %>
+<ul class="entries">
+<%- entries.uniq.each do | entry |
+    desc = "<span class='"
+    entry.employees.each do | e |
+        style = @calendars[ e ]
+        if style
+           desc+=style
+           break;
+        end
+    end
+    desc += "'>#{entry.short_time} #{entry.title}</span>"
+%>
+     <li onmouseout="Element.hide('desc<%=entry.id%>');"
+         onmouseover="Element.show('desc<%=entry.id%>');">
+         <%= link_to_remote( desc,
+            :update => 'sidebar',
+            :url => { :action => :edit_entry, :id=> entry.id }  )%>
+            <div id="desc<%=entry.id%>"  style="position: absolute; z-index: 1; padding: 5px; display:none; background: #ff9999;" onmouseout="Element.hide('desc<%=entry.id%>');" onmouseover="Element.show('desc<%=entry.id%>');">
+                <h3><%=entry.duration%></h3>
+                <%=entry.description%>
+            </div>
+     </li>
+<%- end %>
+</ul>
+<%- end %>

@@ -1,0 +1,7 @@
+<table width="100%">
+  <tr>
+    <%- calendars.each do | user,css | %>
+    <td align="center" class="<%=css%>"><%= user.login %></td>
+    <%- end %>
+  </tr>
+</table>

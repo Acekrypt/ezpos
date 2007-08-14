@@ -1,0 +1,68 @@
+<% content_for("scripts") { %>
+<%= javascript_include_tag 'prototype','controls', 'effects', 'dragdrop' %>
+<% } %>
+
+    <div id="prefs">
+      <form action="/employee_prefs/save" method="post">
+        <table class="edit">
+          <%= form_input(:text_field, 'user', 'name', 'Name', 'class'=>'two_columns') %>
+          <tr class="two_rows">
+            <td><label>Send type message</label></td>
+            <td><select name="mailpref[mail_type]">
+                <%= options_for_select(CDF::CONFIG[:mail_send_types], @mailpref.mail_type)%>
+            </select></td>
+          </tr>
+
+          <tr class="two_rows">
+            <td><label>Messages per page</label></td>
+            <td><select name="mailpref[wm_rows]">
+                <%= options_for_select(CDF::CONFIG[:mail_message_rows], @mailpref.wm_rows)%>
+            </select></td>
+          </tr>
+
+          <tr class="two_rows">
+            <td colspan='2' class="buttonBar">
+              <input type="submit" name="op" value="Save"/>
+              <input type="button" value="Cancel" onclick="window.location='/webmail/folders'"/>
+            </td>
+          </tr>
+        </table>
+
+      </form>
+    </div>
+
+
+      <form action="/webmail/filters" method="post">
+
+        <% if @user.mail_filters and @user.mail_filters.size > 0 %>
+        <table class="list">
+        <thead>
+          <tr>
+            <th align="center">Re-Order</th>
+            <th>Emaill Filter Name</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+          </tr>
+          </thead>
+          <tbody id="filters">
+          <%= render_partial_collection "filter", @user.mail_filters %>
+          </tbody>
+        </table>
+
+<div id="sortable_list_control">
+  <%= sortable_element('filters', :handle=>'handle',:tag=>'tr', :complete =>visual_effect(:highlight, 'filters'), :url => { :action => :update_filter_positions } ) %>
+</div>
+
+
+        <% end %>
+
+
+      </form>
+      <% if @flash['error'] %>
+      <div id="SystemError"><%= @flash['error'] %></div>
+      <% elsif @flash['status'] %>
+      <div id="SystemStatus"><%= @flash['status'] %></div>
+      <% end %>
+
+

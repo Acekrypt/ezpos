@@ -1,0 +1,100 @@
+#!/usr/bin/env ruby
+
+IO.popen('festival --tts','w'){ | voice | voice.puts 'Now updating and generating reports.  DO NOT remove device.' }
+
+require 'optparse'
+require 'ftools'
+
+options = { :environment => (ENV['RAILS_ENV'] || "production").dup }
+
+ARGV.options do |opts|
+  script_name = File.basename($0)
+
+  opts.separator ""
+
+  opts.on("-e", "--environment=name", String,
+          "Specifies the environment for the runner to operate under (test/development/production).",
+          "Default: development") { |options[:environment]| }
+
+  opts.separator ""
+
+  opts.on("-h", "--help",
+          "Show this help message.") { puts opts; exit }
+
+  opts.parse!
+end
+
+ENV["RAILS_ENV"] = options[:environment]
+RAILS_ENV.replace(options[:environment]) if defined?(RAILS_ENV)
+HOSTNAME=`hostname`.chomp
+
+require File.dirname(__FILE__) + '/../config/boot'
+require RAILS_ROOT + '/config/environment'
+require 'nas/dbsync'
+require 'nas/ezpos/sales_report'
+require 'nas/payments/credit_card/yourpay'
+
+begin
+    STDERR.print `#{"sudo mount -t vfat -o uid=#{Process.euid} #{DEF::POS_UPDATES_DEV} #{DEF::POS_UPDATES_MOUNT_DIR}"}`
+
+    unless File.directory? "#{DEF::POS_UPDATES_MOUNT_DIR}/pos/#{HOSTNAME}"
+        FileUtils.mkdir_p( "#{DEF::POS_UPDATES_MOUNT_DIR}/pos/#{HOSTNAME}" )
+    end
+
+    File.open( "#{DEF::POS_UPDATES_MOUNT_DIR}/pos/#{HOSTNAME}/sync.log",'a' ) do | log |
+        log.puts '*'*40
+        log.puts Time.now
+        log.puts '*'*40
+
+        config=Hash.new
+        if File.exist?( "#{DEF::POS_UPDATES_MOUNT_DIR}/pos/#{HOSTNAME}/settings.conf" )
+            File.open( "#{DEF::POS_UPDATES_MOUNT_DIR}/pos/#{HOSTNAME}/settings.conf" ){ | f | config = YAML::load( f ) }
+            log.puts "Last ran on: #{config['last-reported-time']}"
+        else
+            config['last-reported-time']=Time.now-1.week
+            log.puts "Never ran on this computer before (or conf file missing)"
+        end
+
+        sr=NAS::EZPOS::SalesReport.new( config['last-reported-time'],Time.now )
+        sr.xls( "#{DEF::POS_UPDATES_MOUNT_DIR}/pos/#{HOSTNAME}/#{sr.suggested_file_name}.xls" )
+
+        size = File.size( "#{DEF::POS_UPDATES_MOUNT_DIR}/pos/#{HOSTNAME}/#{sr.suggested_file_name}.xls" )
+
+        log.puts '-'*40
+
+        log.puts "Saved #{HOSTNAME}/#{sr.suggested_file_name}.xls ( #{size} bytes )"
+
+        log.puts '-'*40
+
+        log.puts 'Batching Credit Cards'
+
+        log.puts '-'*40
+
+        PosPaymentType::YourPayCreditCard.charge_pending do | payment, charge |
+	    res=charge.raw
+	    log.printf( "%-8s%-10s%-17s%s\n", payment.id, res['approved'],res['tdate'],res['error'] )
+        end
+
+        log.puts '-'*40
+        log.puts 'Syncing databases'
+        log.puts '-'*40
+        db = NAS::DBSync.new( "#{DEF::POS_UPDATES_MOUNT_DIR}/pos/updates", config['last-reported-time'] )
+        db.perform do | success, msg |
+            log.puts msg # unless success
+        end
+
+        config['last-reported-time']=Time.now
+        File.open( "#{DEF::POS_UPDATES_MOUNT_DIR}/pos/#{HOSTNAME}/settings.conf",'w' ){ | f | f.puts config.to_yaml }
+
+        log.puts '-'*40
+        log.puts 'Update Complete'
+        log.puts '-'*40
+
+    end
+
+ensure
+    `sudo umount #{DEF::POS_UPDATES_MOUNT_DIR}`
+end
+
+IO.popen('festival --tts','w'){ | voice | voice.puts 'Update is now finished, please remove device.' }
+

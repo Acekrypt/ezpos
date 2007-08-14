@@ -1,0 +1,16 @@
+<li><%=link_to('Compose', :controller=>"webmail", :action=>"compose")%></li>
+<%- if @params['action'] == 'messages'%>
+    <li><%=link_refresh%></li>
+<% elsif @params['action']=='message'%>
+      <li>
+      <%= link_to("&#171; Back to list", :controller=>"webmail", :action=>"messages") %>
+      </li>
+      <li><%=link_reply_to_sender(@msg_id)%></li>
+      <li><%=link_forward_message(@msg_id)%></li>
+      <li><%=link_flag_for_deletion(@msg_id)%></li>
+      <li><%=link_view_source(@msg_id)%></li>
+<% else %>
+    <li><%=link_to('Return to Messages', :controller=>"webmail", :action=>"messages")%></li>
+    <li><%=link_to('Start Over', :controller=>"webmail", :action=>"compose")%></li>
+    <li><a href="#" onclick="chooseContacts();">Choose addresses from contacts</a></li>
+<% end %>
