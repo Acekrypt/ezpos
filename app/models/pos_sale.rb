@@ -21,11 +21,11 @@ class PosSale < ActiveRecord::Base
             end
         end
         c=self.payments.first.customer unless self.payments.empty?
-        c.nil? ? P21Customer.find_by_code( DEF::ACCOUNTS['POS_CASH'] ) : c
+        c.nil? ? Customer.find_by_code( DEF::ACCOUNTS['POS_CASH'] ) : c
     end
 
     def set_default_customer
-        self.customer=P21Customer.find_by_code( DEF::ACCOUNTS['POS_CASH'] )
+        self.customer=Customer.find_by_code( DEF::ACCOUNTS['POS_CASH'] )
     end
 
     def paid_by

@@ -152,10 +152,10 @@ class DBSync
                 loc = file['location']
                 obj.connection.execute( "delete from #{file['src-table']}" )
                 res=`bunzip2 #{loc}`
-                yield[ res.empty?, "bunzip2 #{loc}" ]
+                yield [ res.empty?, "bunzip2 #{loc}" ]
                 loc.gsub!(/\.bz2$/,'')
                 obj.connection.execute( "COPY #{file['src-table']} from '#{loc}'" )
-                yield[ true, "COPY #{file['src-table']} from '#{loc}'" ]
+                yield [ true, "COPY #{file['src-table']} from '#{loc}'" ]
                 File.unlink( loc )
             rescue ActiveRecord::StatementInvalid
                 success=false
