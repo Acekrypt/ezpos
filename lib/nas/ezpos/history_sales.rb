@@ -43,12 +43,6 @@ class HistorySales < Gtk::TreeView
         column.alignment = 1
         self.append_column(column)
 
-        #@items_grid=ViewItemGrid.new( @items_view,self )
-
-        #@calendar = glade.get_widget('returns_calendar_ctrl')
-        #@sale_id_box = glade.get_widget('returns_sale_id_entry_box')
-
-
         self.signal_connect('row_activated') do | view,row_num,col,store |
             if 20 == col.min_width
                 self.void(  self.model.get_iter( self.selection.selected.path ) )
