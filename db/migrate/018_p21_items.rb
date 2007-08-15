@@ -26,8 +26,6 @@ class P21Items < ActiveRecord::Migration
       remove_column :skus, :cost
       execute "delete from skus"
       execute "ALTER TABLE skus ALTER COLUMN price set not null"
-      execute "INSERT into skus ( id,code,descrip,uom,price,uom_size,deleted_flag,inv_mast_uid,cost ) values ( 1,'NON_EXISTANT', 'Item Does Not Exist ', 'EA',0,1,'f',0, 0 )"
-      execute "INSERT into skus ( id,code,descrip,uom,price,uom_size,deleted_flag,inv_mast_uid,cost ) values ( 2,'RETURN', 'Returned ', 'EA',0,1,'f',0, 0 )"
 
       add_column :skus, :cost, :integer, :null=>false
 
@@ -49,6 +47,8 @@ class P21Items < ActiveRecord::Migration
       remove_column :skus, :isbn
       remove_column :skus, :category
 
+      execute "INSERT into skus ( id,code,descrip,uom,price,uom_size,deleted_flag,inv_mast_uid,cost ) values ( 1,'NON_EXISTANT', 'Item Does Not Exist ', 'EA',0,1,'f',0, 0 )"
+      execute "INSERT into skus ( id,code,descrip,uom,price,uom_size,deleted_flag,inv_mast_uid,cost ) values ( 2,'RETURN', 'Returned ', 'EA',0,1,'f',0, 0 )"
 
   end
 

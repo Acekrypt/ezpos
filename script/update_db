@@ -34,7 +34,7 @@ require RAILS_ROOT + '/config/environment'
 
 
 updater=NAS::DBSync.new
-updater.perform{ | success,msg |
+updater.perform(){ | success,msg |
     STDERR.puts msg if ( verbose || ! success )
 }
 
