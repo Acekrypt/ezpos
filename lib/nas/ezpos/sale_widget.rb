@@ -95,7 +95,7 @@ class SaleWidget < Gtk::VBox
         end
         @sale.save
 
-	@display_pole.show_thanks
+        @display_pole.show_thanks
         ReceiptPrinter.print( @sale )
 
         open_drawer=false
@@ -205,13 +205,13 @@ class SaleWidget < Gtk::VBox
     end
 
     def update_sku( sku )
-	@display_pole.show_sku( sku, @sale.total )
+        @display_pole.show_sku( sku, @sale.total )
     end
 
     def add_sku( sku )
         @sale.skus.push( sku )
         @grid.insert( sku )
-	@display_pole.show_sku( sku, @sale.total )
+        @display_pole.show_sku( sku, @sale.total )
         self.update
     end
 
