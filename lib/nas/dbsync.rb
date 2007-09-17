@@ -151,7 +151,7 @@ class DBSync
             begin
                 loc = file['location']
                 obj.connection.execute( "delete from #{file['src-table']}" )
-                res=`bunzip2 #{loc}`
+                res=`bunzip2 --force --keep #{loc}`
                 yield [ res.empty?, "bunzip2 #{loc}" ]
                 loc.gsub!(/\.bz2$/,'')
                 obj.connection.execute( "COPY #{file['src-table']} from '#{loc}'" )
