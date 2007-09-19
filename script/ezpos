@@ -2,6 +2,7 @@
 
 require 'gtk2'
 require 'getoptlong'
+require 'bigdecimal'
 
 env='production'
 opts = GetoptLong.new( [ "--enviroment",       "-e",   GetoptLong::OPTIONAL_ARGUMENT] )
