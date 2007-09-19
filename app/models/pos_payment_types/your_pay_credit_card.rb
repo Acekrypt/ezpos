@@ -18,7 +18,7 @@ class PosPaymentType
         end
 
         def needs
-            Array[ 'Credit Card #','Expiration Month','Expiration Year' ]
+            Array[ 'Credit Card #','Expiration Month (MM)','Expiration Year (YY)' ]
         end
 
 

@@ -10,6 +10,7 @@ class CreditCardPayment < Gtk::Dialog
 
     def initialize( payment )
         super()
+        @msg=''
         @payment=payment
         self.charge
 
@@ -25,7 +26,6 @@ class CreditCardPayment < Gtk::Dialog
         self.decorated=false
 
         vbox.pack_start( @pb )
-
         show_all
         self.run
     end
@@ -33,11 +33,16 @@ class CreditCardPayment < Gtk::Dialog
     def pulse
         status = @io.wait(Process::WNOHANG)
         if status
-            @ok = ( status.exitstatus == 0 )
-            @msg = @io.stdout.readline
-            Gtk.timeout_remove( @timeout )
-            self.destroy
-            @io.close
+            begin
+                @ok = ( status.exitstatus == 0 )
+                @msg = @io.stdout.readline
+             rescue EOFError=>e
+                @msg = "Failure reading msg: #{e}" if @msg.empty?
+            ensure
+                Gtk.timeout_remove( @timeout )
+                self.destroy
+                @io.close
+            end
         else
             @pb.pulse
         end
@@ -45,7 +50,7 @@ class CreditCardPayment < Gtk::Dialog
 
 
     def charge
-	return if @io
+        return if @io
         ( num, mon,yr ) = @payment.values
         match = /(\d+)=(\d{2})(\d{2})/.match( num )
         if match
@@ -53,9 +58,9 @@ class CreditCardPayment < Gtk::Dialog
             mon=match[3]
             yr =match[2]
         end
-        STDERR.puts "#{num} #{mon} #{yr} "
-
-        @io=Popen4.new("#{File.dirname( __FILE__ )}/charge.rb -e #{RAILS_ENV} --amt=#{@payment.amount} --num=#{num} --mon=#{mon} --yr=#{yr}")
+        cmd = "#{File.dirname( __FILE__ )}/charge.rb -e #{RAILS_ENV} --amt=#{@payment.amount} --num=#{num} --mon=#{mon} --yr=#{yr}"
+        puts cmd
+        @io=Popen4.new(cmd)
     end
 
     def ok?
