@@ -47,7 +47,7 @@ class SkuFinder < Gtk::VBox
         renderer.ellipsize=Pango::ELLIPSIZE_MIDDLE
 
 
-        @desc_column = Gtk::TreeViewColumn.new("Description", renderer,{:text => 1} ) 
+        @desc_column = Gtk::TreeViewColumn.new("Description", renderer,{:text => 1} )
         @desc_column.min_width = 299
 
         @grid.append_column(@desc_column)
@@ -58,7 +58,7 @@ class SkuFinder < Gtk::VBox
             renderer.xalign=1
             column = Gtk::TreeViewColumn.new('', renderer,{:text => 2} )
             column.min_width = 30
-	    column.max_width = 40
+            column.max_width = 40
             @grid.append_column(column)
         end
 
@@ -130,7 +130,7 @@ class SkuFinder < Gtk::VBox
             char = char[0]
             if char > 47 && char < 123
                 @grid_items.clear
-                ActiveRecord::Base.connection.select_all( "select code, descrip, round(cost/100,2) as cost from skus where upper(code) like #{ActiveRecord::Base.quote( (widget.text + sprintf('%c',char) +'%' ).upcase )} limit 100" ).each do | row |
+                ActiveRecord::Base.connection.select_all( "select code, descrip, round(cost::numeric/100,2) as cost from skus where upper(code) like #{ActiveRecord::Base.quote( (widget.text + sprintf('%c',char) +'%' ).upcase )} limit 100" ).each do | row |
                     line = @grid_items.append
                     line[0] = row['code']
                     line[1] = row['descrip']
@@ -140,7 +140,7 @@ class SkuFinder < Gtk::VBox
         else if 'BackSpace' == char
                  @grid_items.clear
                  if widget.text.size > 1
-                     ActiveRecord::Base.connection.select_all( "select code, descrip,round(cost/100,2) as cost from skus where upper(code) like #{ActiveRecord::Base.quote( widget.text.chop.upcase + '%' )} limit 100" ).each do | row |
+                     ActiveRecord::Base.connection.select_all( "select code, descrip,round(cost::numeric/100,2) as cost from skus where upper(code) like #{ActiveRecord::Base.quote( widget.text.chop.upcase + '%' )} limit 100" ).each do | row |
                         line = @grid_items.append
                         line[0] = row['code']
                         line[1] = row['descrip']
