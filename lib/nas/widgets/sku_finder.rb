@@ -134,7 +134,7 @@ class SkuFinder < Gtk::VBox
                     line = @grid_items.append
                     line[0] = row['code']
                     line[1] = row['descrip']
-                    line[2] = Money.new( row['cost'].to_f ).format
+                    line[2] = Money.new( row['cost'] ).format
                 end
             end
         else if 'BackSpace' == char
@@ -144,7 +144,7 @@ class SkuFinder < Gtk::VBox
                         line = @grid_items.append
                         line[0] = row['code']
                         line[1] = row['descrip']
-                        line[2] = Money.new( row['cost'].to_f ).format
+                        line[2] = Money.new( row['cost'] ).format
                     end
                  end
              end
