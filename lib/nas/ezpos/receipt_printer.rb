@@ -75,6 +75,9 @@ class ReceiptPrinter
     def ReceiptPrinter.print( sale )
         recpt=Tempfile.new( 'pos-sale-' )
 
+        recpt.putc 0x1B
+        recpt.putc 0x40
+
         File.open( RAILS_ROOT + "/db/" + DEF::RECEIPT_LOGO ) do | file |
             recpt.write file.read
         end

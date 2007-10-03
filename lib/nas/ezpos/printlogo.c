@@ -59,8 +59,6 @@ int main(int argc, char *argv[])
                 printf("argc is %d\n", argc);
                 printf("argv is %s\n", argv[1]);
                 printf("argv is %s\n", argv[2]);
-                printf("Are you ready?\n");
-                scanf("%s",str);
         }
 
         int colcount, rowcount, pixel, offsetcnt, begoffsetcnt;
@@ -92,7 +90,7 @@ int main(int argc, char *argv[])
 
         if ( testing != 0 ) {
                 printf("The pixel row height is %d.\n", rowcount);              //The height of the image
-                printf("The pixel row height is %d.\n", rowcount);              //The height of the image
+                printf("The pixel row width is %d.\n",  colcount);              //The width of the image
                 printf("The  old file offset is %d.\n", offsetcnt);
         }
 
@@ -129,7 +127,7 @@ int main(int argc, char *argv[])
         int finishedbyte;
         FILE *fpo;
         if ( testing ){
-                fpo=popen("lp","w");
+                fpo=popen("lp -d receipt","w");
         } else {
                 fpo=stdout;
         }
@@ -156,7 +154,7 @@ int main(int argc, char *argv[])
                 putc( 27, fpo );
                 putc( 42, fpo );
                 putc( 0, fpo );
-                putc( colcount, fpo );
+                putc( colcount-1, fpo );
                 putc( 0, fpo );
 
                 i = 0;
@@ -171,18 +169,11 @@ int main(int argc, char *argv[])
                                 fscanf(fpi, "%d", &pixel);              //Read in the red,blue and green pixel values
                                 fscanf(fpi, "%d", &pixel);
                                 fscanf(fpi, "%d", &pixel);
-                                if (testing != 0 )
-                                        printf("The pixel value is %d.", pixel);
+//                                if (testing != 0 )
+//                                        printf("The pixel value is %d.", pixel);
 
                                 if (pixel != EOF ) {
-                                        if ( pixel > 128 ) {
-                                                if (testing != 0 ){
-                                                        printf(" This means the pixel is turned off.\n");
-                                                }
-                                        } else {
-                                                if (testing != 0 ){
-                                                        printf(" This means the pixel is turned on.\n");
-                                                }
+                                        if ( pixel < 128 ) {
                                                 finishedbyte = ( finishedbyte + logicor );
                                         }
                                 } else {
@@ -199,19 +190,19 @@ int main(int argc, char *argv[])
                                         fscanf(fpi, "%d", &pixel);
                                         fscanf(fpi, "%d", &pixel);
                                         fscanf(fpi, "%d", &pixel);
-                                        if (testing != 0 )
-                                                printf("%d of %d = %d.\n", parsecntr, parsecnt, pixel );
+//                                        if (testing != 0 )
+//                                                printf("%d of %d = %d.\n", parsecntr, parsecnt, pixel );
 
                                         parsecntr++;
                                 }
                         }
                         putc( finishedbyte , fpo );                                     // Put the finished byte in output file
-                        if (testing != 0 )
-                                printf("This is the result of the logical or: %d\n", finishedbyte);
+//                        if (testing != 0 )
+//                                printf("This is the result of the logical or: %d\n", finishedbyte);
 
-                        fseek (fpi, offsetcnt,SEEK_SET);
-                        if (testing != 0 )
-                                printf("This is the current offset %d.\n", offsetcnt);
+                        fseek (fpi, offsetcnt, SEEK_SET);
+//                        if (testing != 0 )
+//                                printf("This is the current offset %d.\n", offsetcnt);
 
                         k = 0;
                         while ( k < 3 )
@@ -226,10 +217,10 @@ int main(int argc, char *argv[])
                         }
 
 
-                        if (testing != 0 )
-                                printf("This is the current offset %d.\n", offsetcnt);
+//                        if (testing != 0 )
+//                                printf("This is the current offset %d.\n", offsetcnt);
 
-                        fseek (fpi, offsetcnt,SEEK_SET);
+                        fseek (fpi, offsetcnt, SEEK_SET);
                         i++;
                 }
 
@@ -274,6 +265,13 @@ int main(int argc, char *argv[])
         putc( 0x0A, fpo);
 
         if (testing != 0 ) {
+
+                // bold
+                putc( 27, fpo);
+                putc( 'E', fpo);
+                putc( 45, fpo);
+
+
                 putc('T', fpo);
                 putc('h', fpo);
                 putc('e', fpo);
