@@ -19,7 +19,7 @@ class SaleToolbar < Gtk::Toolbar
         end
 
         @rep=Gtk::Entry.new
-        @rep.width_chars=10
+        @rep.width_chars=5
         self.append( Gtk::Label.new('Rep:') )
         self.append( @rep, "Rep", nil )
 
@@ -36,6 +36,12 @@ class SaleToolbar < Gtk::Toolbar
         @tax_toggle=Gtk::CheckButton.new('Tax Exempt')
         @tax_toggle.signal_connect('toggled'){ | widget | @sale.update_tax }
         self.append( @tax_toggle )
+
+        self.append_space
+
+        self.append( "P21", "Open Prophet 21" ) {
+                `rdesktop -f p21.allmed.net`
+        }
 
         self.append_space
 
