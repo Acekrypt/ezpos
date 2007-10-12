@@ -23,7 +23,8 @@ class PosPaymentType
 
 
         def YourPayCreditCard.charge_pending
-            PosPayment.find( :all, :conditions=>[ "pos_payment_type_id=( select id from pos_payment_types where type = 'PosPaymentType::YourPayCreditCard') and transaction_id not like 'XXX-%%'" ] ).each do | payment |
+            PosPayment.find( :all, :conditions=>[ "pos_payment_type_id=( select id from pos_payment_types where type = 'PosPaymentType::YourPayCreditCard') and transaction_id not like 'XXX-%%'", :include=>:sale ] ).each do | payment |
+		next if sale.voided
                 res=NAS::Payment::CreditCard::YourPay.charge_f2f_authorization( payment.transaction_id, payment.amount )
                 yield [ payment, res ] if block_given?
                 payment.transaction_id='XXX-'+payment.transaction_id
