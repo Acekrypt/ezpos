@@ -6,7 +6,7 @@ module EZPOS
 class CashDrawer
 
         def self.open
-                IO.popen("lp -s -d #{DEF::CASH_DRAWER_PRINTER}","w") do | recpt |
+            IO.popen("lp -s -d #{DEF::CASH_DRAWER_PRINTER}","w") do | recpt |
         recpt.putc 0x1B
         recpt.putc 'p'
         recpt.putc 0

@@ -1,4 +1,4 @@
-   require 'nas/ezpos/settings'
+require 'nas/ezpos/settings'
 require 'nas/ezpos/totals_table'
 require 'nas/ezpos/sale_sku_grid'
 require 'nas/ezpos/sale_toolbar'
@@ -105,7 +105,9 @@ class SaleWidget < Gtk::VBox
                 break
             end
         end
-        CashDrawer.open if open_drawer
+
+#        CashDrawer.open if open_drawer
+
         ReceiptPrinter.print_signature_slip( @sale ) if need_signature
 
         if remaining.cents < 0

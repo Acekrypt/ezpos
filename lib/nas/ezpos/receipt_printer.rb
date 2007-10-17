@@ -78,12 +78,12 @@ class ReceiptPrinter
         recpt.putc 0x1B
         recpt.putc 0x40
 
-        # open drawer
-        recpt.putc 0x1B
-        recpt.putc 'p'
-        recpt.putc 0
-        recpt.putc 25
-        recpt.putc 250
+       # open drawer
+#        recpt.putc 0x1B
+#        recpt.putc 'p'
+#        recpt.putc 0
+#        recpt.putc 25
+#        recpt.putc 250
 
         File.open( RAILS_ROOT + "/db/" + DEF::RECEIPT_LOGO ) do | file |
             recpt.write file.read
