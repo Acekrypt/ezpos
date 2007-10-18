@@ -116,7 +116,7 @@ class SkuFinder < Gtk::VBox
     def nearest_match
         iter = @grid.model.iter_first
         if iter
-            Sku.find( :first, :conditions=> [ 'code like ?', iter[0].upcase+'%' ] )
+            Sku.find( :first, :conditions=> [ 'upper(code) like ?', iter[0].upcase+'%' ] )
         else
             nil
         end
@@ -130,12 +130,15 @@ class SkuFinder < Gtk::VBox
             char = char[0]
             if char > 47 && char < 123
                 @grid_items.clear
+#                ActiveRecord::Base.connection.execute("set enable_seqscan to off")
                 ActiveRecord::Base.connection.select_all( "select code, descrip, round(cost::numeric/100,2) as cost from skus where upper(code) like #{ActiveRecord::Base.quote( (widget.text + sprintf('%c',char) +'%' ).upcase )} limit 100" ).each do | row |
                     line = @grid_items.append
                     line[0] = row['code']
                     line[1] = row['descrip']
                     line[2] = Money.new( row['cost'] ).format
                 end
+#                ActiveRecord::Base.connection.execute("set enable_seqscan to default")
+
             end
         else if 'BackSpace' == char
                  @grid_items.clear
