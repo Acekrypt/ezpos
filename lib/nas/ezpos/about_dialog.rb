@@ -10,7 +10,7 @@ class AboutDialog < Gtk::AboutDialog
         self.logo = Gdk::Pixbuf.new( RAILS_ROOT + '/public/images/alliance-logo.png' )
         self.name = "EZPOS"
         self.authors = ["Nathan Stitt <stittn@allmed.net>"]
-        self.version = `svnversion #{RAILS_ROOT}`.split(':').first
+        self.version = `svnversion #{RAILS_ROOT}`
         self.copyright = "Copyright (C) 2007 Alliance Medical"
         self.website = 'http://www.allmed.net/'
         self.comments = <<-EOS
