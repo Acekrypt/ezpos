@@ -10,15 +10,17 @@ class AboutDialog < Gtk::AboutDialog
         self.logo = Gdk::Pixbuf.new( RAILS_ROOT + '/public/images/alliance-logo.png' )
         self.name = "EZPOS"
         self.authors = ["Nathan Stitt <stittn@allmed.net>"]
+        self.version = `svnversion #{RAILS_ROOT}`.split(':').first
+        self.copyright = "Copyright (C) 2007 Alliance Medical"
+        self.website = 'http://www.allmed.net/'
         self.comments = <<-EOS
 This is a Point of Sale program written to
 interface with Alliance Medical's product catalog
 
 Address: #{ip_address}
+Embeded software versions: #{Gtk::BINDING_VERSION.join('.')} / #{Gtk::VERSION.join('.')}
+#{`svn info #{RAILS_ROOT} | grep 'Last Changed Date'`}
 EOS
-        self.copyright = "Copyright (C) 2006 Alliance Medical"
-        self.version = self.revision
-        self.website = 'http://www.allmed.net/'
     end
 
      def ip_address
@@ -28,9 +30,6 @@ EOS
     "#{$1}.#{$2}.#{$3}.#{$4}"
     end
 
-     def revision
-         `svn  info #{File.dirname(__FILE__)}/$(ls -t #{File.dirname(__FILE__)}|head -n1)|grep Revision`
-     end
 end # AboutDialog
 
 end # EZPOS

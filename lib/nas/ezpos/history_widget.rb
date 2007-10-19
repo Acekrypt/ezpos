@@ -196,7 +196,6 @@ class HistoryWidget < Gtk::VBox
 
     def update
         self.date_selected
-        GC.start
     end
 
     def update_sku(sku)
