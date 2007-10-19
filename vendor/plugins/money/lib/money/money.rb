@@ -54,7 +54,7 @@ class Money
                when 'NilClass' then 0
                when 'Money' then amt.cents
 #               when 'Float'  then amt*100  <- Don't do this
-               when 'String' then ( amt.to_f * 100 ).to_i
+               when 'String' then ( BigDecimal.new( amt ) * 100 ).to_i
                else amt.to_i
                end
   end
