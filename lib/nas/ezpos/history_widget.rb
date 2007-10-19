@@ -74,7 +74,7 @@ class HistoryWidget < Gtk::VBox
             gn=NAS::Widgets::GetNumber.new("Number?","Return Qty:", sku.qty )
             qty=gn.to_i
         end
-        gs=NAS::Widgets::GetText.new("Reason?","Reason for Return:" )
+        gs=NAS::Widgets::GetText.new("Reason?", 'Reason for Return:' )
 
         pt_box = Gtk::OptionMenu.new
         menu = Gtk::Menu.new
@@ -83,6 +83,7 @@ class HistoryWidget < Gtk::VBox
         end
         menu.show_all
         pt_box.menu = menu
+        gs.vbox.pack_start(Gtk::Label.new("IF A CREDIT CARD SALE, must ALSO refund on Terminal!"))
         gs.vbox.pack_start( Gtk::Label.new('Payment Returned') )
         gs.vbox.pack_start( pt_box ,true,true,0  )
         gs.show_all
@@ -107,7 +108,7 @@ class HistoryWidget < Gtk::VBox
             dialog.destroy
             return false
         end
-        gs=NAS::Widgets::GetText.new("Reason?","Reaso for voiding sale #{sale.id}" )
+        gs=NAS::Widgets::GetText.new("Reason?","Reason for voiding sale #{sale.id}\nIF A CREDIT CARD SALE, must ALSO refund on Terminal!" )
         gs.show_all
         gs.run
         ret=gs.ok?
