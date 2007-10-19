@@ -4,10 +4,10 @@ require 'getoptlong'
 
 env='production'
 opts = GetoptLong.new(  [ "--enviroment", "-e", GetoptLong::OPTIONAL_ARGUMENT],
-			[ "--amt","-a", GetoptLong::REQUIRED_ARGUMENT ],
-			[ "--num","-n", GetoptLong::REQUIRED_ARGUMENT ],
-			[ "--mon","-m", GetoptLong::REQUIRED_ARGUMENT ],
-			[ "--yr", "-y", GetoptLong::REQUIRED_ARGUMENT ] )
+                        [ "--amt","-a", GetoptLong::REQUIRED_ARGUMENT ],
+                        [ "--num","-n", GetoptLong::REQUIRED_ARGUMENT ],
+                        [ "--mon","-m", GetoptLong::REQUIRED_ARGUMENT ],
+                        [ "--yr", "-y", GetoptLong::REQUIRED_ARGUMENT ] )
 
 amount=num=mon=yr=''
 opts.each do | opt, arg |
@@ -15,13 +15,13 @@ opts.each do | opt, arg |
     when "--enviroment"
        env = arg
     when "--amt"
-	amount = arg
+        amount = arg
     when "--num"
-	num = arg
+        num = arg
     when "--mon"
         mon = arg
     when "--yr"
-	yr = arg		
+        yr = arg
     end
 end
 
@@ -35,10 +35,7 @@ RAILS_ENV=env
 
 require File.dirname( __FILE__) + '/../../../config/environment'
 
-#require File.dirname(__FILE__) + '/../../../config/boot'
-
 require 'nas/payments/credit_card/yourpay'
-
 
 auth=NAS::Payment::CreditCard::YourPay.f2f_authorize( amount, num, mon, yr )
 

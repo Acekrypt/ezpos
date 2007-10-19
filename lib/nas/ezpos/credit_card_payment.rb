@@ -37,7 +37,7 @@ class CreditCardPayment < Gtk::Dialog
                 @ok = ( status.exitstatus == 0 )
                 @msg = @io.stdout.readline
              rescue EOFError=>e
-                @msg = "Failure reading msg: #{e}" if @msg.empty?
+                @msg = "Error: #{e} was encounterd.\nMost likely this is becouse invalid information was submitted." if @msg.empty?
             ensure
                 Gtk.timeout_remove( @timeout )
                 self.destroy
