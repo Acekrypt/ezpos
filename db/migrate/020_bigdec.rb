@@ -1,4 +1,4 @@
-class BigDecimal < ActiveRecord::Migration
+class Bigdec < ActiveRecord::Migration
   def self.up
       `sudo apt-get install libbigdecimal-ruby`
   end
