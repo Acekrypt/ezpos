@@ -1,4 +1,4 @@
-require 'nas/payments/credit_card/c_yourpay.so'
+#require 'nas/payments/credit_card/c_yourpay.so'
 
 module NAS
 
