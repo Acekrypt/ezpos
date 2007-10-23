@@ -49,8 +49,7 @@ class MainWindow < Gtk::Window
     end
 
     def enter_deposits
-        t=Time.now
-        DailyReceiptsDialog.new( Date.new( t.year, t.month, t.day ) ).run
+        DailyReceiptsDialog.new( Date.today )
     end
 
     def shutdown

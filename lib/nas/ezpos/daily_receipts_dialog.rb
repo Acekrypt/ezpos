@@ -10,7 +10,7 @@ class DailyReceiptsDialog < Gtk::Dialog
     def initialize( date )
         @date=date
 
-        @allow_edit=( @date == Time.now.to_date )
+        @allow_edit=( @date == Date.today )
 
         @receipt=PosDailyReceipt.find_by_day( date )
         super()
