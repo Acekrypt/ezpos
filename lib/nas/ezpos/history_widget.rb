@@ -98,7 +98,7 @@ class HistoryWidget < Gtk::VBox
     end
 
     def void_sale( sale )
-        if sale.occured.to_date != Time.now.to_date
+        if sale.occured.to_date != Date.today
             dialog = Gtk::MessageDialog.new( nil,
                                              Gtk::Dialog::MODAL,
                                              Gtk::MessageDialog::ERROR,
