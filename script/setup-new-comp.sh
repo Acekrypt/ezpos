@@ -1,14 +1,13 @@
 #!/bin/bash
 
-cat > /etc/apt/sources <<__EOS__
-deb http://us.archive.ubuntu.com/ubuntu/ dapper main restricted universe
-deb http://us.archive.ubuntu.com/ubuntu/ dapper-updates main restricted universe
-deb http://security.ubuntu.com/ubuntu dapper-security main restricted universe
+cat > /etc/apt/sources.list <<__EOS__
+deb http://debs.hq.allmed.net:9999/ubuntu gutsy main universe restricted
+deb http://debs.hq.allmed.net:9999/ubuntu-security gutsy-security main
 __EOS__
 
 apt-get update
 
-apt-get --assume-yes install libpgsql-ruby1.8 ruby ruby1.8 emacs21 libgnome2-ruby libgconf2-ruby libstdc++5 rdoc1.8 postgresql-8.2 libpgsql-ruby1.8 libvte-ruby libopenssl-ruby
+apt-get --assume-yes install libpgsql-ruby1.8 ruby ruby1.8 emacs21 libgnome2-ruby libgconf2-ruby libstdc++5 rdoc1.8 postgresql-8.2 libpgsql-ruby1.8 libvte-ruby libopenssl-ruby rake subversion rubygemsi ssh
 if [ $? != 0 ]; then
     echo failed to download needed *.debs, will now exit
     exit 1
@@ -16,7 +15,7 @@ fi
 
 
 su postgres -c '/usr/lib/postgresql/8.2/bin/createuser -s -d nas'
-su postgres -c '/usr/lib/postgresql/8.2/bin/createuser -S -R -D ezpos'
+su postgres -c '/usr/lib/postgresql/8.2/bin/createuser -s -d ezpos'
 
 cat > /etc/postgresql/8.2/main/pg_hba.conf <<__EOS_
 local   all     postgres                                ident sameuser
@@ -28,11 +27,6 @@ psql -Unas -c "CREATE DATABASE ezpos ENCODING 'latin1'" template1
 psql -Unas -c "CREATE LANGUAGE 'plpgsql'" ezpos
 cd /tmp
 
-svn co https://trac.allmed.net/svn/computers/vendor/rubygems-0.9.0 | tail
-cd /tmp/rubygems-0.9.0
-ruby setup.rb 2>&1 | tail
-cd /tmp
-rm -r /tmp/rubygems-0.9.0
 gem install rails --include-dependencies | tail -n 10
 
 cd /usr/local
@@ -47,7 +41,7 @@ su -c 'svn co https://trac.allmed.net/svn/computers/trunk/ezpos' nas | tail
 
 cd /tmp
 
-svn co https://trac.allmed.net/svn/computers/vendor/yourpay | tail
+su -c 'svn co https://trac.allmed.net/svn/computers/vendor/yourpay' nas | tail
 cp yourpay/*.so /usr/local/lib/
 echo /usr/local/lib > /etc/ld.so.conf
 ln -s /usr/lib/libssl.so.0.9.8 /usr/lib/libssl.so.2
@@ -73,7 +67,7 @@ development:
   password:
 __EOS_
 
-cat > /etc/udev/rules.d/05-pos-updates <<EOF
+cat > /etc/udev/rules.d/51-pos-updates.rules <<EOF
 ACTION=="add", KERNEL=="sd[a-z]1", NAME="pos_update" RUN+="/usr/local/ezpos/script/update_pos"
 EOF
 
