@@ -8,24 +8,24 @@ __EOS__
 
 apt-get update
 
-apt-get --assume-yes install libpgsql-ruby1.8 ruby ruby1.8 emacs21 libgnome2-ruby libgconf2-ruby libstdc++5 rdoc1.8 postgresql-8.1 libpgsql-ruby1.8 libvte-ruby libopenssl-ruby
+apt-get --assume-yes install libpgsql-ruby1.8 ruby ruby1.8 emacs21 libgnome2-ruby libgconf2-ruby libstdc++5 rdoc1.8 postgresql-8.2 libpgsql-ruby1.8 libvte-ruby libopenssl-ruby
 if [ $? != 0 ]; then
     echo failed to download needed *.debs, will now exit
     exit 1
 fi
 
 
-su postgres -c '/usr/lib/postgresql/8.1/bin/createuser -s -d nas'
-su postgres -c '/usr/lib/postgresql/8.1/bin/createuser -S -R -D allmed'
+su postgres -c '/usr/lib/postgresql/8.2/bin/createuser -s -d nas'
+su postgres -c '/usr/lib/postgresql/8.2/bin/createuser -S -R -D ezpos'
 
-cat > /etc/postgresql/8.1/main/pg_hba.conf <<__EOS_
+cat > /etc/postgresql/8.2/main/pg_hba.conf <<__EOS_
 local   all     postgres                                ident sameuser
 local   all     all                                     trust
 host    all     all             127.0.0.1/32            trust
 __EOS_
-/etc/init.d/postgresql-8.1 restart
-psql -Unas -c "CREATE DATABASE allmed ENCODING 'latin1'" template1
-psql -Unas -c "CREATE LANGUAGE 'plpgsql'" allmed
+/etc/init.d/postgresql-8.2 restart
+psql -Unas -c "CREATE DATABASE ezpos ENCODING 'latin1'" template1
+psql -Unas -c "CREATE LANGUAGE 'plpgsql'" ezpos
 cd /tmp
 
 svn co https://trac.allmed.net/svn/computers/vendor/rubygems-0.9.0 | tail
@@ -37,13 +37,13 @@ gem install rails --include-dependencies | tail -n 10
 
 cd /usr/local
 
-if [ ! -d allmed ]; then
-   mkdir allmed
+if [ ! -d ezpos ]; then
+   mkdir ezpos
 fi
 
-chown nas allmed
+chown nas ezpos
 
-su -c 'svn co https://trac.allmed.net/svn/computers/trunk/allmed' nas | tail
+su -c 'svn co https://trac.allmed.net/svn/computers/trunk/ezpos' nas | tail
 
 cd /tmp
 
@@ -55,19 +55,26 @@ ln -s /usr/lib/libcrypto.so.0.9.8 /usr/lib/libcrypto.so.2
 ldconfig
 rm -rf /tmp/yourpay
 
-cd /usr/local/allmed
+cd /usr/local/ezpos
 
 cat > ./config/database.yml <<__EOS_
 production:
   adapter: postgresql
-  database: allmed
+  database: ezpos
   host: localhost
-  username: allmed
+  username: ezpos
+  password:
+
+development:
+  adapter: postgresql
+  database: ezpos
+  host: localhost
+  username: ezpos
   password:
 __EOS_
 
 cat > /etc/udev/rules.d/05-pos-updates <<EOF
-ACTION=="add", KERNEL=="sd[a-z]1", NAME="pos_update" RUN+="/usr/local/allmed/script/update_pos"
+ACTION=="add", KERNEL=="sd[a-z]1", NAME="pos_update" RUN+="/usr/local/ezpos/script/update_pos"
 EOF
 
 cat > ./config/settings.yml <<EOF
@@ -79,8 +86,8 @@ SKU_FIRST_ID: 3
 
 DB:
   DUMPS: /tmp
-  NAME: allmed
-  USER: allmed
+  NAME: ezpos
+  USER: ezpos
 
 SBT_SERVER: 192.168.1.4
 DISPLAY_POLE_PORT: /dev/ttyS0
