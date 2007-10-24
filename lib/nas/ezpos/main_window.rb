@@ -17,17 +17,17 @@ class MainWindow < Gtk::Window
         set_title( 'EzPOS' )
         set_default_size( DEF::POS_HEIGHT, DEF::POS_WIDTH )
         resizable=true
+        signal_connect('delete_event') do|widget,key|
+              shutdown
+        end
         if DEBUG
             signal_connect('key_press_event') do|widget,key|
                 if key.keyval == 113
                     shutdown
                 end
             end
-        else
-            fullscreen
-            set_has_frame( false )
         end
-
+     	maximize
 
         @menu=MainMenu.new( self )
 
