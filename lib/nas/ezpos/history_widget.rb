@@ -69,11 +69,6 @@ class HistoryWidget < Gtk::VBox
     end
 
     def return_sku( sku )
-        qty=sku.qty
-        if qty > 1
-            gn=NAS::Widgets::GetNumber.new("Number?","Return Qty:", sku.qty )
-            qty=gn.to_i
-        end
         gs=NAS::Widgets::GetText.new("Reason?", 'Reason for Return:' )
 
         pt_box = Gtk::OptionMenu.new
@@ -83,29 +78,44 @@ class HistoryWidget < Gtk::VBox
         end
         menu.show_all
         pt_box.menu = menu
-        gs.vbox.pack_start(Gtk::Label.new("IF A CREDIT CARD SALE, must ALSO refund on Terminal!"))
+        gs.vbox.pack_start( Gtk::Label.new("IF A CREDIT CARD SALE, must ALSO refund on Terminal!"))
+        hb=Gtk::HBox.new
+        hb.pack_start( Gtk::Label.new("Qty to Return:") )
+        qty_entry=Gtk::Entry.new
+        qty_entry.text = sku.qty_unreturned.to_s
+        hb.pack_end( qty_entry )
+        gs.vbox.pack_start( hb )
         gs.vbox.pack_start( Gtk::Label.new('Payment Returned') )
         gs.vbox.pack_start( pt_box ,true,true,0  )
         gs.show_all
         gs.run
         if gs.ok?
-            payment_type = PosPaymentType.all[ pt_box.history ]
-            ( ret_sku, ret_rec )=sku.return( payment_type, qty, gs.to_s ) if gs.ok?
-            @app.add_sku_to_sale( ret_sku ) # if ret_sku
+            qty = qty_entry.text.to_i
+            if qty <= sku.qty_unreturned
+                payment_type = PosPaymentType.all[ pt_box.history ]
+                ( ret_sku, ret_rec )=sku.return( payment_type, qty, gs.to_s ) if gs.ok?
+                @app.add_sku_to_sale( ret_sku ) # if ret_sku
+            else
+                show_error( "Can not return more than #{sku.qty_unreturned}" )
+            end
         end
         gs.destroy
         self.display_sale( PosSale.find( @sale.id ) )
     end
 
+    def show_error( msg )
+        dialog = Gtk::MessageDialog.new( nil,
+                                         Gtk::Dialog::MODAL,
+                                         Gtk::MessageDialog::ERROR,
+                                         Gtk::MessageDialog::BUTTONS_OK,
+                                         msg )
+        dialog.run
+        dialog.destroy
+    end
+
     def void_sale( sale )
         if sale.occured.to_date != Date.today
-            dialog = Gtk::MessageDialog.new( nil,
-                                             Gtk::Dialog::MODAL,
-                                             Gtk::MessageDialog::ERROR,
-                                             Gtk::MessageDialog::BUTTONS_OK,
-                                             "Sales can only be voided on the day they occured" )
-            dialog.run
-            dialog.destroy
+            show_error( "Sales can only be voided on the day they occured" )
             return false
         end
         gs=NAS::Widgets::GetText.new("Reason?","Reason for voiding sale #{sale.id}\nIF A CREDIT CARD SALE, must ALSO refund on Terminal!" )
@@ -141,26 +151,14 @@ class HistoryWidget < Gtk::VBox
         sale=PosSale.find_by_id( sale_id )
         if sale
             if sale.voided?
-                dialog = Gtk::MessageDialog.new( nil,
-                                                 Gtk::Dialog::MODAL,
-                                                 Gtk::MessageDialog::ERROR,
-                                                 Gtk::MessageDialog::BUTTONS_OK,
-                                                 "Sale #{sale_id} has been voided" )
-                dialog.run
-                dialog.destroy
+                show_error "Sale #{sale_id} has been voided"
             end
             display_sale( sale )
             @cal.select_month( sale.occured.month, sale.occured.year )
             @sales.update( sale.occured )
             @sales.highlite( sale )
         else
-            dialog = Gtk::MessageDialog.new( nil,
-                                             Gtk::Dialog::MODAL,
-                                             Gtk::MessageDialog::ERROR,
-                                             Gtk::MessageDialog::BUTTONS_OK,
-                                             "Sale #{sale_id} was not found" )
-            dialog.run
-            dialog.destroy
+            show_error( "Sale #{sale_id} was not found" )
         end
         @sale_id.text=""
     end
