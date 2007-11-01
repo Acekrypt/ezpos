@@ -5,7 +5,9 @@ set :repository,  "https://trac.allmed.net/svn/computers/trunk/ezpos"
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
 # via the :deploy_to variable:
- set :deploy_to, "/usr/local/ezpos"
+set :deploy_to, "/usr/local/ezpos"
+
+set :user, "nas"
 
 # If you aren't using Subversion to manage your source code, specify
 # your SCM below:
@@ -17,43 +19,40 @@ role :db,  "register.kcstore.allmed.net", :primary => true
 role :db,  "register.jcstore.allmed.net", :primary => true
 
 
-
 desc "Create database.yml in shared/config"
-task :after_setup do
-    database_configuration = render :template => <<-EOF
+task :database_yml_change do
+    database_configuration =<<-EOF
 login: &login
   adapter: postgresql
   host: localhost
-  port: <%= postgresql_port %>
   username: allmed
   password:
 
 development:
-  database: <%= "#{application}_development" %>
+  database: allmed_dev
   <<: *login
 
 test:
-  database: <%= "#{application}_test" %>
+  database: allmed_test
   <<: *login
 
 production:
-  database: <%= "#{application}_production" %>
+  database: allmed
   <<: *login
 EOF
 
-    run "mkdir -p #{deploy_to}/#{shared_dir}/config"
-    put database_configuration, "#{deploy_to}/#{shared_dir}/config/database.yml"
+    run "mkdir -p #{deploy_to}/shared/config"
+    put database_configuration, "#{deploy_to}/shared/config/database.yml"
+    run "ln -nfs #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
 end
 
 desc "Link in the production database.yml"
 task :after_update_code do
-    run "ln -nfs #{deploy_to}/#{shared_dir}/config/database.yml #{release_path}/config/database.yml"
+    database_yml_change
 end
 
-
-
 task :restart_web_server, :roles => :web do
-    `killall -9 ezpos`
+    sudo "killall -9 ezpos"
 end
 
 after "deploy:start", :restart_web_server
