@@ -8,6 +8,7 @@ set :repository,  "https://trac.allmed.net/svn/computers/trunk/ezpos"
 set :deploy_to, '/usr/local/ezpos'
 set :user, 'nas'
 set :spinner_user, 'nas'
+set :runner, 'root'
 
 # If you aren't using Subversion to manage your source code, specify
 # your SCM below:
@@ -49,11 +50,16 @@ end
 desc "Link in the production database.yml"
 task :after_update_code do
     database_yml_change
+
 end
 
-task :spinner, :roles => :web do
+task :start do
+
+end
+
+task :restart_ezpos, :roles => :web do
     sudo "killall -9 ezpos"
 end
 
 
-after "deploy:start", :restart_web_server
+after "deploy:start", :restart_ezpos
