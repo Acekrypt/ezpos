@@ -5,9 +5,9 @@ set :repository,  "https://trac.allmed.net/svn/computers/trunk/ezpos"
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
 # via the :deploy_to variable:
-set :deploy_to, "/usr/local/ezpos"
-
-set :user, "nas"
+set :deploy_to, '/usr/local/ezpos'
+set :user, 'nas'
+set :spinner_user, 'nas'
 
 # If you aren't using Subversion to manage your source code, specify
 # your SCM below:
@@ -51,8 +51,9 @@ task :after_update_code do
     database_yml_change
 end
 
-task :restart_web_server, :roles => :web do
+task :spinner, :roles => :web do
     sudo "killall -9 ezpos"
 end
+
 
 after "deploy:start", :restart_web_server
