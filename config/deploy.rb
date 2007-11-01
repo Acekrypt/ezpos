@@ -47,9 +47,14 @@ EOF
     run "ln -nfs #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
 end
 
-desc "Link in the production database.yml"
+desc "Link in the settings.yml file"
+task :load_basic_settings do
+    run "ln -nfs #{deploy_to}/shared/config/settings.yml #{release_path}/config/settings.yml"
+end
+
 task :after_update_code do
     database_yml_change
+    load_basic_settings
 end
 
 task :start do
