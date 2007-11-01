@@ -62,16 +62,17 @@ task :start do
 end
 
 task :restart_ezpos, :roles => :web do
-#    sudo "killall -9 ruby"
+    sudo "killall -9 ruby"
     run 'sleep 10'
+
     if File.exists?("#{deploy_to}shared/log/production.log")
         run "tail -n100 #{deploy_to}shared/log/production.log"
+    else
+        run "touch #{deploy_to}shared/log/production.log"
+        run "chmod a+rw #{deploy_to}shared/log/production.log"
     end
 end
 
 
-#after "deploy:start", :restart_ezpos
+after "deploy:restart", :restart_ezpos
 
-task :restart, :roles => :app do
-    restart_ezpos
-end
