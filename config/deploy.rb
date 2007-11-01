@@ -64,7 +64,6 @@ end
 task :restart_ezpos, :roles => :web do
     sudo "killall -9 ruby"
     run 'sleep 10'
-
     if File.exists?("#{deploy_to}/shared/log/production.log")
         run "tail -n100 #{deploy_to}/shared/log/production.log"
     else
