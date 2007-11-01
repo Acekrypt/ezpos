@@ -15,7 +15,7 @@ class MainWindow < Gtk::Window
     def initialize
         super(Gtk::Window::TOPLEVEL)
         set_title( 'EzPOS' )
-        set_default_size( DEF::POS_HEIGHT, DEF::POS_WIDTH )
+        set_default_size( ::DEF::POS_HEIGHT, ::DEF::POS_WIDTH )
         resizable=true
         signal_connect('delete_event') do|widget,key|
               shutdown
@@ -27,7 +27,7 @@ class MainWindow < Gtk::Window
                 end
             end
         end
-     	maximize
+        maximize
 
         @menu=MainMenu.new( self )
 

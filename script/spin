@@ -1,4 +1,4 @@
 #!/bin/sh
 
 
-killall -w -9 ruby
+

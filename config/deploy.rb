@@ -50,7 +50,6 @@ end
 desc "Link in the production database.yml"
 task :after_update_code do
     database_yml_change
-
 end
 
 task :start do
@@ -58,7 +57,11 @@ task :start do
 end
 
 task :restart_ezpos, :roles => :web do
-    sudo "killall -9 ezpos"
+#    sudo "killall -9 ruby"
+    if File.exists?("#{deploy_to}shared/log/production.log")
+        run 'sleep 10'
+        run "tail -n100 #{deploy_to}shared/log/production.log"
+    end
 end
 
 
