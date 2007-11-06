@@ -106,7 +106,7 @@ class SaleWidget < Gtk::VBox
             end
         end
 
-#        CashDrawer.open if open_drawer
+        CashDrawer.open if open_drawer
 
         ReceiptPrinter.print_signature_slip( @sale ) if need_signature
 
