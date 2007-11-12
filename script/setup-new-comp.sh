@@ -7,7 +7,7 @@ __EOS__
 
 apt-get update
 
-apt-get --assume-yes install libpgsql-ruby1.8 ruby ruby1.8 emacs21 libgnome2-ruby libgconf2-ruby libstdc++5 rdoc1.8 postgresql-8.2 libpgsql-ruby1.8 libvte-ruby libopenssl-ruby rake subversion rubygemsi ssh
+apt-get --assume-yes install libpgsql-ruby1.8 ruby ruby1.8 emacs21 libgnome2-ruby libgconf2-ruby libstdc++5 rdoc1.8 postgresql-8.2 libpgsql-ruby1.8 libvte-ruby libopenssl-ruby rake subversion rubygems ssh
 if [ $? != 0 ]; then
     echo failed to download needed *.debs, will now exit
     exit 1
@@ -84,7 +84,7 @@ DB:
   USER: ezpos
 
 SBT_SERVER: 192.168.1.4
-DISPLAY_POLE_PORT: /dev/ttyS0
+DISPLAY_POLE_PORT: /dev/null
 RECEIPT_PRINTER: receipt
 RECEIPT_LOGO: allmed-receipt-logo.bin
 CASH_DRAWER_PRINTER: receipt
@@ -111,6 +111,7 @@ EOF
 echo "NOW COPYING YOUR PAY PEM FILE"
 scp nas@nas.hq.allmed.net:/etc/your-pay-cert.pem /etc/your-pay-cert.pem
 
+chown -R nas .
 
 su -c 'rake db:migrate RAILS_ENV=production' nas
 echo Updating Database, this will take quite awhile
