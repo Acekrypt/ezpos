@@ -75,3 +75,12 @@ end
 
 after "deploy:restart", :restart_ezpos
 
+desc "Spy on register screens to ensure it's ok to upgrade"
+task :spy do | s |
+    s.roles[:app].each do | server | #methods
+        pid=Kernel.fork do
+            Kernel.exec( "xvncviewer -ViewOnly -passwd ./config/vnc.passwd #{server}" )
+        end
+        Process.detach( pid )
+    end
+end
