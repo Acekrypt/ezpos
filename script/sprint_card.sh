@@ -4,7 +4,7 @@
 # http://samat.org/weblog/20070128-sprints-evdo-mobile-broadband-on-ubuntu-linux.html
 
 
-cat > /etc/ppp/peers/sprint <<__EOS_
+cat > /etc/ppp/peers/sprint <<__EOS__
 
 /dev/ttyUSB3    # modem
 921600          # faster than this has no effect, and actually can be detrimental
@@ -27,7 +27,7 @@ lcp-echo-interval 65535 # prevent timeouts
 connect        "/usr/sbin/chat -v -f /etc/chatscripts/sprint-connect"
 disconnect      "/usr/sbin/chat -v -f /etc/chatscripts/sprint-disconnect"
 
-__EOS_
+__EOS__
 
 cat > /etc/chatscripts/sprint-connect <<__EOS__
 TIMEOUT 10
@@ -56,9 +56,20 @@ SAY "Disconnected from Sprint."
 __EOS__
 
 
-cat > /etc/ppp/ip-up.d/zzz-fix-route t <<__EOS__
+cat > /etc/ppp/ip-up.d/zzz-fix-route <<__EOS__
 
 #!/bin/sh
 /sbin/route del default gw 0.0.0.0      # Remove nonsense route
 /sbin/route add default gw $PPP_REMOTE  # Add correct route
 __EOS__
+
+if ! grep -q 'sprint' /etc/network/interfaces
+then
+cat >> /etc/network/interfaces <<EOF
+
+auto ppp0
+iface ppp0 inet ppp
+        provider sprint
+
+EOF
+fi
