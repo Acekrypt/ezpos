@@ -40,7 +40,7 @@ class SaleToolbar < Gtk::Toolbar
         self.append_space
 
         self.append( "P21", "Open Prophet 21" ) {
-                `rdesktop -f p21.allmed.net`
+                `rdesktop -g 1010x680 -a8 p21.allmed.net`
         }
 
         self.append_space
