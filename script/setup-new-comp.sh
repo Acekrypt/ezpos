@@ -1,4 +1,4 @@
-#!/bin/bash
+t-#!/bin/bash
 
 cat > /etc/apt/sources.list <<__EOS__
 deb http://debs.hq.allmed.net:9999/ubuntu gutsy main universe restricted
@@ -7,7 +7,7 @@ __EOS__
 
 apt-get update
 
-apt-get --assume-yes install libpgsql-ruby1.8 ruby ruby1.8 emacs21 libgnome2-ruby libgconf2-ruby libstdc++5 rdoc1.8 postgresql-8.2 libpgsql-ruby1.8 libvte-ruby libopenssl-ruby rake subversion rubygems ssh
+apt-get --assume-yes install libpgsql-ruby1.8 ruby ruby1.8 emacs21 libgnome2-ruby libgconf2-ruby libstdc++5 rdoc1.8 postgresql-8.2 libpgsql-ruby1.8 libvte-ruby libopenssl-ruby rake subversion rubygems ssh festival festvox-kallpc16k
 if [ $? != 0 ]; then
     echo failed to download needed *.debs, will now exit
     exit 1
