@@ -1,5 +1,6 @@
 class BigintPrice < ActiveRecord::Migration
   def self.up
+
       execute "ALTER TABLE skus ALTER COLUMN price type bigint"
   end
 

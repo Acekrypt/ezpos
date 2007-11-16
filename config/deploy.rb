@@ -84,3 +84,13 @@ task :spy do | s |
         Process.detach( pid )
     end
 end
+
+
+task :vnc do | s |
+    s.roles[:app].each do | server | #methods
+        pid=Kernel.fork do
+            Kernel.exec( "xvncviewer -passwd ./config/vnc.passwd #{server}" )
+        end
+        Process.detach( pid )
+    end
+end
