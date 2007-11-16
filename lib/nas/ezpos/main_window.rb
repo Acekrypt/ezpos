@@ -26,8 +26,12 @@ class MainWindow < Gtk::Window
                     shutdown
                 end
             end
+        elsif DEF::FULL_SCREEN
+            fullscreen
+            set_has_frame( false )
+        else
+            maximize
         end
-        maximize
 
         @menu=MainMenu.new( self )
 
