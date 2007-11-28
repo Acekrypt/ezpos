@@ -33,13 +33,13 @@ class SalesSummary
     end
 
     def get_receipts( type )
-        return Money.new unless have_receipts?
+        return BigDecimal.zero unless have_receipts?
         if single_day?
-            return @rec.method( type ).call
+            return @rec[ type ]
         else
-            ret=Money.new
+            ret=BigDecimal.zero
             @rec.each do | rec |
-                ret+=rec.method( type ).call
+                ret+=rec[ type ]
             end
             return ret
         end
@@ -90,7 +90,7 @@ class SalesSummary
     end
 
     def returned_total
-        total = Money.new
+        total = BigDecimal.zero
         @sales.each do | sale |
             total += sale.total_returned
         end
@@ -98,7 +98,7 @@ class SalesSummary
     end
 
    def returned_tax
-        total = Money.new
+        total = BigDecimal.zero
         @sales.each do | sale |
             total += sale.total_tax_returned
         end
@@ -106,7 +106,7 @@ class SalesSummary
     end
 
     def subtotal
-        stotal = ::Money.new
+        stotal = BigDecimal.zero
         @sales.each do | sale |
             stotal += sale.subtotal
         end
@@ -118,7 +118,7 @@ class SalesSummary
     end
 
     def tax_collected
-        stax = Money.new
+        stax = BigDecimal.zero
         @sales.each do | sale |
             stax += sale.tax
         end
@@ -126,7 +126,7 @@ class SalesSummary
     end
 
     def amount_of_type( type )
-        total = Money.new
+        total = BigDecimal.zero
         @sales.each do | sale |
             for payment in sale.payments
                 total += payment.amount if payment.payment_type == type

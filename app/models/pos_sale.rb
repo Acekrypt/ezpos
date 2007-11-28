@@ -1,6 +1,6 @@
 class PosSale < ActiveRecord::Base
 
-    belongs_to :customer, :class_name=>'Customer'
+    belongs_to :customer, :class_name=>'Customer', :foreign_key=>'customer_id'
 
     has_many :skus, :class_name=>'PosSaleSku'
     has_many :returns, :class_name=>'PosSaleSkuReturns', :through => :skus
@@ -49,26 +49,26 @@ class PosSale < ActiveRecord::Base
     end
 
     def discount_amount
-        m=Money.new
+        m=BigDecimal.zero
         skus.each{ | s | m+=s.discount }
         m
     end
 
 
     def total
-        m=Money.new
+        m=BigDecimal.zero
         skus.each{ | s | m+=s.total }
         m
     end
 
     def total_returned
-        m=Money.new
+        m=BigDecimal.zero
         skus.each{ | s | m+= s.total_returned }
         m
     end
 
     def total_tax_returned
-        m=Money.new
+        m=BigDecimal.zero
         skus.each{ | s | m+= s.total_tax_returned }
         m
     end
@@ -82,19 +82,19 @@ class PosSale < ActiveRecord::Base
     end
 
     def subtotal
-        m=Money.new
+        m=BigDecimal.zero
         skus.each{ | s | m+=s.subtotal }
         m
     end
 
     def tax
-        m=Money.new
+        m=BigDecimal.zero
         skus.each{ | s | m+=s.tax }
         m
     end
 
     def change_given
-        rec=Money.new
+        rec=BigDecimal.zero
         payments.each{ | s | rec+=s.amount }
         return rec-total
     end

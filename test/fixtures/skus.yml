@@ -1,46 +1,20 @@
 ---
 non:
-  price4: 0.0
-  level6: "0"
-  isbn:
-  price5: 0.0
-  category:
-  um: none
-  price6: 0.0
-  cost:
+  inv_mast_uid: 1
+  deleted_flag: false
+  cost: 0.0
   code: NOT EXISTENT
-  webonly: true
+  uom: 'EA'
   id: 1
-  level1: "0"
-  level2: "0"
-  price1: 0.0
-  on_hand: 0
-  level3: "0"
+  price: 0.0
   descrip: "Sorry, we no longer sell this item."
-  price2: 0.0
-  level4: "0"
-  price3: 0.0
-  level5: "0"
 
 return:
-  price4: 0.0
-  level6: "0"
-  isbn:
-  price5: 555
-  category:
-  um: none
-  price6: 0.0
-  cost:
+  inv_mast_uid: 2
+  deleted_flag: false
+  cost: 0.0
   code: RETURN
-  webonly: true
+  uom: 'EA'
   id: 2
-  level1: "0"
-  level2: "0"
-  price1: 0.0
-  on_hand: 0
-  level3: "5"
+  price: 0.0
   descrip: Returned Item.
-  price2: 0.0
-  level4: "0"
-  price3: 34
-  level5: "532"

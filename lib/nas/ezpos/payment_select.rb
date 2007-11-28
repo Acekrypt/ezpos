@@ -14,7 +14,7 @@ class PaymentSelect < Gtk::Dialog
         self.modal=true
         @types=Hash.new
         @current_boxes=Array.new
-        @amount=Money.new(0)
+        @amount=BigDecimal.zero
         @transaction_id
 
         label = Gtk::Label.new
@@ -60,7 +60,7 @@ class PaymentSelect < Gtk::Dialog
         hbox.pack_start( Gtk::Label.new( 'Amount: ' ),false )
         @amount_entry=Gtk::Entry.new
         @amount_entry.activates_default=true
-        @amount_entry.text=remaining.to_s
+        @amount_entry.text=remaining.money
         hbox.pack_start( @amount_entry,true,true )
 
         @ok=false
@@ -86,7 +86,7 @@ class PaymentSelect < Gtk::Dialog
             @current_boxes.each{ |bx| bx.text="" }
         end
         @values=Array.new
-        @amount=Money.new
+        @amount=BigDecimal.zero
 
         if resp ==  Gtk::Dialog::RESPONSE_OK
             @selected_type.data=custom_input_values
@@ -95,7 +95,7 @@ class PaymentSelect < Gtk::Dialog
                 @ok=true
                 @transaction_id=@selected_type.transaction
                 @values.push( *custom_input_values )
-                @amount=Money.new( @amount_entry.text )
+                @amount=BigDecimal.new( @amount_entry.text )
                 self.destroy
             else
                 dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,

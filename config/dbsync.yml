@@ -11,8 +11,8 @@ files:
     class: Sku
     src-table: inv_mast
     map:
-      cost: "inv_mast.cost*100"
-      price: "inv_mast.price*100"
+      cost: "inv_mast.cost"
+      price: "inv_mast.price"
       code: 'inv_mast.item_id'
 
 
@@ -23,6 +23,6 @@ files:
     src-table: p21_customers
     map:
       code: "p21_customers.legacy_id"
-      credit_limit_used: "p21_customers.credit_limit_used*100"
-      credit_limit: "p21_customers.credit_limit*100"
+      credit_limit_used: "p21_customers.credit_limit_used"
+      credit_limit: "p21_customers.credit_limit"
 

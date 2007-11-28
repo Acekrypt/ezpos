@@ -9,6 +9,7 @@ require 'nas/ezpos/cash_drawer'
 require 'nas/ezpos/display_pole'
 require 'nas/ezpos/customer_info_dialog'
 
+
 module NAS
 
 module EZPOS
@@ -110,8 +111,7 @@ class SaleWidget < Gtk::VBox
 
         ReceiptPrinter.print_signature_slip( @sale ) if need_signature
 
-        if remaining.cents < 0
-            remaining=Money.new( remaining.cents.abs )
+        if remaining.round(2) < 0
             dialog = Gtk::MessageDialog.new( nil,
                                              Gtk::Dialog::MODAL,
                                              Gtk::MessageDialog::INFO,
@@ -131,7 +131,7 @@ class SaleWidget < Gtk::VBox
         need_signature=false
         while true # loop until we have it all paid
 
-            while remaining.cents > 0 do
+            while remaining.round(2) > 0 do
                 ps=PaymentSelect.new( @sale.total, remaining )
                 if ps.ok?
                     payments.push( ps )
@@ -141,7 +141,7 @@ class SaleWidget < Gtk::VBox
                 end
             end
 
-            if remaining <= Money::ZERO
+            if remaining.round(2) <= 0
                 bad_payments=Array.new
                 payments.each do | payment |
                     if payment.selected_type == PosPaymentType::CREDIT_CARD
@@ -165,7 +165,7 @@ class SaleWidget < Gtk::VBox
                 end
                 bad_payments.each{ | p | payments.delete( p ) }
             end
-            break if remaining <= Money::ZERO
+            break if remaining.round(2) <= 0
         end
         return Array[ need_signature, payments, remaining ]
     end

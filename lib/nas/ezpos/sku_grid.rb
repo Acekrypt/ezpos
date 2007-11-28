@@ -123,7 +123,6 @@ class SkuGrid < Gtk::TreeView
             end
         end
         @last_discount=discount
-
     end
 
     def each_iter
@@ -141,7 +140,7 @@ class SkuGrid < Gtk::TreeView
     end
 
     def total
-        tot=Money.new( 0 )
+        tot=BigDecimal.zero
         each{ | sku | tot+=sku.discounted_total }
         return tot
     end
@@ -181,10 +180,10 @@ class SkuGrid < Gtk::TreeView
         sku.discount_percent=row[DISC]
         sku.descrip=row[ DESC ]
         sku.uom = row[ UM ]
-        sku.undiscounted_price=Money.new( row[PRICE].to_f*100 )
-        row[ TAX ] = sku.tax.to_s
-        row[ SUB_TOTAL ] = sku.subtotal.to_s
-        row[ TOTAL ] = sku.total.to_s
+        sku.undiscounted_price=BigDecimal.new( row[PRICE] )
+        row[ TAX ] = sku.tax.money
+        row[ SUB_TOTAL ] = sku.subtotal.money
+        row[ TOTAL ] = sku.total.money
         @parent_widget.update_sku(sku)
     end
 
@@ -194,12 +193,12 @@ class SkuGrid < Gtk::TreeView
         iter[ CODE  ] = sku.code
         iter[ DESC  ] = sku.descrip
         iter[ UM    ] = sku.uom
-        iter[ PRICE ] = sku.undiscounted_price.to_s
+        iter[ PRICE ] = sku.undiscounted_price.money
         iter[ QTY   ] = sku.qty
         iter[ DISC      ] = sku.discount_percent
-        iter[ TAX       ] = sku.tax.to_s
-        iter[ SUB_TOTAL ] = sku.subtotal.to_s
-        iter[ TOTAL     ] = sku.total.to_s
+        iter[ TAX       ] = sku.tax.money
+        iter[ SUB_TOTAL ] = sku.subtotal.money
+        iter[ TOTAL     ] = sku.total.money
         iter[ RETURNED  ] = sku.returned?
         self.scroll_to_cell( iter.path,nil,false,0,0 )
     end

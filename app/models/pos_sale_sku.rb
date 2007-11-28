@@ -1,13 +1,10 @@
 
 class PosSaleSku < ActiveRecord::Base
 
-    belongs_to :sale, :class_name=>'PosSale'
+    belongs_to :sale, :class_name=>'PosSale', :foreign_key=>:pos_sale_id
 
     has_many :returns, :class_name=>'PosSaleSkuReturn'
 
-    composed_of :price, :class_name=>'Money', :mapping => [ %w(price cents) ]
-    composed_of :tax, :class_name=>'Money', :mapping => [ %w(tax cents) ]
-    composed_of :discount, :class_name=>'Money', :mapping => [ %w(discount cents) ]
 
     def PosSaleSku.from_sku( sku )
         pps=PosSaleSku.new
@@ -22,7 +19,7 @@ class PosSaleSku < ActiveRecord::Base
     def discount_percent
         return @discount_percent if @discount_percent
         return 0 if self.discount.zero? || self.undiscounted_price.zero?
-        @discount_percent=((self.discount.cents.to_f/self.undiscounted_price.cents.to_f)*100).round
+        @discount_percent = ( (self.discount / self.undiscounted_price ) * 100 ).round
         return @discount_percent
     end
 
@@ -45,7 +42,7 @@ class PosSaleSku < ActiveRecord::Base
         entry.tax=self.tax*-1
         entry.descrip=self.code + '-' + self.descrip
         entry.price=self.price*-1
-        entry.discount=Money::ZERO
+        entry.discount=BigDecimal.zero
         return Array[ entry, ret ]
     end
 
@@ -58,13 +55,13 @@ class PosSaleSku < ActiveRecord::Base
         @discount_percent=f
         p=self.undiscounted_price
         if @discount_percent > 0
-            self.price=Money.new( p * ( 1-( @discount_percent.to_f/100 ) ) )
+            self.price= p * ( 1-( @discount_percent.to_f/100 ) )
             self.discount=p-self.price
         else
             self.price=p
-            self.discount=Money::ZERO
+            self.discount=BigDecimal.zero
         end
-        self.tax=Money.new( self.price * self.tax_rate ) * self.qty
+        self.tax=self.price * self.tax_rate * self.qty
     end
 
     def discounted?
@@ -72,14 +69,14 @@ class PosSaleSku < ActiveRecord::Base
     end
 
     def tax_rate=( rate )
-        self.tax=Money.new( self.price * rate ) * self.qty
+        self.tax=( self.price * rate ) * self.qty
         @rate=rate
     end
 
 
     def tax_rate
         return @rate if @rate
-        @rate=self.tax.cents.to_f/self.price.cents.to_f
+        @rate=self.tax/self.price
     end
 
     def undiscounted_price
@@ -87,9 +84,9 @@ class PosSaleSku < ActiveRecord::Base
     end
 
     def undiscounted_price=( new_price )
-        self.price=Money.new( new_price * ( 1-( @discount_percent.to_f/100 ) ) )
+        self.price=( 1-( @discount_percent.to_f/100 ) ) *  new_price
         self.discount=new_price-self.price
-        self.tax=Money.new( self.price * self.tax_rate ) * self.qty
+        self.tax = self.price * self.tax_rate * self.qty
     end
 
     def subtotal
@@ -101,7 +98,7 @@ class PosSaleSku < ActiveRecord::Base
     end
 
     def total
-        self.tax+self.subtotal
+        (self.tax+self.subtotal).round(2)
     end
 
     def total_returned
@@ -109,7 +106,7 @@ class PosSaleSku < ActiveRecord::Base
     end
 
     def total_tax_returned
-        return Money::ZERO if total_returned.zero?
-        Money.new( total_returned.cents*self.tax_rate )
+        return BigDecimal.zero if total_returned.zero?
+        total_returned*self.tax_rate
     end
 end

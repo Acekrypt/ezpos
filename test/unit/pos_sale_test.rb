@@ -24,19 +24,19 @@ class PosSaleTest < Test::Unit::TestCase
   def test_total
       sale=pos_sales( :sale )
       assert_equal( sale.tax+sale.subtotal, sale.total )
-      assert_equal( sale.total, Money.new( 15663 ) )
+      assert_equal( BigDecimal.new('160.68'), sale.total )
   end
 
   def test_subtotal
-      assert_equal( pos_sales( :sale).subtotal, Money.new( 15404 ) )
+      assert_equal( 154.04, pos_sales( :sale).subtotal )
   end
 
   def test_tax
-      assert_equal( pos_sales( :sale).tax, Money.new( 259 ) )
+      assert_equal(6.64, pos_sales( :sale).tax )
   end
 
   def test_change
-      assert_equal( pos_sales( :sale).change_given, Money.new( 1275 ) )
+      assert_equal( BigDecimal.new('8.32'), pos_sales( :sale).change_given )
   end
 
 end

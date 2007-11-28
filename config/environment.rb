@@ -79,7 +79,20 @@ end
 
 # config.action_mailer.delivery_method=:smtp
 
-ActionMailer::Base.server_settings = {
+ActionMailer::Base.smtp_settings = {
     :address => "mail.allmed.net",
     :port => 25
 }
+
+class BigDecimal
+    def money
+        sprintf('%0.2f',self)
+    end
+    def format
+        sprintf('%0.2f',self)
+    end
+    def BigDecimal.zero
+        BigDecimal.new('0')
+    end
+end
+

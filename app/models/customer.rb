@@ -4,11 +4,6 @@ class Customer < ActiveRecord::Base
     set_primary_key :customer_id
 
 
-    composed_of :credit_limit, :class_name => "Money", :mapping => [ %w(credit_limit cents) ]
-
-    composed_of :credit_limit_used, :class_name => "Money", :mapping => [ %w(credit_limit_used cents) ]
-
-
     def credit_hold?
         ( credit_limit_used > credit_limit || credit_status != 'GOOD' || net_days == 0 )
     end

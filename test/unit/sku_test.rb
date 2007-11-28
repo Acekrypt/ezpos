@@ -25,14 +25,14 @@ class SkuTest < Test::Unit::TestCase
     end
 
     def test_price
-        assert_kind_of( Money, @ret.price1 )
-        assert_equal( "$0.00", @ret.price1.format )
-        assert_equal( Money.empty, @ret.price )
+        assert_kind_of( BigDecimal, @ret.price1 )
+        assert_equal( "$0.00", @ret.price1.money )
+        assert_equal( BigDecimal.new('0'), @ret.price )
 
         customer=customers( :special )
         assert_kind_of Customer, customer
 
-        assert_equal( Money.new( 555 ), @ret.price( customer ) )
+        assert_equal( BigDecimal.new( '555' ), @ret.price( customer ) )
     end
 
 

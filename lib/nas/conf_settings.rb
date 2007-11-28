@@ -4,7 +4,7 @@ module ConfSettings
 
     def self.add(setting,value)
       File.open( "#{RAILS_ROOT}/config/settings.yml",'a' ) do | f |
-            f.write( "#{setting}:#{value}\n" )
+            f.write( "#{setting}: #{value}\n" )
         end
     end
 

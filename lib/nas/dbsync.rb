@@ -150,13 +150,28 @@ class DBSync
             success=true
             begin
                 loc = file['location']
+
                 obj.connection.execute( "delete from #{file['src-table']}" )
-                res=`bunzip2 --force --keep #{loc}`
+                res=`bunzip2 --force #{loc}`
                 yield [ res.empty?, "bunzip2 #{loc}" ]
                 loc.gsub!(/\.bz2$/,'')
-                obj.connection.execute( "COPY #{file['src-table']} from '#{loc}'" )
-                yield [ true, "COPY #{file['src-table']} from '#{loc}'" ]
+
+                File.open( loc+'.clean', 'w') do | dest |
+                    File.open( file['location'] ) do | src |
+                        src.each_line do  | line |
+                            els=[]
+                            line.split("\t").each do | el |
+                                els.push el.gsub( /[^[:print:]]/,'' )
+                            end
+                            dest.write( els.join("\t") + "\n" )
+                        end
+                    end
+                end
+
+                obj.connection.execute( "COPY #{file['src-table']} from '#{loc}.clean'" )
+                yield [ true, "COPY #{file['src-table']} from '#{loc}.clean'" ]
                 File.unlink( loc )
+                File.unlink( "#{loc}.clean" )
             rescue ActiveRecord::StatementInvalid
                 success=false
                 yield [false,"COPY #{file['src-table']} from '#{file['location']}'" ]

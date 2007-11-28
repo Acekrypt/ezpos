@@ -1,18 +1,16 @@
 ---
 pos_payment_6:
-  occured: 2006-03-14 11:36:46 -06:00
   pos_sale_id: 1
   id: 6
   transaction_id: ''
   pos_payment_type_id: 6
   customer_id: 1
-  amount: 15515
+  amount: 155.15
 
 pos_payment_7:
-  occured: 2006-03-14 11:38:38 -06:00
   pos_sale_id: 1
   id: 7
   transaction_id: ''
   pos_payment_type_id: 6
   customer_id: 2
-  amount: 1423
+  amount: 14.23

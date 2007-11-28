@@ -17,7 +17,7 @@ class ReceiptPrinter
         recpt.puts LINE
         sale.payments.each do | payment |
             if payment.payment_type == PosPaymentType::CREDIT_CARD
-                recpt.puts sprintf('%-25s%15s',payment.payment_type.name,payment.amount.format )
+                recpt.puts sprintf('%-25s%15s',payment.payment_type.name,payment.amount )
             end
         end
         recpt.puts LINE

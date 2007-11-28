@@ -638,8 +638,8 @@ class PDF
             end
             txt = txt.gsub(')', '\\)')
             txt.gsub!('(', '\\(')
-		# hack, but can't figure out how to include a \
-		# this does not work: txt.gsub!('\\', '\\\\')
+                # hack, but can't figure out how to include a \
+                # this does not work: txt.gsub!('\\', '\\\\')
             txt.gsub!('\\', '')
             if @ColorFlag
                 s=s+'q '+@TextColor+' '
@@ -1586,7 +1586,7 @@ class PDF
         if txt.is_a?( Numeric ) && align.nil?
             align='R'
             txt=txt.to_s
-        elsif txt.is_a?( Money ) && align.nil?
+        elsif txt.is_a?( BigDecimal ) && align.nil?
             align='R'
             txt=txt.format
         elsif align.nil?

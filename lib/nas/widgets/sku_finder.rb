@@ -135,7 +135,7 @@ class SkuFinder < Gtk::VBox
                     line = @grid_items.append
                     line[0] = row['code']
                     line[1] = row['descrip']
-                    line[2] = Money.new( row['cost'] ).format
+                    line[2] = row['cost'].money
                 end
 #                ActiveRecord::Base.connection.execute("set enable_seqscan to default")
 
@@ -147,7 +147,7 @@ class SkuFinder < Gtk::VBox
                         line = @grid_items.append
                         line[0] = row['code']
                         line[1] = row['descrip']
-                        line[2] = Money.new( row['cost'] ).format
+                        line[2] = row['cost'].money
                     end
                  end
              end

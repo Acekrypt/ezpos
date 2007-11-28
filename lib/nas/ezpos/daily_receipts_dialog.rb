@@ -65,7 +65,7 @@ class DailyReceiptsDialog < Gtk::Dialog
     def create_entry( name )
         ent=Gtk::Entry.new
         ent.editable=self.allow_edit?
-        ent.text=@receipt.method(name).call.to_s if @receipt
+        ent.text=@receipt[ name ].money if @receipt
         return ent
     end
 
@@ -82,11 +82,11 @@ class DailyReceiptsDialog < Gtk::Dialog
                 @receipt = PosDailyReceipt.new
                 @receipt.day=@date
             end
-            @receipt.cash = Money.new(@cash.text.to_f*100)
-            @receipt.checks = Money.new(@checks.text.to_f*100)
-            @receipt.credit_cards = Money.new(@credit_cards.text.to_f*100)
-            @receipt.billing = Money.new( @billing.text.to_f*100 )
-            @receipt.returns = Money.new( @returns.text.to_f*100 )
+            @receipt.cash = BigDecimal.new(@cash.text)
+            @receipt.checks = BigDecimal.new(@checks.text)
+            @receipt.credit_cards = BigDecimal.new(@credit_cards.text)
+            @receipt.billing = BigDecimal.new( @billing.text)
+            @receipt.returns = BigDecimal.new( @returns.text)
             @receipt.save
         end
         self.destroy

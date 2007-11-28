@@ -5,11 +5,11 @@ a:
   pos_sale_id: 1
   code: '0001'
   descrip: test sku
-  um: ea
-  price: 3434
+  uom: ea
+  price: 34.34
   qty: 1
-  tax: 234
-  discount: 343
+  tax: 2.34
+  discount: 3.43
 
 
 b:
@@ -17,8 +17,8 @@ b:
   pos_sale_id: 1
   code: '0003'
   descrip: test sku
-  um: ea
-  price: 3434
+  uom: ea
+  price: 34.34
   qty: 3
   tax: 2
   discount: 0
@@ -29,9 +29,9 @@ c:
   pos_sale_id: 1
   code: '0001'
   descrip: test sku
-  um: ea
-  price: 834
+  uom: ea
+  price: 8.34
   qty: 2
-  tax: 23
+  tax: 2.3
   discount: 3
 
