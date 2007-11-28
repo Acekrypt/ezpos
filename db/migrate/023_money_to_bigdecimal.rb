@@ -16,7 +16,10 @@ class MoneyToBigdecimal < ActiveRecord::Migration
     end
 
     def self.up
+        execute 'drop view am_barcoder_items_view'
         to_m :skus, :price
+        execute 'create view am_barcoder_items_view as select skus.code AS item_id, skus.descrip AS extended_desc, skus.price from skus'
+
         to_m :customers, :credit_limit
         to_m :customers, :credit_limit_used
         to_m :pos_daily_receipts, :checks
