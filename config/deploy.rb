@@ -85,12 +85,19 @@ task :spy do | s |
     end
 end
 
-
+desc "Control register screens via vnc"
 task :vnc do | s |
     s.roles[:app].each do | server | #methods
         pid=Kernel.fork do
             Kernel.exec( "xvncviewer -passwd ./config/vnc.passwd #{server}" )
         end
         Process.detach( pid )
+    end
+end
+
+desc "Show last 50 lines from logs .xsession-errors"
+task :logtail do | s |
+    s.roles[:app].each do | server | #methods
+        run "tail -n50 /home/auto/.xsession-errors"
     end
 end
