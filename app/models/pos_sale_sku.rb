@@ -90,11 +90,11 @@ class PosSaleSku < ActiveRecord::Base
     end
 
     def subtotal
-        ( self.price * self.qty )
+        ( self.price * self.qty ).round(2)
     end
 
     def undiscounted_subtotal
-        ( self.undiscounted_price * self.qty )
+        ( self.undiscounted_price * self.qty ).round(2)
     end
 
     def total
@@ -102,7 +102,7 @@ class PosSaleSku < ActiveRecord::Base
     end
 
     def total_returned
-        self.price*qty_returned
+        (self.price*qty_returned).round(2)
     end
 
     def total_tax_returned

@@ -51,7 +51,7 @@ begin
             File.open( "#{DEF::POS_UPDATES_MOUNT_DIR}/pos/#{HOSTNAME}/settings.conf" ){ | f | config = YAML::load( f ) }
             log.puts "Last ran on: #{config['last-reported-time']}"
         else
-            config['last-reported-time']=Time.now-1.week
+            config['last-reported-time']=( PosSale.find(:first,:order=>'occured asc').occured - 1.day )
             log.puts "Never ran on this computer before (or conf file missing)"
         end
 
@@ -71,8 +71,8 @@ begin
         log.puts '-'*40
 
         PosPaymentType::YourPayCreditCard.charge_pending do | payment, charge |
-	    res=charge.raw
-	    log.printf( "%-8s%-10s%-17s%s\n", payment.id, res['approved'],res['tdate'],res['error'] )
+            res=charge.raw
+            log.printf( "%-8s%-10s%-17s%s\n", payment.id, res['approved'],res['tdate'],res['error'] )
         end
 
         log.puts '-'*40
