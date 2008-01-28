@@ -3,32 +3,32 @@
 (defun my-save-and-compile ()
   (interactive "")
   (save-buffer 0)
-  (compile "cd ~/code/allmed && ruby test/unit/pos_sale_sku_test.rb"))
+  (compile "cd ~/code/ezpos && ruby test/unit/pos_sale_sku_test.rb"))
 
 (defun my-save-and-compile ()
   (interactive "")
   (save-buffer 0)
-  (compile "cd ~/code/allmed && ./script/monthly-sales-summary -e development"))
+  (compile "cd ~/code/ezpos && ./script/monthly-sales-summary -e development"))
 
 (defun my-save-and-compile ()
   (interactive "")
   (save-buffer 0)
-  (compile "cd ~/code/allmed && ruby test/unit/pos_payment_type_test.rb"))
+  (compile "cd ~/code/ezpos && ruby test/unit/pos_payment_type_test.rb"))
 
 (defun my-save-and-compile ()
   (interactive "")
   (save-buffer 0)
-  (compile "cd ~/code/allmed && ./script/sales-report -e development -d 0"))
+  (compile "cd ~/code/ezpos && ./script/sales-report -e development -d 0"))
 
 (defun my-save-and-compile()
   (interactive "")
   (save-buffer 0)
-  (compile "cd ~/code/allmed && ./script/update_pos"))
+  (compile "cd ~/code/ezpos && ./script/update_pos"))
 
 (defun my-save-and-compile ()
   (interactive "")
   (save-buffer 0)
-  (compile "cd ~/code/allmed && ./script/ezpos -e development"))
+  (compile "cd ~/code/ezpos && ./script/ezpos -e development"))
 
 (defun my-save-and-compile ()
   (interactive "")

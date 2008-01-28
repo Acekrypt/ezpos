@@ -3,9 +3,10 @@ class PosSale < ActiveRecord::Base
     belongs_to :customer, :class_name=>'Customer', :foreign_key=>'customer_id'
 
     has_many :skus, :class_name=>'PosSaleSku'
-    has_many :returns, :class_name=>'PosSaleSkuReturns', :through => :skus
-    has_many :payments, :class_name=>'PosPayment'
 
+    has_many :returns, :class_name=>'PosSaleSkuReturns', :through => :skus
+
+    has_many :payments, :class_name=>'PosPayment::Base'
 
     def void(reason)
         self.voided=true
@@ -24,17 +25,27 @@ class PosSale < ActiveRecord::Base
         c.nil? ? Customer.find_by_code( DEF::ACCOUNTS['POS_CASH'] ) : c
     end
 
-    def set_default_customer
-        self.customer=Customer.find_by_code( DEF::ACCOUNTS['POS_CASH'] )
+    def set_customer
+        if payments.empty?
+            self.customer=Customer.find_by_code( DEF::ACCOUNTS['POS_CASH'] )
+        else
+            payments.each do | p |
+                if p.is_a?( PosPayment::Billing )
+                    self.customer = p.customer
+                    return
+                end
+            end
+            self.customer = payments.first.customer
+        end
     end
 
     def paid_by
         ret='CASH'
         self.payments.each do | p |
-            if p.payment_type == PosPaymentType::BILLING
+            if p.is_a?( PosPayment::Billing )
                 return p.customer.code
             end
-            ret=p.payment_type.name
+            ret=p.customer.customer_name
         end
         return ret
     end

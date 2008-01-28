@@ -1,9 +1,8 @@
+module PosPayment
 
+    class Billing < Base
 
-
-class PosPaymentType
-
-    class BillingAccount < PosPaymentType
+        set_needs 'Customer Code'
 
         def name
             if self.data
@@ -15,7 +14,7 @@ class PosPaymentType
 
         def customer
             if self.data
-                Customer.magic_find( self.data.first )
+                Customer.magic_find( self.data )
             else
                 nil
             end
@@ -36,9 +35,6 @@ class PosPaymentType
             self.data.first
         end
 
-        def needs
-            Array[ 'Customer Code' ]
-        end
 
     end # BillingAccount
 

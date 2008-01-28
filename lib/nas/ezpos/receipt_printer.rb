@@ -46,8 +46,11 @@ class ReceiptPrinter
         recpt.putc 'm'
 
         recpt.close
-
-        `lp -s -d #{DEF::RECEIPT_PRINTER} #{recpt.path}` unless DEBUG
+        if DEBUG
+            File.open(recpt.path){  |f| f.each_line{|l| STDERR.puts l } }
+        else
+            `lp -s -d #{DEF::RECEIPT_PRINTER} #{recpt.path}`
+        end
     end
 
     def ReceiptPrinter.output_skus( sale, recpt )
@@ -84,9 +87,10 @@ class ReceiptPrinter
 #        recpt.putc 0
 #        recpt.putc 25
 #        recpt.putc 250
-
-        File.open( RAILS_ROOT + "/db/" + DEF::RECEIPT_LOGO ) do | file |
-            recpt.write file.read
+        unless DEBUG
+            File.open( RAILS_ROOT + "/db/" + DEF::RECEIPT_LOGO ) do | file |
+                recpt.write file.read
+            end
         end
 
         Settings['receipt_header'].each_line{ |line|
@@ -128,9 +132,13 @@ class ReceiptPrinter
         recpt.putc 0x1B
         recpt.putc 'm'
         recpt.close
-  #      `cat #{recpt.path}`
 
-        `lp -s -d #{DEF::RECEIPT_PRINTER} #{recpt.path}` # unless DEBUG
+        if DEBUG
+            File.open(recpt.path){  |f| f.each_line{|l| STDERR.puts l } }
+        else
+            `lp -s -d #{DEF::RECEIPT_PRINTER} #{recpt.path}`
+        end
+
     end
 
 end # ReceiptPrinter

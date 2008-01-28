@@ -1,4 +1,7 @@
-require 'nas/payments/credit_card/c_yourpay.so'
+
+if DEF::POS_PROCESS_CARDS
+    require 'nas/payments/credit_card/c_yourpay.so'
+end
 
 module NAS
 

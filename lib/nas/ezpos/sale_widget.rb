@@ -75,24 +75,19 @@ class SaleWidget < Gtk::VBox
         @sale.occured=Time.now
         @sale.rep=@toolbar.rep
         @toolbar.begin_new_sale
+        @sale.set_customer
+        @sale.save
 
         (need_signature,payments,remaining)=get_payments
         return if payments.nil?
 
         if payments.empty?
-            @sale.set_default_customer
-            @sale.save
             if @sale.skus.find( :first, :conditions=>"code='RETURN'" )
-                ps=PaymentSelect.new( @sale.total, remaining )
-                if ps.ok?
-                    ps.record( @sale )
-                else
-                    return
-                end
+                ps=PaymentSelect.new( @sale, remaining )
+                return unless ps.ok?
             end
         else
-            @sale.customer=payments.first.selected_type.customer
-            payments.each{ | p | p.record( @sale ) }
+            @sale.set_customer
         end
         @sale.save
 
@@ -101,7 +96,7 @@ class SaleWidget < Gtk::VBox
 
         open_drawer=false
         payments.each do | p |
-            if p.selected_type.should_open_drawer?
+            if p.should_open_drawer?
                 open_drawer=true
                 break
             end
@@ -132,19 +127,21 @@ class SaleWidget < Gtk::VBox
         while true # loop until we have it all paid
 
             while remaining.round(2) > 0 do
-                ps=PaymentSelect.new( @sale.total, remaining )
+                ps=PaymentSelect.new( @sale, remaining )
                 if ps.ok?
-                    payments.push( ps )
-                    remaining-=ps.amount
+                    payment = ps.payment
+                    payments.push( payment )
+                    remaining-=payment.amount
                 else
+                    @sale.payments.delete
                     return
                 end
             end
 
-            if remaining.round(2) <= 0
+            if remaining <= 0
                 bad_payments=Array.new
                 payments.each do | payment |
-                    if payment.selected_type == PosPaymentType::CREDIT_CARD
+                    if payment.is_a?( PosPayment::CreditCard )
                         ccp=CreditCardPayment.new( payment )
                         if ccp.ok?
                             need_signature=true
@@ -165,7 +162,7 @@ class SaleWidget < Gtk::VBox
                 end
                 bad_payments.each{ | p | payments.delete( p ) }
             end
-            break if remaining.round(2) <= 0
+            break if remaining <= 0
         end
         return Array[ need_signature, payments, remaining ]
     end

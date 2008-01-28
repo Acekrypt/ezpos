@@ -4,24 +4,23 @@ module EZPOS
 
 class PaymentSelect < Gtk::Dialog
     MARKUP='<span weight="bold" foreground="red" size="large">'
-    BAD_CC_SWIPE = ';E/'
 
-    attr_reader :amount, :selected_type, :values
+    attr_reader :payment
 
-    def initialize( total, remaining )
+    def initialize( sale, remaining )
         super()
         self.title = 'Select Payment Type/Amount'
         self.modal=true
+        @sale=sale
         @types=Hash.new
         @current_boxes=Array.new
-        @amount=BigDecimal.zero
-        @transaction_id
+
 
         label = Gtk::Label.new
-        if total == remaining
-            label.markup="#{MARKUP}#{total.format}</span>"
+        if sale.total == remaining
+            label.markup="#{MARKUP}#{sale.total.format}</span>"
         else
-            label.markup="#{MARKUP}#{total.format} - #{(total-remaining).format} = #{remaining.format}</span>"
+            label.markup="#{MARKUP}#{sale.total.format} - #{(sale.total-remaining).format} = #{remaining.format}</span>"
         end
         vbox.pack_start( label, false )
 
@@ -32,15 +31,16 @@ class PaymentSelect < Gtk::Dialog
 
         group=Gtk::RadioButton.new
         num=1
-        methods=PosPaymentType.non_credit_card.clone
+        methods=PosPayment.non_credit_card
         if Settings['proccess_credit_cards']
-            methods << PosPaymentType::CREDIT_CARD
+            methods << PosPayment::CreditCard
         else
-            methods << PosPaymentType::CC_TERMINAL
+            methods << PosPayment::CreditCardTerminal
         end
         methods.each do | pt |
-            pt.data = nil
-            button=Gtk::RadioButton.new( group,"F#{num}-#{pt.name}" )
+#            pt=pt_class.new
+#            pt.data = nil
+            button=Gtk::RadioButton.new( group,"F#{num}-#{pt.name.demodulize.titleize}" )
             alt_s = Gtk::AccelGroup.new
             alt_s.connect( Gdk::Keyval.const_get( "GDK_F#{num}".to_sym),nil, Gtk::ACCEL_VISIBLE ) {
                 button.activate
@@ -74,33 +74,31 @@ class PaymentSelect < Gtk::Dialog
             got_response( response )
         end
         show_all
-        @selected_type=methods.first
-        @types[ @selected_type ].activate
+
+        @types[PosPayment::Cash].activate
         self.run
     end
 
     def got_response( resp )
         err=''
-        if ( @selected_type == PosPaymentType::CREDIT_CARD && custom_input_values.first == BAD_CC_SWIPE )
+        if ( @payment == PosPayment::CreditCard && PosPayment::CreditCard.is_bad_swipe?( custom_input_values.first ) )
             Gdk::Display.default.beep
             @current_boxes.each{ |bx| bx.text="" }
         end
-        @values=Array.new
-        @amount=BigDecimal.zero
 
         if resp ==  Gtk::Dialog::RESPONSE_OK
-            @selected_type.data=custom_input_values
-            err=@selected_type.error_msg
-            if err.empty?
+            @payment.data=custom_input_values.to_yaml
+            if @payment.valid?
+                @payment.amount=BigDecimal.new( @amount_entry.text )
                 @ok=true
-                @transaction_id=@selected_type.transaction
-                @values.push( *custom_input_values )
-                @amount=BigDecimal.new( @amount_entry.text )
                 self.destroy
             else
+                err=[]
+                @payment.errors.each{|el,msg| err << msg }
                 dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,
                                                  Gtk::MessageDialog::ERROR,
-                                                 Gtk::MessageDialog::BUTTONS_OK, err  )
+                                                 Gtk::MessageDialog::BUTTONS_OK,
+                                                 err.join("\n") )
                 ret = ( dialog.run == Gtk::Dialog::RESPONSE_OK )
                 dialog.destroy
                 self.run
@@ -115,17 +113,6 @@ class PaymentSelect < Gtk::Dialog
         @ok
     end
 
-    def record( sale )
-        pymt=PosPayment.new( Hash[
-                                  'payment_type'=>@selected_type,
-                                  'amount'=> @amount,
-                                  'customer'=>@selected_type.customer,
-                                  'transaction_id'=> @transaction_id,
-                                  'sale'=> sale,
-                              ] )
-        pymt.save
-        pymt
-    end
 
     def transaction_id=( trans )
         @transaction_id = trans
@@ -138,15 +125,16 @@ class PaymentSelect < Gtk::Dialog
     end
 
     def set_inputs( pt )
-        @selected_type=pt
+        @payment=pt.new
+        @payment.sale = @sale
 
         @current_boxes.each do | ( box, label, entry ) |
             self.vbox.remove( box )
         end
         @current_boxes.clear
-        pt.needs.each do | needs |
+        pt.needs.each do | need |
             box=Gtk::HBox.new
-            label=Gtk::Label.new( needs )
+            label=Gtk::Label.new( need )
             entry=Gtk::Entry.new
             entry.activates_default=true
             @current_boxes <<  Array[ box, label, entry ]

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+
+cd lib/nas/ezpos/display_pole
+ruby extconf.rb
+make
+
+cd -
+
+

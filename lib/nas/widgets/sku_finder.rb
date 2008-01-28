@@ -122,35 +122,27 @@ class SkuFinder < Gtk::VBox
         end
     end
 
+
     def got_key( widget, key )
         char = Gdk::Keyval.to_name( key.keyval )
         return if char.nil?
         char.delete!( 'KP_' )
+        code = widget.text.upcase
         if 1 == char.size
             char = char[0]
             if char > 47 && char < 123
+                code << ( sprintf('%c',char) +'%' ).upcase
+            elsif 'BackSpace' == char
                 @grid_items.clear
-#                ActiveRecord::Base.connection.execute("set enable_seqscan to off")
-                ActiveRecord::Base.connection.select_all( "select code, descrip, round(cost::numeric/100,2) as cost from skus where upper(code) like #{ActiveRecord::Base.quote( (widget.text + sprintf('%c',char) +'%' ).upcase )} limit 100" ).each do | row |
-                    line = @grid_items.append
-                    line[0] = row['code']
-                    line[1] = row['descrip']
-                    line[2] = row['cost'].money
-                end
-#                ActiveRecord::Base.connection.execute("set enable_seqscan to default")
-
-            end
-        else if 'BackSpace' == char
-                 @grid_items.clear
-                 if widget.text.size > 1
-                     ActiveRecord::Base.connection.select_all( "select code, descrip,round(cost::numeric/100,2) as cost from skus where upper(code) like #{ActiveRecord::Base.quote( widget.text.chop.upcase + '%' )} limit 100" ).each do | row |
-                        line = @grid_items.append
-                        line[0] = row['code']
-                        line[1] = row['descrip']
-                        line[2] = row['cost'].money
-                    end
-                 end
+                code.chop
              end
+        end
+        @grid_items.clear
+        ActiveRecord::Base.connection.select_all( "select code, descrip, round(cost::numeric/100,2) as cost from skus where upper(code) like #{ActiveRecord::Base.connection.quote( code ) + '%'} limit 100" ).each do | row |
+            line = @grid_items.append
+            line[0] = row['code']
+            line[1] = row['descrip']
+            line[2] = BigDecimal.new( row['cost'] ).format
         end
         false
     end
