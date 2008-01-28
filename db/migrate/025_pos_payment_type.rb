@@ -6,12 +6,12 @@ class PosPaymentType < ActiveRecord::Migration
       add_column 'pos_payments', 'post_processed', :boolean, :default=>'f'
       execute <<EOS;
 update pos_payments set type = case pos_payment_type_id
-when 1 then 'PosPayment::CCTerminal'
+when 1 then 'PosPayment::CreditCardTerminal'
 when 2 then 'PosPayment::Cash'
 when 3 then 'PosPayment::Check'
 when 4 then 'PosPayment::Billing'
 when 5 then 'PosPayment::GiftCard'
-when 6 then 'PosPayment::YourPay'
+when 6 then 'PosPayment::CreditCard'
 else 'UNK'
 end
 EOS
@@ -26,12 +26,12 @@ EOS
       add_column 'pos_payments', 'pos_payment_type_id', :int
       execute <<EOS;
 update pos_payments set pos_payment_type_id = case type
-when 'PosPayment::CCTerminal' then 1
+when 'PosPayment::CreditCardTerminal' then 1
 when 'PosPayment::Cash' then 2
 when 'PosPayment::Check' then 3
 when 'PosPayment::Billing' then 4
 when 'PosPayment::GiftCard' then 5
-when 'PosPayment::YourPay' then 6
+when 'PosPayment::CreditCard' then 6
 else 0
 end
 EOS
