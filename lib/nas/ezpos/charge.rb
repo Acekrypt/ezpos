@@ -2,6 +2,8 @@
 
 require 'getoptlong'
 
+
+
 env='production'
 opts = GetoptLong.new(  [ "--enviroment", "-e", GetoptLong::OPTIONAL_ARGUMENT],
                         [ "--amt","-a", GetoptLong::REQUIRED_ARGUMENT ],
@@ -31,6 +33,7 @@ else
     DEBUG=true
 end
 
+
 RAILS_ENV=env
 
 require File.dirname( __FILE__) + '/../../../config/environment'
@@ -39,10 +42,11 @@ require 'nas/payments/credit_card/yourpay'
 
 auth=NAS::Payment::CreditCard::YourPay.f2f_authorize( amount, num, mon, yr )
 
+
 if auth.ok?
         puts auth.ordernum
-        exit! 0
+        exit 0
 else
         puts auth.error
-        exit! 1
+        exit 1
 end

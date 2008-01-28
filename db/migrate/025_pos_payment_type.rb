@@ -3,7 +3,7 @@ class PosPaymentType < ActiveRecord::Migration
       `sudo apt-get install libgpgme-ruby -y`
 
       add_column 'pos_payments', 'type', :text
-      add_column 'pos_payments', 'post_processed', :boolean
+      add_column 'pos_payments', 'post_processed', :boolean, :default=>'f'
       execute <<EOS;
 update pos_payments set type = case pos_payment_type_id
 when 1 then 'PosPayment::CCTerminal'

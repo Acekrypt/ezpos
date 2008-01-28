@@ -70,7 +70,7 @@ begin
 
         log.puts '-'*40
 
-        PosPaymentType::YourPayCreditCard.charge_pending do | payment, charge |
+        PosPayment::CreditCard.charge_pending do | payment, charge |
             res=charge.raw
             log.printf( "%-8s%-10s%-17s%s\n", payment.id, res['approved'],res['tdate'],res['error'] )
         end

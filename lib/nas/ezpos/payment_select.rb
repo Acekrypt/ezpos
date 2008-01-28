@@ -80,33 +80,52 @@ class PaymentSelect < Gtk::Dialog
     end
 
     def got_response( resp )
-        err=''
         if ( @payment == PosPayment::CreditCard && PosPayment::CreditCard.is_bad_swipe?( custom_input_values.first ) )
             Gdk::Display.default.beep
             @current_boxes.each{ |bx| bx.text="" }
         end
-
         if resp ==  Gtk::Dialog::RESPONSE_OK
-            @payment.data=custom_input_values.to_yaml
+            @payment.data=custom_input_values.first
             if @payment.valid?
-                @payment.amount=BigDecimal.new( @amount_entry.text )
-                @ok=true
-                self.destroy
+                if payment.is_a?( PosPayment::CreditCard )
+                    ccp=CreditCardPayment.new( custom_input_values, @amount_entry.text )
+                    puts "DID CC PAY: #{ccp.ok?}"
+                    if ccp.ok?
+                        @payment.data = ccp.msg
+                        finished_ok
+                    else
+                        show_errors( [ "Credit Card Failed to process.\nMsg Returned:\n#{ccp.msg}" ] )
+
+                    end
+                else
+                    finished_ok
+                end
             else
                 err=[]
                 @payment.errors.each{|el,msg| err << msg }
-                dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,
-                                                 Gtk::MessageDialog::ERROR,
-                                                 Gtk::MessageDialog::BUTTONS_OK,
-                                                 err.join("\n") )
-                ret = ( dialog.run == Gtk::Dialog::RESPONSE_OK )
-                dialog.destroy
-                self.run
+                show_errors( err )
             end
         else
             @ok=false
             self.destroy
         end
+    end
+
+    def finished_ok
+        @payment.amount=BigDecimal.new( @amount_entry.text )
+        @payment.save!
+        @ok=true
+        self.destroy
+    end
+
+    def show_errors(errors)
+        dialog = Gtk::MessageDialog.new( nil,Gtk::Dialog::MODAL,
+                                         Gtk::MessageDialog::ERROR,
+                                         Gtk::MessageDialog::BUTTONS_OK,
+                                         errors.join("\n") )
+        ret = ( dialog.run == Gtk::Dialog::RESPONSE_OK )
+        dialog.destroy
+        self.run
     end
 
     def ok?

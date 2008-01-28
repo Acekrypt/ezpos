@@ -10,17 +10,30 @@ module PosPayment
         validates_length_of :data,:minimum=>3, :message=>'Credit Card not entered'
 
 
+        def before_destroy
+            if self.post_processed
+                errors.push("Cannot delete a credit card payment once it's been batched.")
+                return false
+            else
+                cv=CcVoid.new( { :auth_number=>self.data,
+                                   :voided_at=>Time.now,
+                                   :sale_id=>self.sale.id
+                            } )
+                cv.save!
+            end
+        end
 
         def self.is_bad_swipe?(txt)
             (txt.size < 15)
         end
 
         def self.charge_pending
-            PosPayment.find( :all, :conditions=>[ "pos_payment_type_id=( select id from pos_payment_types where type = 'PosPaymentType::YourPayCreditCard') and transaction_id not like 'XXX-%%'" ], :include=>:sale ).each do | payment |
+            CreditCard.find( :all, :conditions=>[ "post_processed = 'f'" ], :include=>:sale ).each do | payment |
                 next if payment.sale.voided
-                res=NAS::Payment::CreditCard::YourPay.charge_f2f_authorization( payment.transaction_id, payment.amount )
+                RAILS_DEFAULT_LOGGER.info "BATCHING #{sale.id} #{payment.data} #{payment.amount}"
+                res=NAS::Payment::CreditCard::YourPay.charge_f2f_authorization( payment.data, payment.amount )
                 yield [ payment, res ] if block_given?
-                payment.transaction_id='XXX-'+payment.transaction_id
+                payment.post_processed = true
                 payment.save
             end
         end

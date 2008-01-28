@@ -22,8 +22,8 @@ end
 RAILS_ENV=env
 
 require File.dirname( __FILE__ ) + '/../config/environment'
-
 require 'nas/ezpos/main_window'
+
 
 
 Gtk.init

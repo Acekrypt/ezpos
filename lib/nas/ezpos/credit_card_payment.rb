@@ -1,4 +1,3 @@
-require 'nas/payments/credit_card/yourpay'
 require 'open4'
 
 module NAS
@@ -8,10 +7,11 @@ module EZPOS
 class CreditCardPayment < Gtk::Dialog
 
 
-    def initialize( payment )
+    def initialize( values, amount )
         super()
         @msg=''
-        @payment=payment
+        @values=values
+        @amount=amount
         self.charge
 
         label = Gtk::Label.new( 'Processing Credit Card Payment' )
@@ -31,11 +31,12 @@ class CreditCardPayment < Gtk::Dialog
     end
 
     def pulse
-        status = @io.wait(Process::WNOHANG)
+        ignored,status = Process::waitpid2(@io.pid,Process::WNOHANG)
         if status
             begin
                 @ok = ( status.exitstatus == 0 )
-                @msg = @io.stdout.readline
+                @msg = @io.readline.chomp
+                RAILS_DEFAULT_LOGGER.info "CC EXIT PROCESS EXIT - #{@ok} - #{@msg}"
              rescue EOFError=>e
                 @msg = "Error: #{e} was encounterd.\nMost likely this is becouse invalid information was submitted." if @msg.empty?
             ensure
@@ -51,16 +52,16 @@ class CreditCardPayment < Gtk::Dialog
 
     def charge
         return if @io
-        ( num, mon,yr ) = @payment.values
+        ( num, mon,yr ) = @values
         match = /(\d+)=(\d{2})(\d{2})/.match( num )
         if match
             num=match[1]
             mon=match[3]
             yr =match[2]
         end
-        cmd = "#{File.dirname( __FILE__ )}/charge.rb -e #{RAILS_ENV} --amt=#{@payment.amount} --num=#{num} --mon=#{mon} --yr=#{yr}"
-        puts cmd
-        @io=Popen4.new(cmd)
+        cmd = "#{File.dirname( __FILE__ )}/charge.rb -e #{RAILS_ENV} --amt=#{@amount} --num=#{num} --mon=#{mon} --yr=#{yr}"
+        RAILS_DEFAULT_LOGGER.info "Starting CC payment #{num}::#{mon}::#{yr}"
+        @io=IO.popen(cmd)
     end
 
     def ok?

@@ -4,7 +4,7 @@ SHELL = /bin/sh
 #### Start of system configuration section. ####
 
 srcdir = .
-topdir = /usr/lib/ruby/1.8/x86_64-linux
+topdir = /usr/lib/ruby/1.8/i486-linux
 hdrdir = $(topdir)
 VPATH = $(srcdir):$(topdir):$(hdrdir)
 prefix = $(DESTDIR)/usr
@@ -52,8 +52,8 @@ EXEEXT =
 
 RUBY_INSTALL_NAME = ruby1.8
 RUBY_SO_NAME = ruby1.8
-arch = x86_64-linux
-sitearch = x86_64-linux
+arch = i486-linux
+sitearch = i486-linux
 ruby_version = 1.8
 ruby = /usr/bin/ruby1.8
 RUBY = $(ruby)

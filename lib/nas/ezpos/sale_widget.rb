@@ -126,10 +126,11 @@ class SaleWidget < Gtk::VBox
         need_signature=false
         while true # loop until we have it all paid
 
-            while remaining.round(2) > 0 do
+            while remaining > 0 do
                 ps=PaymentSelect.new( @sale, remaining )
                 if ps.ok?
                     payment = ps.payment
+                    need_signature = true if payment.is_a?( PosPayment::CreditCard )
                     payments.push( payment )
                     remaining-=payment.amount
                 else
@@ -138,32 +139,9 @@ class SaleWidget < Gtk::VBox
                 end
             end
 
-            if remaining <= 0
-                bad_payments=Array.new
-                payments.each do | payment |
-                    if payment.is_a?( PosPayment::CreditCard )
-                        ccp=CreditCardPayment.new( payment )
-                        if ccp.ok?
-                            need_signature=true
-                            payment.transaction_id=ccp.msg
-                        else
-                            dialog = Gtk::MessageDialog.new( nil,
-                                                             Gtk::Dialog::MODAL,
-                                                             Gtk::MessageDialog::ERROR,
-                                                             Gtk::MessageDialog::BUTTONS_OK,
-                                                             "Credit Card Failed to process.\nMsg Returned:\n#{ccp.msg}" )
-                            dialog.window_position=Gtk::Window::POS_CENTER_ALWAYS
-                            dialog.run
-                            dialog.destroy
-                            remaining+=payment.amount
-                            bad_payments.push( payment )
-                        end
-                    end
-                end
-                bad_payments.each{ | p | payments.delete( p ) }
-            end
             break if remaining <= 0
         end
+        payments.each{ |p| @sale.payments << p }
         return Array[ need_signature, payments, remaining ]
     end
 
