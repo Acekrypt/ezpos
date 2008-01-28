@@ -6,7 +6,7 @@ class PosSale < ActiveRecord::Base
 
     has_many :returns, :class_name=>'PosSaleSkuReturns', :through => :skus
 
-    has_many :payments, :class_name=>'PosPayment::Base'
+    has_many :payments, :class_name=>'PosPayment::Base',:order=>'amount desc'
 
     def void(reason)
         self.voided=true
@@ -40,14 +40,7 @@ class PosSale < ActiveRecord::Base
     end
 
     def paid_by
-        ret='CASH'
-        self.payments.each do | p |
-            if p.is_a?( PosPayment::Billing )
-                return p.customer.code
-            end
-            ret=p.customer.customer_name
-        end
-        return ret
+        return self.payments.find(:first).class.name.demodulize.titleize
     end
 
     def tax_rate=( rate )

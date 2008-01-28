@@ -31,7 +31,7 @@ class HistorySales < Gtk::TreeView
 
         renderer = Gtk::CellRendererText.new
         renderer.xalign = 0.5
-        column = Gtk::TreeViewColumn.new("Customer",renderer, {:text => 2})
+        column = Gtk::TreeViewColumn.new("Type",renderer, {:text => 2})
         column.min_width = 150
         column.alignment = 0.5
         self.append_column(column)

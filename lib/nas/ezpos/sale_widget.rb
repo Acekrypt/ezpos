@@ -55,7 +55,6 @@ class SaleWidget < Gtk::VBox
                 got_sku( sku )
             end
         end
-        @toolbar.focus_rep
     end
 
 
@@ -65,7 +64,11 @@ class SaleWidget < Gtk::VBox
         @totals.sale=@sale
         @grid.sale=@sale
         @sku_finder.clear
-        @toolbar.focus_rep
+        if DEF::FOCUS_REP
+            @toolbar.focus_rep
+        else
+            self.set_focus
+        end
     end
 
     def finalize
