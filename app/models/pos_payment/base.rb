@@ -22,7 +22,8 @@ module PosPayment
 
         belongs_to :customer
 
-        validates_presence_of :customer, :sale
+        validates_presence_of :customer, :message=>'Invalid Customer'
+        validates_presence_of :sale
 
         def should_open_drawer?
             true

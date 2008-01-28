@@ -40,7 +40,12 @@ class PosSale < ActiveRecord::Base
     end
 
     def paid_by
-        return self.payments.find(:first).class.name.demodulize.titleize
+        self.payments.each do | p |
+            if p.is_a?( PosPayment::Billing )
+                return payment.customer.code_n_name
+            end
+        end
+        return self.payments.first.class.name.demodulize.titleize
     end
 
     def tax_rate=( rate )

@@ -4,7 +4,7 @@ module PosPayment
 
         set_needs 'Customer Code'
 
-        def name
+         def name
             if self.data
                 'Billing Account: ' + self.customer.code
             else
@@ -12,12 +12,12 @@ module PosPayment
             end
         end
 
-        def customer
-            if self.data
-                Customer.magic_find( self.data )
-            else
-                nil
-            end
+         def customer
+             if self.data
+                 Customer.magic_find( self.data )
+             else
+                 nil
+             end
         end
 
         def error_msg

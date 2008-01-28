@@ -18,8 +18,12 @@ class Customer < ActiveRecord::Base
         end
     end
 
+    def code_n_name
+        "#{customer_name} (#{self.id})"
+    end
+
     def self.magic_find( code )
-        if code =~ /\w/
+        if code =~ /\D/
             Customer.find( :first, :conditions => [ "code=?", code.upcase ] )
         else
             Customer.find( :first, :conditions => [ "customer_id=?", code ] )
