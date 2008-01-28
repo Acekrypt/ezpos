@@ -61,6 +61,7 @@ task :start do
 
 end
 
+desc 'Restart the POS'
 task :restart_ezpos, :roles => :web do
     sudo "killall -9 ruby"
     run 'sleep 10'
