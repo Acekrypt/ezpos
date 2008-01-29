@@ -3,10 +3,15 @@ module PosPayment
 
     class Base < ActiveRecord::Base
 
+	belongs_to :sale, :class_name=>'PosSale'
+
         def self.set_default_customer(c)
             @@def_customer=c
         end
 
+	def name
+		self.class.name.demodulize.titleize
+	end
 
         def self.set_needs(n)
             if n.is_a? Array

@@ -1,7 +1,5 @@
 
-require 'pos_payment_type'
 
-require 'nas/pdf'
 require 'nas/ezpos/sales_summary'
 require 'nas/spreadsheet/excel'
 
@@ -113,12 +111,12 @@ EOT
                     sale.skus.each do | sku |
                         ws.write( y+=1, 0, Array[ sale.id, sale.rep, sale.occured.strftime("%Y-%m-%d %H:%M"), sku.code, sku.descrip, sku.uom, sku.undiscounted_price.to_s, sku.discount_percent,sku.discount.to_s, sku.price.to_s, sku.qty, sku.tax.to_s, sku.total.to_s ] )
                         unless sale.payments.empty?
-                            tps=sale.payments.first.payment_type.name
+                            tps=sale.payments.first.name
                             if sale.payments.size > 1
                                 tps  << "-" << sale.payments.first.amount.format
                             end
                             sale.payments[1..sale.payments.size].each do | pay |
-                                tps << ', ' << (pay.payment_type.name+'-'+pay.amount.format)
+                                tps << ', ' << (pay.name+'-'+pay.amount.format)
                             end
                             ws.write( y, 13, tps )
                         end
@@ -189,7 +187,7 @@ EOT
                         sale = sku.sale
                         pdf.Cell( 20,5,'Reason:', 1, 0, 'L' )
                         pdf.Cell( 130,5, ret.reason, 'RTBL', 0,'L' )
-                        pdf.Cell( 30,5, ret.pos_payment_type.name, 'TBR', 1, 'R' )
+                        pdf.Cell( 30,5, ret.payment_type, 'TBR', 1, 'R' )
                         pdf.Cell( 15,5,'Ret: ', 'TBL', 0, 'L' )
                         pdf.Cell( 35,5,ret.occured.strftime('%I:%M%p %Y-%m-%d'), 'TBR', 0, 'R' )
                         pdf.Cell( 20,5,'Orig Sale: ', 'TBL', 0, 'L' )
@@ -227,7 +225,7 @@ EOT
                     pdf.Cell( 20, 5, 'REF#', 'TBL', 0,'L' )
                     pdf.Cell( 50, 5, payment.transaction_id, 'TBR', 0,'C' )
 
-                    pdf.Cell( 25, 5, payment.payment_type.name, 'TBL', 0,'L' )
+                    pdf.Cell( 25, 5, payment.name, 'TBL', 0,'L' )
                     pdf.Cell( 30, 5, payment.amount.format, 'TBR', 0,'R' )
                     pdf.Cell( 25, 5, 'Chng:', 'TBL', 0,'L' )
                     pdf.Cell( 30, 5, sale.change_given.format, 'TBR', 1, 'R' )

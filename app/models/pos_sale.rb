@@ -16,7 +16,7 @@ class PosSale < ActiveRecord::Base
     def customer
         c=nil
         self.payments.each do | p |
-            if p.payment_type == PosPaymentType::BILLING
+            if p.payment_type == PosPayment::Billing
                 c=p.customer
                 break
             end

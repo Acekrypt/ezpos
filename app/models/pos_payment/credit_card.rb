@@ -30,7 +30,7 @@ module PosPayment
         def self.charge_pending
             CreditCard.find( :all, :conditions=>[ "post_processed = 'f'" ], :include=>:sale ).each do | payment |
                 next if payment.sale.voided
-                RAILS_DEFAULT_LOGGER.info "BATCHING #{sale.id} #{payment.data} #{payment.amount}"
+                RAILS_DEFAULT_LOGGER.info "BATCHING SALE #{payment.sale.id} #{payment.data} #{payment.amount}"
                 res=NAS::Payment::CreditCard::YourPay.charge_f2f_authorization( payment.data, payment.amount )
                 yield [ payment, res ] if block_given?
                 payment.post_processed = true

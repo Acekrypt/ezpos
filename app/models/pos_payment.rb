@@ -12,6 +12,9 @@ module PosPayment
         Array[ Cash, Check, Billing, GiftCard ]
     end
 
+    def self.all
+        Array[ Cash, Check, Billing, GiftCard, CreditCardTerminal ]
+    end
 
 
 end

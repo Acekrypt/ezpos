@@ -1,5 +1,3 @@
-require 'pos_payment_type'
-
 
 module NAS
 
@@ -136,11 +134,11 @@ class SalesSummary
     end
 
     def total_checks
-        amount_of_type PosPaymentType::CHECK
+        amount_of_type PosPayment::Check
     end
 
     def total_cash
-        ret = amount_of_type PosPaymentType::CASH
+        ret = amount_of_type PosPayment::Cash
         @sales.each do | sale |
             ret -= sale.change_given
         end
@@ -148,16 +146,16 @@ class SalesSummary
     end
 
     def total_credit_cards
-        amount_of_type( PosPaymentType::CREDIT_CARD ) + amount_of_type( PosPaymentType::CC_TERMINAL )
+        amount_of_type( PosPayment::CreditCard ) + amount_of_type( PosPayment::CreditCardTerminal )
     end
 
 
     def total_billing
-        amount_of_type( PosPaymentType::BILLING )
+        amount_of_type( PosPayment::Billing )
     end
 
     def total_gift_cert
-        amount_of_type( PosPaymentType::GIFT_CERT )
+        amount_of_type( PosPayment::GiftCard )
     end
 end
 
