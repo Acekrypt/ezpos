@@ -74,7 +74,7 @@ class HistoryWidget < Gtk::VBox
         pt_box = Gtk::OptionMenu.new
         menu = Gtk::Menu.new
         for pt in PosPayment.all
-            menu.append( Gtk::MenuItem.new( pt.name.demodulize.titleize ) )
+            menu.append( Gtk::MenuItem.new( pt.name.demodulize ) )
         end
         menu.show_all
         pt_box.menu = menu
