@@ -37,7 +37,7 @@ class CreditCardPayment < Gtk::Dialog
                 @msg = @io.readline.chomp
                 RAILS_DEFAULT_LOGGER.info "CC EXIT PROCESS EXIT - #{@ok} - #{@msg}"
              rescue EOFError=>e
-                @msg = "Error: #{e} was encounterd.\nMost likely this is becouse invalid information was submitted." if @msg.empty?
+                @msg="Error: #{e} was encounterd.\nNo response was return from authorizor.Card MAY or MAY NOT be charged.\nContact support." if @msg.empty?
             ensure
                 Gtk.timeout_remove( @timeout )
                 self.destroy

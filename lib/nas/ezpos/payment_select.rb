@@ -38,8 +38,6 @@ class PaymentSelect < Gtk::Dialog
             methods << PosPayment::CreditCardTerminal
         end
         methods.each do | pt |
-#            pt=pt_class.new
-#            pt.data = nil
             button=Gtk::RadioButton.new( group,"F#{num}-#{pt.name.demodulize.titleize}" )
             alt_s = Gtk::AccelGroup.new
             alt_s.connect( Gdk::Keyval.const_get( "GDK_F#{num}".to_sym),nil, Gtk::ACCEL_VISIBLE ) {

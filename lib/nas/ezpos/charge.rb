@@ -41,7 +41,9 @@ require File.dirname( __FILE__) + '/../../../config/environment'
 require 'nas/payments/credit_card/yourpay'
 
 auth=NAS::Payment::CreditCard::YourPay.f2f_authorize( amount, num, mon, yr )
-
+auth.raw.each do | k,v |
+    RAILS_DEFAULT_LOGGER.info "#{k} => #{v}"
+end
 
 if auth.ok?
         puts auth.ordernum
