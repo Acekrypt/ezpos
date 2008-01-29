@@ -5,6 +5,7 @@ module EZPOS
 
 class CreditCardPayment < Gtk::Dialog
 
+    attr_reader :cc_number
 
     def initialize( values, amount )
         super()
@@ -51,15 +52,15 @@ class CreditCardPayment < Gtk::Dialog
 
     def charge
         return if @io
-        ( num, mon,yr ) = @values
-        match = /(\d+)=(\d{2})(\d{2})/.match( num )
+        ( @cc_number, mon,yr ) = @values
+        match = /(\d+)=(\d{2})(\d{2})/.match( @cc_number )
         if match
-            num=match[1]
+            @cc_number=match[1]
             mon=match[3]
             yr =match[2]
         end
-        cmd = "#{File.dirname( __FILE__ )}/charge.rb -e #{RAILS_ENV} --amt=#{@amount} --num=#{num} --mon=#{mon} --yr=#{yr}"
-        RAILS_DEFAULT_LOGGER.info "Starting CC payment #{num}::#{mon}::#{yr}"
+        cmd = "#{File.dirname( __FILE__ )}/charge.rb -e #{RAILS_ENV} --amt=#{@amount} --num=#{@cc_number} --mon=#{mon} --yr=#{yr}"
+        RAILS_DEFAULT_LOGGER.info "Starting CC payment #{@cc_number}::#{mon}::#{yr}"
         @io=IO.popen(cmd)
     end
 

@@ -89,6 +89,7 @@ class PaymentSelect < Gtk::Dialog
                     ccp=CreditCardPayment.new( custom_input_values, @amount_entry.text )
                     puts "DID CC PAY: #{ccp.ok?}"
                     if ccp.ok?
+                        @payment.cc_digits = ccp.cc_number[ ccp.cc_number.length-4..ccp.cc_number.length  ]
                         @payment.data = ccp.msg
                         finished_ok
                     else

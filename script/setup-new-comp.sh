@@ -104,7 +104,7 @@ ACCOUNTS:
 YOUR_PAY_CERT_PATH:  /etc/your-pay-cert.pem
 YOUR_PAY_HOST:       secure.linkpt.net
 YOUR_PAY_PORT:       1129
-YOUR_PAY_ID:         '1001116300'
+YOUR_PAY_ID:         '1001172488'
 
 EOF
 

@@ -17,7 +17,8 @@ class ReceiptPrinter
         recpt.puts LINE
         sale.payments.each do | payment |
             recpt.puts sprintf('%-25s%15s',payment.class.name.demodulize.titleize, payment.amount.format )
-            recpt.puts sprintf('     %-30s',payment.data ) unless ( payment.data.nil? || payment.data.empty? )
+            recpt.puts 'X'*( 16-payment.cc_digits.length ) + payment.cc_digits unless ( payment.cc_digits.data.nil? || payment.cc_digits.empty?)
+            recpt.puts sprintf('Auth: %-30s',payment.data ) unless ( payment.data.nil? || payment.data.empty? )
         end
         recpt.puts LINE
         output_skus( sale, recpt )
@@ -113,8 +114,8 @@ class ReceiptPrinter
         recpt.puts sprintf('Total:    %30s',sale.total.format )
         recpt.puts LINE
         sale.payments.each do | payment |
-            recpt.puts sprintf('%-25s%15s',payment.class.name.demodulize.titleize, payment.amount.format )
-            recpt.puts sprintf('     %-30s',payment.data ) unless ( payment.data.nil? || payment.data.empty? )
+            recpt.puts 'X'*( 16-payment.cc_digits.length ) + payment.cc_digits unless ( payment.cc_digits.data.nil? || payment.cc_digits.empty?)
+            recpt.puts sprintf('Auth: %-30s',payment.data ) unless ( payment.data.nil? || payment.data.empty? )
         end
         recpt.puts 'Change'   + sprintf('%34s',sale.change_given.format )
         recpt.puts LINE
