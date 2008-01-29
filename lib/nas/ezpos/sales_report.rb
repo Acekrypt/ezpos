@@ -154,17 +154,17 @@ EOT
                 pdf.Ln
                 pdf.Cell( 0, 5,'Recorded',0,1,'C')
                 coll=Array[
-                           [ 'Check', @summary.total_checks ],
-                           [ 'Cash', @summary.total_cash ],
-                           [ 'Credit Cards', @summary.total_credit_cards ],
-                           [ 'Billing', @summary.total_billing ],
-                           [ 'Gift Certificate', @summary.total_gift_cert ],
-                           [ 'Subtotal',@summary.subtotal ],
-                           [ 'Tax', @summary.tax_collected ],
-                           [ 'Total', @summary.total ],
-                           [ 'Returned', @summary.returned_total ],
-                           [ 'Returned Tax', @summary.returned_tax ],
-                           [ 'Total Amount', @summary.total_sales ],
+                           [ 'Check', @summary.total_checks.format ],
+                           [ 'Cash', @summary.total_cash.format ],
+                           [ 'Credit Cards', @summary.total_credit_cards.format ],
+                           [ 'Billing', @summary.total_billing.format ],
+                           [ 'Gift Certificate', @summary.total_gift_cert.format ],
+                           [ 'Subtotal',@summary.subtotal.format ],
+                           [ 'Tax', @summary.tax_collected.format ],
+                           [ 'Total', @summary.total.format ],
+                           [ 'Returned', @summary.returned_total.format ],
+                           [ 'Returned Tax', @summary.returned_tax.format ],
+                           [ 'Total Amount', @summary.total_sales.format ],
                           ]
                 pdf.SetX( 65 )
                 pdf.DrawTable( ['Type','Amount'],[50,30],coll )
