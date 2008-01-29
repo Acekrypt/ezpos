@@ -79,7 +79,7 @@ class HistorySales < Gtk::TreeView
 
     def update( date )
         self.model.clear
-        sales = PosSale.find_on_date( date )
+        sales = PosSale.find_on_date( date ).reverse
         sales.each do | sale |
             next if sale.voided?
             row = self.model.append
