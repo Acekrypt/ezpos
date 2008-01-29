@@ -127,7 +127,7 @@ class SalesSummary
         total = BigDecimal.zero
         @sales.each do | sale |
             for payment in sale.payments
-                total += payment.amount if payment.payment_type == type
+                total += payment.amount if payment.class == type
             end
         end
         total

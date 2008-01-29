@@ -223,7 +223,7 @@ EOT
                 sale.payments.each do | payment |
                     pdf.SetX( 20 )
                     pdf.Cell( 20, 5, 'REF#', 'TBL', 0,'L' )
-                    pdf.Cell( 50, 5, payment.transaction_id, 'TBR', 0,'C' )
+                    pdf.Cell( 50, 5, payment.data, 'TBR', 0,'C' )
 
                     pdf.Cell( 25, 5, payment.name, 'TBL', 0,'L' )
                     pdf.Cell( 30, 5, payment.amount.format, 'TBR', 0,'R' )
