@@ -35,7 +35,13 @@ class PosSaleSku < ActiveRecord::Base
 
     def return( payment_type, q,reason )
         raise ArgumentError.new( "Return Qty must be less than #{qty_unreturned}" ) if q > qty_unreturned
-        ret=PosSaleSkuReturn.new(  :payment_type=>payment_type, :qty=>q, :sku=>self, :reason=>reason, :occured=>Time.now )
+        RAILS_DEFAULT_LOGGER.info( "Returning #{code} from sale #{pos_sale_id}.  Payment type is #{payment_type}")
+        ret=PosSaleSkuReturn.new(  :payment_type=>payment_type,
+                                   :qty=>q,
+                                   :sku=>self,
+                                   :reason=>reason,
+                                   :occured=>Time.now
+                                   )
         ret.save
         entry=PosSaleSku.from_sku( Sku::RETURN )
         entry.qty=q

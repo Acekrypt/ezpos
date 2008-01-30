@@ -1,5 +1,6 @@
 class PosSaleSkuReturn < ActiveRecord::Base
-    belongs_to :sku, :class_name=>'PosSaleSku'
+
+    belongs_to :sku, :class_name=>'PosSaleSku', :foreign_key=>'pos_sale_sku_id'
 
 
     def self.find_on_date( date )

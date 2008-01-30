@@ -92,7 +92,7 @@ class HistoryWidget < Gtk::VBox
         if gs.ok?
             qty = qty_entry.text.to_i
             if qty <= sku.qty_unreturned
-                payment_type = PosPayment.all[ pt_box.history ]
+                payment_type = PosPayment.all[ pt_box.history ].name.demodulize
                 ( ret_sku, ret_rec )=sku.return( payment_type, qty, gs.to_s ) if gs.ok?
                 @app.add_sku_to_sale( ret_sku ) # if ret_sku
             else

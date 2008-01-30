@@ -13,7 +13,13 @@ module PosPayment
     end
 
     def self.all
-        Array[ Cash, Check, Billing, GiftCard, CreditCardTerminal ]
+        a = non_credit_card
+        if DEF::POS_PROCESS_CARDS
+            a << CreditCard
+        else
+            a << CreditCardTerminal
+        end
+        a
     end
 
 
