@@ -41,12 +41,16 @@ class PosSale < ActiveRecord::Base
     end
 
     def paid_by
-        self.payments.each do | payment |
-            if payment.is_a?( PosPayment::Billing )
-                return payment.customer.code_n_name
+        if self.payments.empty?
+            return 'CASH'
+        else
+            self.payments.each do | payment |
+                if payment.is_a?( PosPayment::Billing )
+                    return payment.customer.code_n_name
+                end
             end
+            return self.payments.first.name
         end
-        return self.payments.first.name
     end
 
     def tax_rate=( rate )
