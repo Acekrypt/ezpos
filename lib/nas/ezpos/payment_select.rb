@@ -83,11 +83,14 @@ class PaymentSelect < Gtk::Dialog
             @current_boxes.each{ |bx| bx.text="" }
         end
         if resp ==  Gtk::Dialog::RESPONSE_OK
+            RAILS_DEFAULT_LOGGER.info "SALE #{@sale.id} had payment type #{payment.name} selected"
+
             @payment.data=custom_input_values.first
+
             if @payment.valid?
+
                 if payment.is_a?( PosPayment::CreditCard )
                     ccp=CreditCardPayment.new( custom_input_values, @amount_entry.text )
-                    puts "DID CC PAY: #{ccp.ok?}"
                     if ccp.ok?
                         @payment.cc_digits = ccp.cc_number[ ccp.cc_number.length-4..ccp.cc_number.length  ]
                         @payment.data = ccp.msg
@@ -95,6 +98,13 @@ class PaymentSelect < Gtk::Dialog
                     else
                         show_errors( [ "Credit Card Failed to process.\nMsg Returned:\n#{ccp.msg}" ] )
 
+                    end
+                elsif payment.is_a?( PosPayment::Billing )
+                    cust_info = CustomerInfoDialog.new( payment.customer )
+                    if cust_info.ok?
+                        finished_ok
+                    else
+                        self.run
                     end
                 else
                     finished_ok

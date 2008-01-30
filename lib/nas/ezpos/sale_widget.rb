@@ -82,7 +82,9 @@ class SaleWidget < Gtk::VBox
         @sale.save
 
         (need_signature,payments,remaining)=get_payments
-        return if payments.nil?
+        if payments.nil?
+            return
+        end
 
         if payments.empty?
             if @sale.skus.find( :first, :conditions=>"code='RETURN'" )
@@ -124,25 +126,21 @@ class SaleWidget < Gtk::VBox
     end
 
     def get_payments
+        @sale.payments.delete
         payments=Array.new
         remaining=@sale.total
         need_signature=false
-        while true # loop until we have it all paid
-
-            while remaining > 0 do
-                ps=PaymentSelect.new( @sale, remaining )
-                if ps.ok?
-                    payment = ps.payment
-                    need_signature = true if payment.is_a?( PosPayment::CreditCard )
-                    payments.push( payment )
-                    remaining-=payment.amount
-                else
-                    @sale.payments.delete
-                    return
-                end
+        while remaining > 0 do # loop until we have it all paid
+            ps=PaymentSelect.new( @sale, remaining )
+            if ps.ok?
+                payment = ps.payment
+                need_signature = true if payment.is_a?( PosPayment::CreditCard )
+                payments.push( payment )
+                remaining-=payment.amount
+            else
+                @sale.payments.delete
+                return
             end
-
-            break if remaining <= 0
         end
         payments.each{ |p| @sale.payments << p }
         return Array[ need_signature, payments, remaining ]
