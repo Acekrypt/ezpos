@@ -24,9 +24,7 @@ class PosSaleSku < ActiveRecord::Base
     end
 
     def qty_returned
-        num=0
-        self.returns.each{ | ret | num+=ret.qty }
-        num
+        self.returns.sum('qty')
     end
 
     def qty_unreturned
@@ -61,8 +59,8 @@ class PosSaleSku < ActiveRecord::Base
         @discount_percent=f
         p=self.undiscounted_price
         if @discount_percent > 0
-            self.price= p * ( 1-( @discount_percent.to_f/100 ) )
-            self.discount=p-self.price
+            self.price = ( p * ( 1-( @discount_percent.to_f/100 ) ) ).round(2)
+            self.discount= ( p-self.price ).round(2)
         else
             self.price=p
             self.discount=BigDecimal.zero
@@ -75,7 +73,7 @@ class PosSaleSku < ActiveRecord::Base
     end
 
     def tax_rate=( rate )
-        self.tax=( self.price * rate ) * self.qty
+        self.tax=( ( self.price * rate ) * self.qty ).round(2)
         @rate=rate
     end
 
@@ -86,13 +84,13 @@ class PosSaleSku < ActiveRecord::Base
     end
 
     def undiscounted_price
-        self.price + self.discount
+        ( self.price + self.discount ).round(2)
     end
 
     def undiscounted_price=( new_price )
-        self.price=( 1-( @discount_percent.to_f/100 ) ) *  new_price
+        self.price= ( ( 1-( @discount_percent.to_f/100 ) ) *  new_price ).round(2)
         self.discount=new_price-self.price
-        self.tax = self.price * self.tax_rate * self.qty
+        self.tax = ( self.price * self.tax_rate * self.qty ).round(2)
     end
 
     def subtotal

@@ -51,7 +51,7 @@ class SaleWidget < Gtk::VBox
         GC.start
 
         if DEBUG
-            Sku.find(:all, :order => 'RANDOM()', :limit=>rand(5)+5 ).each do | sku |
+            Sku.find(:all, :order => 'RANDOM()', :limit=>100 ).each do | sku |
                 got_sku( sku )
             end
         end
