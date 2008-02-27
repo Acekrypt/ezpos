@@ -24,7 +24,9 @@ class PosSaleSku < ActiveRecord::Base
     end
 
     def qty_returned
-        self.returns.sum('qty')
+         num=0
+        self.returns.each{ | ret | num+=ret.qty }
+        num
     end
 
     def qty_unreturned
