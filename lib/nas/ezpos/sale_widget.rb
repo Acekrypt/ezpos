@@ -51,7 +51,7 @@ class SaleWidget < Gtk::VBox
         GC.start
 
         if DEBUG
-            Sku.find(:all, :order => 'RANDOM()', :limit=>100 ).each do | sku |
+            Sku.find(:all, :order => 'RANDOM()', :limit=>10 ).each do | sku |
                 got_sku( sku )
             end
         end
@@ -83,13 +83,17 @@ class SaleWidget < Gtk::VBox
 
         (need_signature,payments,remaining)=get_payments
         if payments.nil?
+            @sale.destroy
             return
         end
 
         if payments.empty?
             if @sale.skus.find( :first, :conditions=>"code='RETURN'" )
                 ps=PaymentSelect.new( @sale, remaining )
-                return unless ps.ok?
+                if ! ps.ok?
+                    @sale.destroy
+                    return
+                end
             end
         else
             @sale.set_customer
