@@ -57,6 +57,10 @@ class SaleWidget < Gtk::VBox
         end
     end
 
+    def abandon
+        @sale.destroy unless @sale.new_record?
+        self.reset
+    end
 
     def reset
         @sale=PosSale.new
@@ -83,7 +87,7 @@ class SaleWidget < Gtk::VBox
 
         (need_signature,payments,remaining)=get_payments
         if payments.nil?
-            @sale.destroy
+            @sale.payments.delete
             return
         end
 
@@ -91,7 +95,7 @@ class SaleWidget < Gtk::VBox
             if @sale.skus.find( :first, :conditions=>"code='RETURN'" )
                 ps=PaymentSelect.new( @sale, remaining )
                 if ! ps.ok?
-                    @sale.destroy
+                    @sale.payments.delete
                     return
                 end
             end

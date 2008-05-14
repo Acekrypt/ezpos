@@ -52,7 +52,7 @@ class SaleToolbar < Gtk::Toolbar
         self.append_space
 
         self.append( "Abandon Sale", "abort sale, starting over." ) {
-            sale.reset
+            sale.abandon
         }
 
         self.append_space
