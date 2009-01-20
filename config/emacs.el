@@ -3,7 +3,7 @@
 (defun my-save-and-compile ()
   (interactive "")
   (save-buffer 0)
-  (compile "cd ~/code/ezpos && ruby test/unit/pos_sale_sku_test.rb"))
+  (compile "cat /mnt/loki/smb/public/Move/label.txt > /dev/lp0" ) )
 
 (defun my-save-and-compile ()
   (interactive "")

@@ -7,6 +7,8 @@ class SaleToolbar < Gtk::Toolbar
     def initialize( sale )
         super()
         @sale=sale
+        self.orientation = Gtk::ORIENTATION_HORIZONTAL
+        self.toolbar_style=Gtk::Toolbar::Style::TEXT
 
         if DEF::POS_PROCESS_CARDS
                 @proc_credit_cards=Gtk::CheckButton.new('C-Cards?')
@@ -57,7 +59,7 @@ class SaleToolbar < Gtk::Toolbar
 
         self.append_space
 
-        self.append( "Finalize Sale", "complete Sale by entering payment" ) {
+        self.append( "Finalize Sale (F12)", "complete Sale by entering payment" ) {
             sale.finalize
         }
         f12k = Gtk::AccelGroup.new

@@ -628,7 +628,7 @@ class PDF
                     x*@k,(@h-(y+h))*@k,(x+w)*@k,(@h-(y+h))*@k)
             end
         end
-        if txt!=''
+        unless txt.empty?
             if align=='R'
                 dx=w-@cMargin-self.GetStringWidth(txt)
             elsif align=='C'
@@ -636,11 +636,7 @@ class PDF
             else
                 dx=@cMargin
             end
-            txt = txt.gsub(')', '\\)')
-            txt.gsub!('(', '\\(')
-                # hack, but can't figure out how to include a \
-                # this does not work: txt.gsub!('\\', '\\\\')
-            txt.gsub!('\\', '')
+            txt = escape(txt)
             if @ColorFlag
                 s=s+'q '+@TextColor+' '
             end

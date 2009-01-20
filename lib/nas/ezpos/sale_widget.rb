@@ -87,7 +87,6 @@ class SaleWidget < Gtk::VBox
 
         (need_signature,payments,remaining)=get_payments
         if payments.nil?
-            @sale.payments.delete
             return
         end
 

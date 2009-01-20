@@ -10,6 +10,19 @@
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
+# slurp up the values for the Yaml config file and
+# set them as constants
+module DEF
+    settings="#{File.dirname(__FILE__)}/settings.yml"
+    begin
+        YAML::load( File.open( settings ) ).each do | name, val |
+            DEF.const_set( name, val ) unless DEF.const_defined?( name )
+        end
+    rescue Errno::ENOENT
+        raise RuntimeError.new( "Unable to load config file from: #{settings}" )
+    end
+end
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here
 
@@ -64,18 +77,6 @@ default_config_path = 'config/default_site'
 default_config = File.join(RAILS_ROOT, default_config_path)
 require default_config
 
-# slurp up the values for the Yaml config file and
-# set them as constants
-module DEF
-    settings="#{File.dirname(__FILE__)}/settings.yml"
-    begin
-        YAML::load( File.open( settings ) ).each do | name, val |
-            DEF.const_set( name, val ) unless DEF.const_defined?( name )
-        end
-    rescue Errno::ENOENT
-        raise RuntimeError.new( "Unable to load config file from: #{settings}" )
-    end
-end
 
 # config.action_mailer.delivery_method=:smtp
 

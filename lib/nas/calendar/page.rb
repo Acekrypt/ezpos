@@ -26,7 +26,6 @@ class  Page
         memo.update({pair.last => pair.first})
     end
 
-    include Reloadable
 
     attr_reader :year, :month_number, :start_date, :end_date
 

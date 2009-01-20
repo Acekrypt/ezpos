@@ -6,7 +6,6 @@ module NAS
 module Calendar
 class Day
 
-    include Reloadable
 
     attr_reader :date, :number
 

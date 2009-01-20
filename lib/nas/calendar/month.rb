@@ -7,7 +7,6 @@ module NAS
 module Calendar
 class Month
 
-    include Reloadable
 
     attr_reader :year, :number, :start
 

@@ -6,7 +6,7 @@ server-password:  nejiwj9
 files:
 
   - dest-table: skus
-    filename: inv_mast_100.csv.bz2
+    filename: inv_mast.csv.bz2
     key: inv_mast_uid
     class: Sku
     src-table: inv_mast

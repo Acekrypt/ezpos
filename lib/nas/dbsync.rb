@@ -32,7 +32,6 @@ class DBSync
         success = true
         location="#{@settings['dumps-location']}#{file['filename']}"
         msg = "Downloading: ftp://#{@settings['master-server']}#{location}"
-        yield [ true, msg ]
         begin
             ftp = Net::FTP.new( @settings['master-server'] )
             ftp.login( @settings['server-login'], @settings['server-password'],1 )
@@ -166,10 +165,11 @@ class DBSync
                         end
                     end
                 end
-
-                obj.connection.execute( "COPY #{file['src-table']} from '/tmp/#{file['dest-table']}'" )
-                yield [ true, "COPY #{file['src-table']} from '/tmp/#{file['dest-table']}'" ]
-
+                cmd = "COPY #{file['src-table']} from '#{loc}.clean'"
+                obj.connection.execute( cmd )
+                yield [ true, cmd ]
+                File.unlink( loc )
+                File.unlink( "#{loc}.clean" )
             rescue ActiveRecord::StatementInvalid
                 success=false
                 yield [false,"COPY #{file['src-table']} from '/tmp/#{file['dest-table']}' failed"]

@@ -8,7 +8,6 @@ class Week
     attr_reader :page, :number, :start
 
 
-    include Reloadable
 
     def initialize( page, num )
         @page=page

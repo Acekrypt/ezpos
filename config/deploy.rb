@@ -47,9 +47,10 @@ EOF
     run "ln -nfs #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
 end
 
-desc "Link in the settings.yml file"
+desc "Link in the config yml files"
 task :load_basic_settings do
     run "ln -nfs #{deploy_to}/shared/config/settings.yml #{release_path}/config/settings.yml"
+    run "ln -nfs #{deploy_to}/shared/config/dbsync.yml #{release_path}/config/dbsync.yml"
 end
 
 task :after_update_code do
@@ -80,7 +81,7 @@ desc "Spy on register screens to ensure it's ok to upgrade"
 task :spy do | s |
     s.roles[:app].each do | server | #methods
         pid=Kernel.fork do
-            Kernel.exec( "xvncviewer -ViewOnly -passwd ./config/vnc.passwd #{server}" )
+            Kernel.exec( "xvncviewer -viewonly -passwd ./config/vnc.passwd #{server}" )
         end
         Process.detach( pid )
     end
