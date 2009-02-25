@@ -32,16 +32,6 @@ class MainWindow < Gtk::Window
         else
             maximize
         end
-        if DEF::MOBILE
-            dialog = Gtk::MessageDialog.new( nil,
-                                             Gtk::Dialog::MODAL,
-                                             Gtk::MessageDialog::INFO,
-                                             Gtk::MessageDialog::BUTTONS_CLOSE,
-                                             'Nicole asks: Have You set the TAX RATE?')
-            dialog.window_position=Gtk::Window::POS_CENTER_ALWAYS
-            dialog.run
-            dialog.destroy
-        end
 
         @menu=MainMenu.new( self )
 
@@ -60,6 +50,17 @@ class MainWindow < Gtk::Window
         add( main_box )
 
         self.show_all
+        
+        if DEF::MOBILE
+            dialog = Gtk::MessageDialog.new( nil,
+                                             Gtk::Dialog::MODAL,
+                                             Gtk::MessageDialog::INFO,
+                                             Gtk::MessageDialog::BUTTONS_CLOSE,
+                                             'Nicole asks: Have You set the TAX RATE?')
+            dialog.window_position=Gtk::Window::POS_CENTER_ALWAYS
+            dialog.run
+            dialog.destroy
+        end
     end
 
     def enter_deposits
