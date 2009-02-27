@@ -165,14 +165,14 @@ class DBSync
                         end
                     end
                 end
-                cmd = "COPY #{file['src-table']} from '#{loc}.clean'"
+                cmd = "COPY #{file['src-table']} from '#{loc}'"
                 obj.connection.execute( cmd )
                 yield [ true, cmd ]
-                File.unlink( loc )
-                File.unlink( "#{loc}.clean" )
+#                File.unlink( loc )
+
             rescue ActiveRecord::StatementInvalid
                 success=false
-                yield [false,"COPY #{file['src-table']} from '/tmp/#{file['dest-table']}' failed"]
+                yield [false,"#{cmd} failed"]
             end
             unless success
                 msg+= "OK\n"
