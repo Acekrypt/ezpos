@@ -12,8 +12,8 @@ class ReceiptPrinter
     def ReceiptPrinter.print_signature_slip( sale )
         time = sale.occured.strftime("%I:%M%p - ") + sale.occured.strftime("%b %d %Y")
         recpt=Tempfile.new( 'pos-sale-' )
-
-        recpt.puts sprintf('SALE #: %-6d%26s',sale.id,time )
+        name=`hostname`.chomp[0..8]
+        recpt.puts sprintf('SALE #: %-6d%8s%18s',sale.id,name,time )
         recpt.puts LINE
         sale.payments.each do | payment |
             recpt.puts sprintf('%-25s%15s',payment.class.name.demodulize.titleize, payment.amount.format )
