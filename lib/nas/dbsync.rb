@@ -149,20 +149,30 @@ class DBSync
             success=true
             begin
                 loc = file['location']
-		clean = '/tmp/' + file['src-table']
+
                 obj.connection.execute( "delete from #{file['src-table']}" )
-                File.open( clean, 'w') do | dest |
-	  	    `bzcat #{loc}`.each_line do | line |
-			dest.write( line.split("\t").map{|el| el.gsub( /[^[:print:]]/,'' ) }.join("\t") + "\n" )
+                res=`bunzip2 --keep --force #{loc}`
+                yield [ res.empty?, "bunzip2 #{loc}" ]
+                loc.gsub!(/\.bz2$/,'')
+                File.open( '/tmp/' + file['dest-table'], 'w') do | dest |
+                    File.open( file['location'] ) do | src |
+                        src.each_line do  | line |
+                            els=[]
+                            line.split("\t").each do | el |
+                                els.push el.gsub( /[^[:print:]]/,'' )
+                            end
+                            dest.write( els.join("\t") + "\n" )
+                        end
                     end
                 end
-                cmd = "COPY #{file['src-table']} from '#{clean}'"
+                cmd = "COPY #{file['src-table']} from '#{loc}.clean'"
                 obj.connection.execute( cmd )
                 yield [ true, cmd ]
-                File.unlink( clean )
+                File.unlink( loc )
+                File.unlink( "#{loc}.clean" )
             rescue ActiveRecord::StatementInvalid
                 success=false
-                yield [false,"#{cmd} failed"]
+                yield [false,"COPY #{file['src-table']} from '/tmp/#{file['dest-table']}' failed"]
             end
             unless success
                 msg+= "OK\n"
