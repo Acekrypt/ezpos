@@ -154,7 +154,8 @@ class DBSync
                 res=`bunzip2 --keep --force #{loc}`
                 yield [ res.empty?, "bunzip2 #{loc}" ]
                 loc.gsub!(/\.bz2$/,'')
-                File.open( '/tmp/' + file['dest-table'], 'w') do | dest |
+		clean_loc = '/tmp/' + file['dest-table']
+                File.open( clean_loc, 'w') do | dest |
                     File.open( file['location'] ) do | src |
                         src.each_line do  | line |
                             els=[]
@@ -165,14 +166,14 @@ class DBSync
                         end
                     end
                 end
-                cmd = "COPY #{file['src-table']} from '#{loc}.clean'"
+                cmd = "COPY #{file['src-table']} from '#{clean_loc}'"
                 obj.connection.execute( cmd )
                 yield [ true, cmd ]
                 File.unlink( loc )
-                File.unlink( "#{loc}.clean" )
+             	File.unlink( clean_loc )
             rescue ActiveRecord::StatementInvalid
                 success=false
-                yield [false,"COPY #{file['src-table']} from '/tmp/#{file['dest-table']}' failed"]
+                yield [false,"COPY #{file['src-table']} from '#{clean_loc}' failed"]
             end
             unless success
                 msg+= "OK\n"

@@ -80,7 +80,7 @@ begin
         log.puts '-'*40
         db = NAS::DBSync.new( "#{DEF::POS_UPDATES_MOUNT_DIR}/pos/updates", config['last-reported-time'] )
         db.perform do | success, msg |
-            log.puts msg # unless success
+            log.puts msg unless success
         end
 
         config['last-reported-time']=Time.now
