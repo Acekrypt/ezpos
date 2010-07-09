@@ -33,8 +33,10 @@ module PosPayment
                 RAILS_DEFAULT_LOGGER.info "BATCHING SALE #{payment.sale.id} #{payment.data} #{payment.amount}"
                 res=NAS::Payment::CreditCard::YourPay.charge_f2f_authorization( payment.data, payment.amount )
                 yield [ payment, res ] if block_given?
-                payment.post_processed = true
-                payment.save
+                if res.ok? || payment.sale.occured > Time.now-60.days
+                    payment.post_processed = true
+                    payment.save
+                end
             end
         end
 

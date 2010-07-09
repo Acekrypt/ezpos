@@ -56,8 +56,8 @@ class CreditCardPayment < Gtk::Dialog
         match = /(\d+)=(\d{2})(\d{2})/.match( @cc_number )
         if match
             @cc_number=match[1]
-            mon=match[3]
             yr =match[2]
+            mon=match[3]
         end
         cmd = "#{File.dirname( __FILE__ )}/charge.rb -e #{RAILS_ENV} --amt=#{@amount} --num=#{@cc_number} --mon=#{mon} --yr=#{yr}"
         RAILS_DEFAULT_LOGGER.info "Starting CC payment #{@cc_number}::#{mon}::#{yr}"
