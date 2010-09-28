@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+
+require 'gtk2'
+require 'getoptlong'
+require 'bigdecimal'
+
+env='production'
+opts = GetoptLong.new( [ "--enviroment",       "-e",   GetoptLong::OPTIONAL_ARGUMENT] )
+opts.each do | opt, arg |
+    case opt
+    when "--enviroment"
+       env = arg
+    end
+end
+
+if env == 'production'
+    DEBUG=false
+else
+    DEBUG=true
+end
+
+RAILS_ENV=env
+
+require File.dirname( __FILE__ ) + '/../config/environment'
+require 'nas/ezpos/main_window'
+
+
+Gtk.init
+
+begin
+    win = NAS::Labels::MainWindow.new
+    win.show_all
+    Gtk.main
+rescue Exception=>e
+        msg="#{e}\n"
+        e.backtrace.each{ | l | msg << "#{l}\n" }
+
+    dialog = Gtk::MessageDialog.new(
+                                    nil,Gtk::Dialog::MODAL,Gtk::MessageDialog::ERROR,Gtk::MessageDialog::BUTTONS_CANCEL,
+                                    "Error of type #{e.class} occured.  Msg: #{msg}"
+                                    )
+    puts Time.now
+    puts msg
+    dialog.run
+    dialog.destroy
+end
+
+
+

@@ -8,6 +8,7 @@ class SkuFinder < Gtk::VBox
 
     attr_accessor :master
     attr_reader :grid
+    attr_reader :desc_column
 
     def show_cost?
         @show_cost
@@ -138,7 +139,7 @@ class SkuFinder < Gtk::VBox
              end
         end
         @grid_items.clear
-        ActiveRecord::Base.connection.select_all( "select code, descrip, round(cost::numeric/100,2) as cost from skus where upper(code) like #{ActiveRecord::Base.connection.quote( code + '%' )} limit 100" ).each do | row |
+        ActiveRecord::Base.connection.select_all( "select code, descrip, round(cost::numeric/100,2) as cost from skus where upper(code) like #{ActiveRecord::Base.connection.quote( code + '%' )} order by upper(code) limit 100" ).each do | row |
             line = @grid_items.append
             line[0] = row['code']
             line[1] = row['descrip']
