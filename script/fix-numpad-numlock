@@ -1,0 +1,77 @@
+#!/bin/bash
+
+WORKAROUND=0
+function workaround() {
+    if [ $WORKAROUND -eq 0 ]; then
+        WORKAROUND=1
+        echo "workaround"
+        xmodmap $HOME/.numpad-daemon/workaround
+    fi
+}
+
+function reset() {
+    if [ $WORKAROUND -eq 1 ]; then
+        WORKAROUND=0
+        echo "reset"
+        xmodmap $HOME/.numpad-daemon/original
+    fi
+}
+
+function setup() {
+    mkdir -p $HOME/.numpad-daemon
+    if [ ! -f $HOME/.numpad-daemon/usbid ]; then
+        SETUP=1
+        rm -rf /tmp/numpad-daemon-*
+ 	echo `zenity --question --title 'Unplug keypad' --text 'If using numeric keypad, please unplug it and press OK.  If not using keypad, press CANCEL'`
+        if [ "$?" -ne "0" ]; then
+		exit 0;
+	fi
+        lsusb > /tmp/numpad-daemon-$$-lsusb-orig
+       echo `zenity --question --title 'Plug in keypad' --text 'Please plug in your numeric keypad, then press OK'`
+        lsusb > /tmp/numpad-daemon-$$-lsusb-new
+        USBID=`diff /tmp/numpad-daemon-$$-lsusb-{orig,new} | egrep '>'  | sed -re 's|^.*ID ([0-9a-f]{4}:[0-9a-f]{4})(.*)|\1|'`
+        echo $USBID > $HOME/.numpad-daemon/usbid
+    else
+        USBID=`cat $HOME/.numpad-daemon/usbid`
+    fi
+    if [ ! -f $HOME/.numpad-daemon/original ]; then
+        SETUP=1
+        xmodmap -pke | egrep 'KP_[0-9]' | sed -re 's|= (KP_[0-9]*) (KP_[^ ]*)|= \2 \1|' > $HOME/.numpad-daemon/original
+    fi
+    if [ ! -f $HOME/.numpad-daemon/workaround ]; then
+        SETUP=1
+        sed -re 's|= (KP_[^ ]*) (KP_[0-9])|= \2 \1|' $HOME/.numpad-daemon/original > $HOME/.numpad-daemon/workaround
+    fi
+}
+function run() {
+    while [ 1 ]; do
+        if [ "`lsusb | grep $USBID`" ]; then
+            workaround;
+        else
+            reset;
+        fi
+        sleep 1s
+    done
+}
+DAEMONIZE=0
+for arg in $@; do
+    case $arg in
+        -d|--daemonize)
+            DAEMONIZE=1
+        ;;
+        -k|--kill)
+            killall `basename $0`
+            exit
+        ;;
+        -r|--reset)
+            rm -rf ~/.numpad-daemon
+            exit
+        ;;
+    esac
+done
+setup;
+if [ $DAEMONIZE -eq 1 ]; then
+    run &
+else
+    run
+fi
