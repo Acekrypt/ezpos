@@ -50,7 +50,9 @@ class HistorySales < Gtk::TreeView
         end
 
         self.signal_connect('cursor_changed') do | view,row_num,col,store |
-            @history.display_sale( PosSale.find(  self.selection.selected.get_value( 0 ).to_i ) )
+		if ( sel=self.selection.selected )
+	            @history.display_sale( PosSale.find(  sel.get_value( 0 ).to_i ) )
+		end
         end
     end
 

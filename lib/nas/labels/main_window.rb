@@ -35,6 +35,11 @@ class MainWindow < Gtk::Window
 
         main_box=Gtk::VBox.new
 
+        @qty=Gtk::Entry.new
+	@qty.text = "1"
+
+	main_box.pack_start( @qty, false, false )
+
 
         @sku_finder=NAS::Widgets::SkuFinder.new( self, DEF::POS_SHOW_COST )
 	@sku_finder.desc_column.min_width = 800
@@ -65,6 +70,7 @@ class MainWindow < Gtk::Window
 		(one,two) = lines.split("\n")
 		one = '' if one.nil?
 		two = '' if two.nil?
+		price = sprintf('%0.2f',sku.price)
 	        lbl=<<-EOP
 N
 q406
@@ -72,8 +78,8 @@ Q203,24
 EOP
 
 if 'priced' == ARGV[0]
-	lbl += "A#{150 - (sku.price.to_s.length/2*11)},5,0,3,2,2,N,\"$#{sku.price}\"\n"
-	lbl += "A#{150 - (sku.code.length/2*15)},45,0,4,1,1,N,\"#{sku.code}\"\n"
+	lbl += "A#{150 - (price.length/2*11)},0,0,3,2,2,N,\"$#{price}\"\n"
+	lbl += "A#{150 - (sku.code.length/2*6)},45,0,4,1,1,N,\"#{sku.code}\"\n"
 else
 	lbl += "A#{150 - (sku.code.length/2*22)},15,0,4,2,2,N,\"#{sku.code}\"\n"
 end
@@ -81,13 +87,13 @@ lbl+=<<-EOP
 A#{150 - (one.length/2*8)},65,0,2,1,1,N,"#{one}"
 A#{150 - (two.length/2*8)},81,0,2,1,1,N,"#{two}"
 B#{150 - (sku.code.length/2*15)},108,0,1,2,3,70,N,"#{sku.code}"
-P1
+P#{@qty.text}
 EOP
 puts lbl
 	        Open3.popen3("lp -s -d #{DEF::RECEIPT_PRINTER}") { | stdin,stdout,stderr |
 			stdin.write lbl
 		}
-
+		@qty.text="1"
 	end
 
     def enter_deposits
