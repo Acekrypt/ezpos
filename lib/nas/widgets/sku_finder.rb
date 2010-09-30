@@ -26,7 +26,6 @@ class SkuFinder < Gtk::VBox
         self.pack_start( @entry,false,true,0 )
 
         @grid=Gtk::TreeView.new
-        @grid.signal_connect('cursor_changed'){ |widget| @entry.text = @grid.model.get_value( @grid.selection.selected, 0 ) }
         @grid.signal_connect('row_activated'){ |widget, path, treeview | got_activate( @entry ) }
 
         win=Gtk::ScrolledWindow.new

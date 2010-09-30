@@ -208,7 +208,10 @@ class SaleWidget < Gtk::VBox
     end
 
     def set_focus
-        @sku_finder.focus
+	GLib::Timeout.add( 100 ) do 
+	        @sku_finder.focus
+		false
+	end
     end
 
 

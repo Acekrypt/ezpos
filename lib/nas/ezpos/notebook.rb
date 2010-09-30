@@ -31,8 +31,8 @@ class NoteBook < Gtk::Notebook
         self.signal_connect( 'switch-page' ) do | widget, page, page_num |
             @old_page=page_num
             case page_num
-            when 1
-                @history.update
+	    when 0 then @sale.set_focus
+            when 1 then @history.update
             end
         end
         self.show_all
