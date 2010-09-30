@@ -74,9 +74,17 @@ class PosSaleSku < ActiveRecord::Base
         ! self.discount.zero?
     end
 
+    def tax_exempt?
+	['NAEMT'].include?( self.code )
+    end
+
     def tax_rate=( rate )
-        self.tax=( ( self.price * rate ) * self.qty ).round(2)
-        @rate=rate
+	unless self.tax_exempt?
+	    self.tax=( ( self.price * rate ) * self.qty ).round(2)
+	    @rate=rate
+	else
+	    @rate = BigDecimal.zero
+	end
     end
 
 
