@@ -57,20 +57,21 @@ class ReceiptPrinter
         sale.skus.each do | sku |
             recpt.puts sku.descrip[0..39]
             if sku.discounted?
-                line = sprintf('%-10s%3d x %s',sku.code, sku.qty,sku.undiscounted_price.to_s )
+                line = sprintf('%-10s%3d x %0.2f',sku.code, sku.qty,sku.undiscounted_price )
                 line+= ' - ' + sku.discount_percent.to_s + '% ='
                 remainder = 40 - line.size
                 if ( remainder < sku.total.to_s.size )
                     recpt.puts line
-                    recpt.puts sprintf("%40s", sku.subtotal.to_s )
+                    recpt.puts sprintf("%40.2f", sku.subtotal )
                 else
-                    recpt.puts sprintf("%s%#{remainder}s", line,sku.subtotal.to_s )
+                    recpt.puts sprintf("%s%#{remainder}.2f", line,sku.subtotal )
                 end
             else
-                recpt.puts sprintf('%-14s',sku.code) +
-                    sprintf('%3d', sku.qty ) + ' x ' +
-                    sprintf('%-8s', sku.price.to_s ) +
-                    sprintf('%12s', sku.subtotal.to_s )
+		if sku.qty > 1 
+	                recpt.puts sprintf('%-14s%3d x %-8.2f%12.2f',sku.code, sku.qty, sku.price, sku.subtotal )
+		else 
+	                recpt.puts sprintf('%-14s%26.2f',sku.code, sku.subtotal )
+		end
             end
         end
     end
